@@ -84,7 +84,7 @@ class MicroInst extends Bundle {
   val mem_code  = UInt(2.W)
   val mem_size  = UInt(2.W)
   val csr_code  = UInt(3.W)
-  val w_type    = Bool()
+  val width_32  = Bool()
 
   val rs1_src   = UInt(3.W)
   val rs2_src   = UInt(3.W)
@@ -111,7 +111,7 @@ class MicroInst extends Bundle {
     mem_code := Constant.MEM_X
     mem_size := Constant.MEM_X
     csr_code := Constant.CSR_X
-    w_type   := false.B
+    width_32 := false.B
     rs1_src  := Constant.RS_X
     rs2_src  := Constant.RS_X
     rs1_addr := 0.U

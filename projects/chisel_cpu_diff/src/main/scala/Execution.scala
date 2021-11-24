@@ -37,7 +37,7 @@ class Execution extends Module with Ext {
     RS_FROM_PC  -> Zext_64(inst_decode.pc),
   )).asUInt()
 
-  in1_sext := Mux(inst_decode.w_type, Sext_64(in1(31, 0)), in1)
+  in1_sext := Mux(inst_decode.width_32, Sext_64(in1(31, 0)), in1)
 
 
   in2 := MuxLookup(inst_decode.rs2_src, 0.U, Array(
@@ -46,7 +46,7 @@ class Execution extends Module with Ext {
     RS_FROM_PC  -> Zext_64(inst_decode.pc),
   )).asUInt()
 
-  in2_sext := Mux(inst_decode.w_type, Sext_64(in2(31, 0)), in2)
+  in2_sext := Mux(inst_decode.width_32, Sext_64(in2(31, 0)), in2)
 
 
 

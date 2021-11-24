@@ -31,7 +31,7 @@ ALU_SUB -> (in1-in2).asUInt(),
 ))
 
 
-out_sext  := Mux(inst_decode.w_type, Sext_64(alu_out(31, 0)), alu_out)
+out_sext  := Mux(inst_decode.width_32, Sext_64(alu_out(31, 0)), alu_out)
 
 
 io.out := out_sext

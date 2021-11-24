@@ -84,46 +84,44 @@ module Decode(
   output [3:0]  io_inst_decode_alu_code,
   output [2:0]  io_inst_decode_rs1_src,
   output [2:0]  io_inst_decode_rs2_src,
-  output [4:0]  io_inst_decode_rs1_addr,
   output [4:0]  io_inst_decode_rd_addr,
-  output        io_inst_decode_rs1_en,
   output        io_inst_decode_rd_en,
   output [31:0] io_inst_decode_imm
 );
+  wire [4:0] inst_decode_rd_addr = io_inst[11:7]; // @[Decode.scala 28:30]
   wire [31:0] _ctrl_T = io_inst & 32'h707f; // @[Lookup.scala 31:38]
-  wire  ctrl_0 = 32'h13 == _ctrl_T; // @[Lookup.scala 31:38]
-  wire [2:0] ctrl_1 = ctrl_0 ? 3'h1 : 3'h0; // @[Lookup.scala 33:37]
+  wire  _ctrl_T_1 = 32'h13 == _ctrl_T; // @[Lookup.scala 31:38]
+  wire [31:0] _ctrl_T_2 = io_inst & 32'h7f; // @[Lookup.scala 31:38]
+  wire  _ctrl_T_3 = 32'h17 == _ctrl_T_2; // @[Lookup.scala 31:38]
+  wire [2:0] _ctrl_T_5 = _ctrl_T_3 ? 3'h1 : 3'h0; // @[Lookup.scala 33:37]
+  wire [3:0] _ctrl_T_6 = _ctrl_T_3 ? 4'h1 : 4'h0; // @[Lookup.scala 33:37]
+  wire [2:0] _ctrl_T_12 = _ctrl_T_3 ? 3'h4 : 3'h0; // @[Lookup.scala 33:37]
+  wire [2:0] ctrl_8 = _ctrl_T_1 ? 3'h1 : _ctrl_T_12; // @[Lookup.scala 33:37]
+  wire [2:0] _ctrl_T_13 = _ctrl_T_3 ? 3'h2 : 3'h0; // @[Lookup.scala 33:37]
   wire [52:0] imm_i_hi = io_inst[31] ? 53'h1fffffffffffff : 53'h0; // @[Bitwise.scala 72:12]
-  wire [10:0] imm_i_lo = io_inst[30:20]; // @[Decode.scala 71:43]
+  wire [10:0] imm_i_lo = io_inst[30:20]; // @[Decode.scala 76:43]
   wire [63:0] imm_i = {imm_i_hi,imm_i_lo}; // @[Cat.scala 30:58]
-  wire [5:0] imm_s_hi_lo = io_inst[30:25]; // @[Decode.scala 72:43]
-  wire [4:0] imm_s_lo = io_inst[11:7]; // @[Decode.scala 72:57]
-  wire [63:0] imm_s = {imm_i_hi,imm_s_hi_lo,imm_s_lo}; // @[Cat.scala 30:58]
+  wire [5:0] imm_s_hi_lo = io_inst[30:25]; // @[Decode.scala 77:43]
+  wire [63:0] imm_s = {imm_i_hi,imm_s_hi_lo,inst_decode_rd_addr}; // @[Cat.scala 30:58]
   wire [51:0] imm_b_hi_hi_hi = io_inst[31] ? 52'hfffffffffffff : 52'h0; // @[Bitwise.scala 72:12]
-  wire  imm_b_hi_hi_lo = io_inst[7]; // @[Decode.scala 73:43]
-  wire [3:0] imm_b_lo_hi = io_inst[11:8]; // @[Decode.scala 73:66]
+  wire  imm_b_hi_hi_lo = io_inst[7]; // @[Decode.scala 78:43]
+  wire [3:0] imm_b_lo_hi = io_inst[11:8]; // @[Decode.scala 78:66]
   wire [63:0] imm_b = {imm_b_hi_hi_hi,imm_b_hi_hi_lo,imm_s_hi_lo,imm_b_lo_hi,1'h0}; // @[Cat.scala 30:58]
-  wire [63:0] _inst_decode_imm_T_1 = 3'h1 == ctrl_1 ? imm_i : 64'h0; // @[Mux.scala 80:57]
-  wire [63:0] _inst_decode_imm_T_3 = 3'h2 == ctrl_1 ? imm_s : _inst_decode_imm_T_1; // @[Mux.scala 80:57]
-  wire [63:0] _inst_decode_imm_T_5 = 3'h3 == ctrl_1 ? imm_b : _inst_decode_imm_T_3; // @[Mux.scala 80:57]
-  wire  _T = ctrl_1 == 3'h1; // @[Decode.scala 82:15]
-  wire [4:0] _GEN_0 = ctrl_1 == 3'h1 ? io_inst[19:15] : 5'h0; // @[Decode.scala 82:30 Decode.scala 83:24 Decode.scala 64:24]
+  wire [63:0] _inst_decode_imm_T_1 = 3'h1 == ctrl_8 ? imm_i : 64'h0; // @[Mux.scala 80:57]
+  wire [63:0] _inst_decode_imm_T_3 = 3'h2 == ctrl_8 ? imm_s : _inst_decode_imm_T_1; // @[Mux.scala 80:57]
+  wire [63:0] _inst_decode_imm_T_5 = 3'h3 == ctrl_8 ? imm_b : _inst_decode_imm_T_3; // @[Mux.scala 80:57]
   assign io_inst_decode_pc = io_pc; // @[Decode.scala 18:25 Decode.scala 20:21]
-  assign io_inst_decode_fu_code = ctrl_0 ? 3'h1 : 3'h0; // @[Lookup.scala 33:37]
-  assign io_inst_decode_alu_code = ctrl_0 ? 4'h1 : 4'h0; // @[Lookup.scala 33:37]
-  assign io_inst_decode_rs1_src = ctrl_0 ? 3'h1 : 3'h0; // @[Lookup.scala 33:37]
-  assign io_inst_decode_rs2_src = ctrl_0 ? 3'h2 : 3'h0; // @[Lookup.scala 33:37]
-  assign io_inst_decode_rs1_addr = _T ? io_inst[19:15] : _GEN_0; // @[Decode.scala 88:30 Decode.scala 89:24]
-  assign io_inst_decode_rd_addr = ctrl_0 ? imm_s_lo : 5'h0; // @[Decode.scala 93:24 Decode.scala 93:47 Decode.scala 65:24]
-  assign io_inst_decode_rs1_en = _T | _T; // @[Decode.scala 88:30 Decode.scala 90:24]
-  assign io_inst_decode_rd_en = 32'h13 == _ctrl_T; // @[Lookup.scala 31:38]
-  assign io_inst_decode_imm = _inst_decode_imm_T_5[31:0]; // @[Decode.scala 18:25 Decode.scala 75:19]
+  assign io_inst_decode_fu_code = _ctrl_T_1 ? 3'h1 : _ctrl_T_5; // @[Lookup.scala 33:37]
+  assign io_inst_decode_alu_code = _ctrl_T_1 ? 4'h1 : _ctrl_T_6; // @[Lookup.scala 33:37]
+  assign io_inst_decode_rs1_src = _ctrl_T_1 ? 3'h1 : _ctrl_T_12; // @[Lookup.scala 33:37]
+  assign io_inst_decode_rs2_src = _ctrl_T_1 ? 3'h2 : _ctrl_T_13; // @[Lookup.scala 33:37]
+  assign io_inst_decode_rd_addr = io_inst[11:7]; // @[Decode.scala 28:30]
+  assign io_inst_decode_rd_en = _ctrl_T_1 | _ctrl_T_3; // @[Lookup.scala 33:37]
+  assign io_inst_decode_imm = _inst_decode_imm_T_5[31:0]; // @[Decode.scala 18:25 Decode.scala 80:19]
 endmodule
 module RegFile(
   input         clock,
   input         reset,
-  input  [4:0]  io_rs1_addr,
-  output [63:0] io_rs1_data,
   input  [4:0]  io_rd_addr,
   input  [63:0] io_rd_data,
   input         io_rd_en,
@@ -229,37 +227,6 @@ module RegFile(
   reg [63:0] rf__29; // @[RegFile.scala 16:19]
   reg [63:0] rf__30; // @[RegFile.scala 16:19]
   reg [63:0] rf__31; // @[RegFile.scala 16:19]
-  wire [63:0] _GEN_65 = 5'h1 == io_rs1_addr ? rf__1 : rf__0; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_66 = 5'h2 == io_rs1_addr ? rf__2 : _GEN_65; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_67 = 5'h3 == io_rs1_addr ? rf__3 : _GEN_66; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_68 = 5'h4 == io_rs1_addr ? rf__4 : _GEN_67; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_69 = 5'h5 == io_rs1_addr ? rf__5 : _GEN_68; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_70 = 5'h6 == io_rs1_addr ? rf__6 : _GEN_69; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_71 = 5'h7 == io_rs1_addr ? rf__7 : _GEN_70; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_72 = 5'h8 == io_rs1_addr ? rf__8 : _GEN_71; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_73 = 5'h9 == io_rs1_addr ? rf__9 : _GEN_72; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_74 = 5'ha == io_rs1_addr ? rf__10 : _GEN_73; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_75 = 5'hb == io_rs1_addr ? rf__11 : _GEN_74; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_76 = 5'hc == io_rs1_addr ? rf__12 : _GEN_75; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_77 = 5'hd == io_rs1_addr ? rf__13 : _GEN_76; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_78 = 5'he == io_rs1_addr ? rf__14 : _GEN_77; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_79 = 5'hf == io_rs1_addr ? rf__15 : _GEN_78; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_80 = 5'h10 == io_rs1_addr ? rf__16 : _GEN_79; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_81 = 5'h11 == io_rs1_addr ? rf__17 : _GEN_80; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_82 = 5'h12 == io_rs1_addr ? rf__18 : _GEN_81; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_83 = 5'h13 == io_rs1_addr ? rf__19 : _GEN_82; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_84 = 5'h14 == io_rs1_addr ? rf__20 : _GEN_83; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_85 = 5'h15 == io_rs1_addr ? rf__21 : _GEN_84; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_86 = 5'h16 == io_rs1_addr ? rf__22 : _GEN_85; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_87 = 5'h17 == io_rs1_addr ? rf__23 : _GEN_86; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_88 = 5'h18 == io_rs1_addr ? rf__24 : _GEN_87; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_89 = 5'h19 == io_rs1_addr ? rf__25 : _GEN_88; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_90 = 5'h1a == io_rs1_addr ? rf__26 : _GEN_89; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_91 = 5'h1b == io_rs1_addr ? rf__27 : _GEN_90; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_92 = 5'h1c == io_rs1_addr ? rf__28 : _GEN_91; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_93 = 5'h1d == io_rs1_addr ? rf__29 : _GEN_92; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_94 = 5'h1e == io_rs1_addr ? rf__30 : _GEN_93; // @[RegFile.scala 22:21 RegFile.scala 22:21]
-  wire [63:0] _GEN_95 = 5'h1f == io_rs1_addr ? rf__31 : _GEN_94; // @[RegFile.scala 22:21 RegFile.scala 22:21]
   DifftestArchIntRegState dt_ar ( // @[RegFile.scala 25:21]
     .clock(dt_ar_clock),
     .coreid(dt_ar_coreid),
@@ -296,7 +263,6 @@ module RegFile(
     .gpr_30(dt_ar_gpr_30),
     .gpr_31(dt_ar_gpr_31)
   );
-  assign io_rs1_data = io_rs1_addr != 5'h0 ? _GEN_95 : 64'h0; // @[RegFile.scala 22:21]
   assign rf_10 = rf__10;
   assign dt_ar_clock = clock; // @[RegFile.scala 26:19]
   assign dt_ar_coreid = 8'h0; // @[RegFile.scala 27:19]
@@ -684,7 +650,6 @@ module Execution(
   input  [2:0]  io_inst_decode_rs1_src,
   input  [2:0]  io_inst_decode_rs2_src,
   input  [31:0] io_inst_decode_imm,
-  input  [63:0] io_rs1_data,
   input  [63:0] io_rs2_data,
   output [63:0] io_result
 );
@@ -695,8 +660,7 @@ module Execution(
   wire [31:0] in1_hi = io_inst_decode_imm[31] ? 32'hffffffff : 32'h0; // @[Bitwise.scala 72:12]
   wire [63:0] _in1_T_2 = {in1_hi,io_inst_decode_imm}; // @[Cat.scala 30:58]
   wire [63:0] _in1_T_3 = {32'h0,io_inst_decode_pc}; // @[Cat.scala 30:58]
-  wire [63:0] _in1_T_5 = 3'h1 == io_inst_decode_rs1_src ? io_rs1_data : 64'h0; // @[Mux.scala 80:57]
-  wire [63:0] _in1_T_7 = 3'h2 == io_inst_decode_rs1_src ? _in1_T_2 : _in1_T_5; // @[Mux.scala 80:57]
+  wire [63:0] _in1_T_7 = 3'h2 == io_inst_decode_rs1_src ? _in1_T_2 : 64'h0; // @[Mux.scala 80:57]
   wire [63:0] _in2_T_5 = 3'h1 == io_inst_decode_rs2_src ? io_rs2_data : 64'h0; // @[Mux.scala 80:57]
   wire [63:0] _in2_T_7 = 3'h2 == io_inst_decode_rs2_src ? _in1_T_2 : _in2_T_5; // @[Mux.scala 80:57]
   ALU alu ( // @[Execution.scala 54:19]
@@ -738,15 +702,11 @@ module Core(
   wire [3:0] decode_io_inst_decode_alu_code; // @[Core.scala 14:22]
   wire [2:0] decode_io_inst_decode_rs1_src; // @[Core.scala 14:22]
   wire [2:0] decode_io_inst_decode_rs2_src; // @[Core.scala 14:22]
-  wire [4:0] decode_io_inst_decode_rs1_addr; // @[Core.scala 14:22]
   wire [4:0] decode_io_inst_decode_rd_addr; // @[Core.scala 14:22]
-  wire  decode_io_inst_decode_rs1_en; // @[Core.scala 14:22]
   wire  decode_io_inst_decode_rd_en; // @[Core.scala 14:22]
   wire [31:0] decode_io_inst_decode_imm; // @[Core.scala 14:22]
   wire  rf_clock; // @[Core.scala 18:18]
   wire  rf_reset; // @[Core.scala 18:18]
-  wire [4:0] rf_io_rs1_addr; // @[Core.scala 18:18]
-  wire [63:0] rf_io_rs1_data; // @[Core.scala 18:18]
   wire [4:0] rf_io_rd_addr; // @[Core.scala 18:18]
   wire [63:0] rf_io_rd_data; // @[Core.scala 18:18]
   wire  rf_io_rd_en; // @[Core.scala 18:18]
@@ -757,7 +717,6 @@ module Core(
   wire [2:0] execution_io_inst_decode_rs1_src; // @[Core.scala 24:25]
   wire [2:0] execution_io_inst_decode_rs2_src; // @[Core.scala 24:25]
   wire [31:0] execution_io_inst_decode_imm; // @[Core.scala 24:25]
-  wire [63:0] execution_io_rs1_data; // @[Core.scala 24:25]
   wire [63:0] execution_io_rs2_data; // @[Core.scala 24:25]
   wire [63:0] execution_io_result; // @[Core.scala 24:25]
   wire  dt_ic_clock; // @[Core.scala 35:21]
@@ -832,17 +791,13 @@ module Core(
     .io_inst_decode_alu_code(decode_io_inst_decode_alu_code),
     .io_inst_decode_rs1_src(decode_io_inst_decode_rs1_src),
     .io_inst_decode_rs2_src(decode_io_inst_decode_rs2_src),
-    .io_inst_decode_rs1_addr(decode_io_inst_decode_rs1_addr),
     .io_inst_decode_rd_addr(decode_io_inst_decode_rd_addr),
-    .io_inst_decode_rs1_en(decode_io_inst_decode_rs1_en),
     .io_inst_decode_rd_en(decode_io_inst_decode_rd_en),
     .io_inst_decode_imm(decode_io_inst_decode_imm)
   );
   RegFile rf ( // @[Core.scala 18:18]
     .clock(rf_clock),
     .reset(rf_reset),
-    .io_rs1_addr(rf_io_rs1_addr),
-    .io_rs1_data(rf_io_rs1_data),
     .io_rd_addr(rf_io_rd_addr),
     .io_rd_data(rf_io_rd_data),
     .io_rd_en(rf_io_rd_en),
@@ -855,7 +810,6 @@ module Core(
     .io_inst_decode_rs1_src(execution_io_inst_decode_rs1_src),
     .io_inst_decode_rs2_src(execution_io_inst_decode_rs2_src),
     .io_inst_decode_imm(execution_io_inst_decode_imm),
-    .io_rs1_data(execution_io_rs1_data),
     .io_rs2_data(execution_io_rs2_data),
     .io_result(execution_io_result)
   );
@@ -921,7 +875,6 @@ module Core(
   assign decode_io_inst = fetch_io_inst; // @[Core.scala 15:18]
   assign rf_clock = clock;
   assign rf_reset = reset;
-  assign rf_io_rs1_addr = decode_io_inst_decode_rs1_addr; // @[Core.scala 19:18]
   assign rf_io_rd_addr = decode_io_inst_decode_rd_addr; // @[Core.scala 21:18]
   assign rf_io_rd_data = execution_io_result; // @[Core.scala 28:28]
   assign rf_io_rd_en = decode_io_inst_decode_rd_en; // @[Core.scala 22:18]
@@ -931,7 +884,6 @@ module Core(
   assign execution_io_inst_decode_rs1_src = decode_io_inst_decode_rs1_src; // @[Core.scala 25:28]
   assign execution_io_inst_decode_rs2_src = decode_io_inst_decode_rs2_src; // @[Core.scala 25:28]
   assign execution_io_inst_decode_imm = decode_io_inst_decode_imm; // @[Core.scala 25:28]
-  assign execution_io_rs1_data = decode_io_inst_decode_rs1_en ? rf_io_rs1_data : 64'h0; // @[Core.scala 26:34]
   assign execution_io_rs2_data = {{32'd0}, decode_io_inst_decode_imm}; // @[Core.scala 27:34]
   assign dt_ic_clock = clock; // @[Core.scala 36:21]
   assign dt_ic_coreid = 8'h0; // @[Core.scala 37:21]

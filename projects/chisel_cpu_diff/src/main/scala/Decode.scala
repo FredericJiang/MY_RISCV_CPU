@@ -22,13 +22,22 @@ class Decode extends Module {
  inst_decode.inst   := inst
  
 
+
+  inst_decode.rs1_addr := inst(19, 15)
+  inst_decode.rs2_addr := inst(24, 20)
+  inst_decode.rd_addr := inst(11, 7)
+
+  inst_decode.rs1_en := false.B
+  inst_decode.rs2_en := false.B
+
+
   val ctrl = ListLookup( inst, 
     
-             List(N, FU_X,   ALU_X,    JMP_X,    MEM_X,   MEM_X,     CSR_X,     N, RS_X,         RS_X,        N, IMM_X),
+             List(N,   FU_X,   ALU_X,    JMP_X,    MEM_X,   MEM_X,     CSR_X,    N,   RS_X,         RS_X,        N, IMM_X),
 Array(
-  
-  ADDI   ->  List(Y, FU_ALU, ALU_ADD,  JMP_X,    MEM_X,   MEM_X,     CSR_X,     N, RS_FROM_RF,   RS_FROM_IMM, Y, IMM_I)
-
+  //           valid FuncUnit                                                  w32b?   rs1_type      rs2_type       imm_type
+  ADDI   ->  List(Y,  FU_ALU,  ALU_ADD,  JMP_X,    MEM_X,   MEM_X,     CSR_X,    N,   RS_FROM_RF,   RS_FROM_IMM, Y, IMM_I),
+  AUIPC  ->  List(Y,  FU_ALU,  ALU_ADD,  JMP_X,    MEM_X,   MEM_X,     CSR_X,    N,   RS_FROM_PC,   RS_FROM_IMM, Y, IMM_U)
 
   
   
@@ -44,7 +53,7 @@ Array(
 
 val (valid:Bool)    :: fu_code :: alu_code :: jmp_code :: mem_code ::mem_size :: csr_code :: oprend = ctrl
 
-val (w_type : Bool) :: rs1_src :: rs2_src  :: (rd_en : Bool) :: imm_type :: Nil                     = oprend  
+val (width_32 : Bool) :: rs1_src :: rs2_src  :: (rd_en : Bool) :: imm_type :: Nil                     = oprend  
 
 
   inst_decode.valid     := valid
@@ -54,15 +63,11 @@ val (w_type : Bool) :: rs1_src :: rs2_src  :: (rd_en : Bool) :: imm_type :: Nil 
   inst_decode.mem_code  := mem_code
   inst_decode.mem_size  := mem_size
   inst_decode.csr_code  := csr_code
-  inst_decode.w_type    := w_type
+  inst_decode.width_32  := width_32
   inst_decode.rs1_src   := rs1_src
   inst_decode.rs2_src   := rs2_src
   inst_decode.rd_en     := rd_en
 
-  inst_decode.rs2_en  := false.B
-  inst_decode.rs2_addr := 0.U
-  inst_decode.rs1_addr := 0.U
-  inst_decode.rd_addr  := 0.U
 
 
 
@@ -77,21 +82,6 @@ val (w_type : Bool) :: rs1_src :: rs2_src  :: (rd_en : Bool) :: imm_type :: Nil 
     IMM_S -> imm_s,
     IMM_B -> imm_b,
   ))
-
-
-when (rs1_src === RS_FROM_RF){
-  inst_decode.rs1_addr := inst(19, 15)
-  inst_decode.rs1_en   := true.B
-}otherwise{inst_decode.rs1_en   := false.B}
-
- 
-when (rs1_src === RS_FROM_RF){
-  inst_decode.rs1_addr := inst(19, 15)
-  inst_decode.rs1_en   := true.B
-}otherwise{inst_decode.rs2_en   := false.B}
-
- when(rd_en === true.B){ inst_decode.rd_addr  := inst(11,7)} 
-
 
 
 
