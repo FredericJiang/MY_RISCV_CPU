@@ -13,9 +13,9 @@ class RegFile extends Module {
     val rd_en = Input(Bool())
   })
 
-  val rf = RegInit(VecInit(Seq.fill(32)(0.U(64.W))))
+  val rf = RegInit(VecInit(Seq.fill(32)(0.U(64.W)))) //initialize regfile 32 * 64bits
 
-  when (io.rd_en && (io.rd_addr =/= 0.U)) {
+  when (io.rd_en && (io.rd_addr =/= 0.U)) {  // =/= inequity
     rf(io.rd_addr) := io.rd_data;
   }
 

@@ -13,19 +13,22 @@ class Core extends Module {
 
   val decode = Module(new Decode)
   decode.io.inst := fetch.io.inst
+  decode.io.pc   := fetch.io.pc
 
   val rf = Module(new RegFile)
-  rf.io.rs1_addr := decode.io.rs1_addr
-  rf.io.rs2_addr := decode.io.rs2_addr
-  rf.io.rd_addr := decode.io.rd_addr
-  rf.io.rd_en := decode.io.rd_en
+  rf.io.rs1_addr := decode.io.inst_decode.rs1_addr
+  rf.io.rs2_addr := decode.io.inst_decode.rs2_addr
+  rf.io.rd_addr  := decode.io.inst_decode.rd_addr
+  rf.io.rd_en    := decode.io.inst_decode.rd_en
 
   val execution = Module(new Execution)
-  execution.io.opcode := decode.io.opcode
-  execution.io.in1 := Mux(decode.io.rs1_en, rf.io.rs1_data, 0.U)
-  execution.io.in2 := Mux(decode.io.rs2_en, rf.io.rs2_data, decode.io.imm)
-  execution.io.dmem <> io.dmem
-  rf.io.rd_data := execution.io.out
+  execution.io.inst_decode := decode.io.inst_decode
+  execution.io.rs1_data    := Mux(decode.io.inst_decode.rs1_en, rf.io.rs1_data, 0.U)
+  execution.io.rs2_data    := Mux(decode.io.inst_decode.rs2_en, rf.io.rs2_data, decode.io.inst_decode.imm)
+  rf.io.rd_data            := execution.io.result
+  execution.io.dmem        <> io.dmem
+
+  
 
   /* ----- Difftest ------------------------------ */
 
@@ -40,9 +43,9 @@ class Core extends Module {
   dt_ic.io.skip     := false.B
   dt_ic.io.isRVC    := false.B
   dt_ic.io.scFailed := false.B
-  dt_ic.io.wen      := RegNext(decode.io.rd_en)
-  dt_ic.io.wdata    := RegNext(execution.io.out)
-  dt_ic.io.wdest    := RegNext(decode.io.rd_addr)
+  dt_ic.io.wen      := RegNext(decode.io.inst_decode.rd_en)
+  dt_ic.io.wdata    := RegNext(execution.io.result)
+  dt_ic.io.wdest    := RegNext(decode.io.inst_decode.rd_addr)
 
   val dt_ae = Module(new DifftestArchEvent)
   dt_ae.io.clock        := clock
