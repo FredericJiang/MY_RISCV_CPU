@@ -13,7 +13,7 @@ class Core extends Module {
   })
    
   
-  val pc = RegInit("h80000000".U(32.W))
+  val pc = RegInit("h0000000080000000".U(64.W))
   
   val nxt_pc = Module(new Nxt_PC)
   val decode = Module(new Decode)
