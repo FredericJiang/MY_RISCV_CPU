@@ -13,7 +13,7 @@ class Core extends Module {
   })
    
   
-  val pc = dontTouch(RegInit("h80000000".U(32.W)))
+  val pc = RegInit("h80000000".U(32.W))
   val nxt_pc = Module(new Nxt_PC)
   val decode = Module(new Decode)
   val regfile = Module(new RegFile)
@@ -146,30 +146,6 @@ io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 }.elsewhen(decode.io.wb_type === WB_JALR){
 regfile.io.rd_data := pc + 4.U 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
 
 
 
