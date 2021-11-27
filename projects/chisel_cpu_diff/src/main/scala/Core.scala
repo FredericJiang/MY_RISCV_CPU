@@ -38,7 +38,7 @@ regfile.io.rd_data := 0.U
   io.imem.en    := true.B
   val inst = io.imem.rdata
   
-
+  printf("%c", inst)
 
   //Decode
 
