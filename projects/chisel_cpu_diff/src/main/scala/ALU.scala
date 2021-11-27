@@ -3,39 +3,38 @@ import chisel3.util._
 import Constant._
 
 
-class ALU extends Module with Ext{
+class ALU extends Module{
 val io = IO( new Bundle{
-val inst_decode = Input(new MicroInst())
+val alu_type = Input(UInt(4.W))
 val in1 = Input(UInt(64.W))
 val in2 = Input(UInt(64.W))
+val alu_out = Output(UInt(64.W))
 
-val out = Output(UInt(64.W))
 
 })
 
-val inst_decode = io.inst_decode
 val in1         = io.in1
 val in2         = io.in2
 
 val alu_out   = Wire(UInt(64.W))
-val out_sext  = Wire(UInt(64.W))
 
 
 
-alu_out  := MuxLookup(inst_decode.alu_code, 0.U, Array(
+alu_out  := MuxLookup(io.alu_type, ALU_X, Array(
 
-ALU_ADD -> (in1+in2).asUInt(),
-ALU_SUB -> (in1-in2).asUInt(),
-
-
+ALU_ADD  -> (in1+in2).asUInt(),
+ALU_SUB  -> (in1-in2).asUInt(),
+ALU_SLT  -> (in1.asSInt < in2.asSInt).asUInt(),
+ALU_SLTU -> (in1 < in2).asUInt(),
+ALU_XOR  -> (in1 ^ in2).asUInt(),
+ALU_OR   -> (in1 | in2).asUInt(),
+ALU_AND  -> (in1 & in2).asUInt(),
+ALU_SLL  -> (in1 << in2(4,0)).asUInt(),
+ALU_SRL  -> (in1 >> in2(4,0)).asUInt(),
+ALU_SRA  -> (in1 >> in2(4,0)).asUInt()
 ))
 
-
-out_sext  := Mux(inst_decode.width_32, Sext_64(alu_out(31, 0)), alu_out)
-
-
-io.out := out_sext
-
+io.alu_out := alu_out
 
 
 }
