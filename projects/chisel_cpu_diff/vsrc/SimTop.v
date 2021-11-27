@@ -1289,7 +1289,7 @@ module Core(
       if (`PRINTF_COND) begin
     `endif
         if (~reset) begin
-          $fwrite(32'h80000002,"%c",io_imem_rdata); // @[Core.scala 41:9]
+          $fwrite(32'h80000002,"%x",io_imem_rdata); // @[Core.scala 41:9]
         end
     `ifdef PRINTF_COND
       end
