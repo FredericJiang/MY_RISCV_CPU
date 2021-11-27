@@ -28,13 +28,14 @@ io.dmem.wdata := 0.U
 io.dmem.wmask := 0.U
 io.dmem.addr := 0.U
 io.dmem.wen := false.B
+
 regfile.io.rd_data := 0.U
 
 
 
 
 // InstFetch
-  io.imem.addr  := pc
+  io.imem.addr  := RegNext(pc)
   io.imem.en    := true.B
   val inst = io.imem.rdata
   

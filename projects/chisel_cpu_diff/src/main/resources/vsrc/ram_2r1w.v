@@ -53,7 +53,7 @@ module ram_2r1w (
 
   always @(posedge clk) begin
     ram_write_helper((dmem_addr - 64'h0000_0000_8000_0000) >> 3, dmem_wdata, dmem_wmask, dmem_en & dmem_wen);
-    $display("imem_addr = %x",imem_addr,"imem_data = %x",imem_data);
+    $display("imem_addr = %x",imem_addr,"  imem_data = %x",imem_data);
   end
 
 endmodule
