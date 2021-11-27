@@ -37,7 +37,7 @@ regfile.io.rd_data := 0.U
 // InstFetch
   io.imem.addr  := pc.asUInt()
   io.imem.en    := true.B
-  val inst = io.imem.rdata
+  val inst = RegNext(io.imem.rdata)
   
 
   //Decode

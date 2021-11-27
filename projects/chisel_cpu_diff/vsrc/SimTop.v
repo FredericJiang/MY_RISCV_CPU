@@ -940,11 +940,12 @@ module Core(
   reg [63:0] _RAND_0;
   reg [63:0] _RAND_1;
   reg [63:0] _RAND_2;
-  reg [31:0] _RAND_3;
-  reg [63:0] _RAND_4;
-  reg [31:0] _RAND_5;
-  reg [63:0] _RAND_6;
+  reg [63:0] _RAND_3;
+  reg [31:0] _RAND_4;
+  reg [63:0] _RAND_5;
+  reg [31:0] _RAND_6;
   reg [63:0] _RAND_7;
+  reg [63:0] _RAND_8;
 `endif // RANDOMIZE_REG_INIT
   wire [63:0] nxt_pc_io_pc; // @[Core.scala 18:22]
   wire [2:0] nxt_pc_io_imm_type; // @[Core.scala 18:22]
@@ -1024,6 +1025,7 @@ module Core(
   wire [63:0] dt_cs_mideleg; // @[Core.scala 196:21]
   wire [63:0] dt_cs_medeleg; // @[Core.scala 196:21]
   reg [63:0] pc; // @[Core.scala 16:19]
+  reg [63:0] inst; // @[Core.scala 40:21]
   wire  _regfile_io_rd_en_T = decode_io_wb_type == 3'h1; // @[Core.scala 67:42]
   wire  _regfile_io_rd_en_T_1 = decode_io_wb_type == 3'h5; // @[Core.scala 67:76]
   wire  _io_dmem_en_T = decode_io_mem_rtype != 3'h0; // @[Core.scala 69:38]
@@ -1203,17 +1205,17 @@ module Core(
   assign nxt_pc_io_alu_type = decode_io_alu_type[2:0]; // @[Core.scala 56:22]
   assign nxt_pc_io_alu_out = alu_io_alu_out; // @[Core.scala 59:21]
   assign nxt_pc_io_wb_type = decode_io_wb_type; // @[Core.scala 57:21]
-  assign decode_io_inst = io_imem_rdata[31:0]; // @[Core.scala 52:18]
+  assign decode_io_inst = inst[31:0]; // @[Core.scala 52:18]
   assign regfile_clock = clock;
   assign regfile_reset = reset;
-  assign regfile_io_rs1_addr = io_imem_rdata[19:15]; // @[Core.scala 46:30]
-  assign regfile_io_rs2_addr = io_imem_rdata[24:20]; // @[Core.scala 47:30]
-  assign regfile_io_rd_addr = io_imem_rdata[11:7]; // @[Core.scala 48:30]
+  assign regfile_io_rs1_addr = inst[19:15]; // @[Core.scala 46:30]
+  assign regfile_io_rs2_addr = inst[24:20]; // @[Core.scala 47:30]
+  assign regfile_io_rd_addr = inst[11:7]; // @[Core.scala 48:30]
   assign regfile_io_rd_data = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 4'h0 ?
     alu_io_alu_out : _GEN_23; // @[Core.scala 121:101 Core.scala 122:20]
   assign regfile_io_rd_en = decode_io_wb_type == 3'h1 | decode_io_wb_type == 3'h5; // @[Core.scala 67:54]
   assign imm_gen_io_imm_type = decode_io_imm_type; // @[Core.scala 62:23]
-  assign imm_gen_io_inst = io_imem_rdata[31:0]; // @[Core.scala 63:19]
+  assign imm_gen_io_inst = inst[31:0]; // @[Core.scala 63:19]
   assign alu_io_alu_type = decode_io_alu_type; // @[Core.scala 72:19]
   assign alu_io_in1 = alu_io_alu_type != 4'h0 & decode_io_op1_type == 3'h1 ? regfile_io_rs1_data : _GEN_0; // @[Core.scala 82:68 Core.scala 83:14]
   assign alu_io_in2 = decode_io_op2_type == 3'h1 & decode_io_imm_type == 3'h0 ? regfile_io_rs2_data : _GEN_4; // @[Core.scala 90:70 Core.scala 92:14]
@@ -1238,7 +1240,7 @@ module Core(
   assign dt_ae_exceptionInst = 32'h0;
   assign dt_te_clock = clock; // @[Core.scala 188:21]
   assign dt_te_coreid = 8'h0; // @[Core.scala 189:21]
-  assign dt_te_valid = io_imem_rdata == 64'h6b; // @[Core.scala 190:30]
+  assign dt_te_valid = inst == 64'h6b; // @[Core.scala 190:30]
   assign dt_te_code = rf_a0_0[2:0]; // @[Core.scala 191:29]
   assign dt_te_pc = pc; // @[Core.scala 192:21]
   assign dt_te_cycleCnt = cycle_cnt; // @[Core.scala 193:21]
@@ -1269,8 +1271,9 @@ module Core(
     end else begin
       pc <= nxt_pc_io_pc_nxt; // @[Core.scala 148:5]
     end
+    inst <= io_imem_rdata; // @[Core.scala 40:21]
     dt_ic_io_pc_REG <= pc; // @[Core.scala 161:31]
-    dt_ic_io_instr_REG <= io_imem_rdata; // @[Core.scala 162:31]
+    dt_ic_io_instr_REG <= inst; // @[Core.scala 162:31]
     dt_ic_io_wen_REG <= regfile_io_rd_en; // @[Core.scala 167:31]
     dt_ic_io_wdata_REG <= regfile_io_rd_data; // @[Core.scala 168:31]
     dt_ic_io_wdest_REG <= regfile_io_rd_addr; // @[Core.scala 169:31]
@@ -1324,19 +1327,21 @@ initial begin
   _RAND_0 = {2{`RANDOM}};
   pc = _RAND_0[63:0];
   _RAND_1 = {2{`RANDOM}};
-  dt_ic_io_pc_REG = _RAND_1[63:0];
+  inst = _RAND_1[63:0];
   _RAND_2 = {2{`RANDOM}};
-  dt_ic_io_instr_REG = _RAND_2[63:0];
-  _RAND_3 = {1{`RANDOM}};
-  dt_ic_io_wen_REG = _RAND_3[0:0];
-  _RAND_4 = {2{`RANDOM}};
-  dt_ic_io_wdata_REG = _RAND_4[63:0];
-  _RAND_5 = {1{`RANDOM}};
-  dt_ic_io_wdest_REG = _RAND_5[4:0];
-  _RAND_6 = {2{`RANDOM}};
-  cycle_cnt = _RAND_6[63:0];
+  dt_ic_io_pc_REG = _RAND_2[63:0];
+  _RAND_3 = {2{`RANDOM}};
+  dt_ic_io_instr_REG = _RAND_3[63:0];
+  _RAND_4 = {1{`RANDOM}};
+  dt_ic_io_wen_REG = _RAND_4[0:0];
+  _RAND_5 = {2{`RANDOM}};
+  dt_ic_io_wdata_REG = _RAND_5[63:0];
+  _RAND_6 = {1{`RANDOM}};
+  dt_ic_io_wdest_REG = _RAND_6[4:0];
   _RAND_7 = {2{`RANDOM}};
-  instr_cnt = _RAND_7[63:0];
+  cycle_cnt = _RAND_7[63:0];
+  _RAND_8 = {2{`RANDOM}};
+  instr_cnt = _RAND_8[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
