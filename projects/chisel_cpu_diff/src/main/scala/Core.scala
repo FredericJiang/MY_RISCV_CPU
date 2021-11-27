@@ -14,6 +14,7 @@ class Core extends Module {
    
   
   val pc = RegInit("h80000000".U(32.W))
+  
   val nxt_pc = Module(new Nxt_PC)
   val decode = Module(new Decode)
   val regfile = Module(new RegFile)
@@ -37,9 +38,6 @@ regfile.io.rd_data := 0.U
   io.imem.en    := true.B
   val inst = io.imem.rdata
   
-  pc := nxt_pc.io.pc_nxt
-  
-
 
 
   //Decode
@@ -147,7 +145,7 @@ io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 regfile.io.rd_data := pc + 4.U 
 }
 
-
+ pc := nxt_pc.io.pc_nxt
 
 
 
