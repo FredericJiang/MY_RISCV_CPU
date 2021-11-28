@@ -8,8 +8,8 @@ import Constant._
 
 class Core extends Module {
   val io = IO(new Bundle {
-    val imem = Flipped(new RomIO)
-    val dmem = Flipped(new RamIO)
+    val imem = new RomIO
+    val dmem = new RamIO
   })
    
   
@@ -24,7 +24,7 @@ class Core extends Module {
 
 //Initialize
 
-io.dmem.wdata := 1.U
+io.dmem.wdata := 0.U
 io.dmem.wmask := 0.U
 io.dmem.addr := 0.U
 io.dmem.wen := false.B
@@ -35,10 +35,11 @@ regfile.io.rd_data := 0.U
 
 
 // InstFetch
+
   io.imem.addr  := pc.asUInt()
   io.imem.en    := true.B
   val inst = io.imem.rdata
-  
+  printf("%d inst = ", io.imem.rdata)
 
   //Decode
 
