@@ -367,6 +367,26 @@ module RegFile(
   wire [63:0] dt_ar_gpr_29; // @[RegFile.scala 25:21]
   wire [63:0] dt_ar_gpr_30; // @[RegFile.scala 25:21]
   wire [63:0] dt_ar_gpr_31; // @[RegFile.scala 25:21]
+  wire  csr_clock; // @[RegFile.scala 32:17]
+  wire [7:0] csr_coreid; // @[RegFile.scala 32:17]
+  wire [1:0] csr_priviledgeMode; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mstatus; // @[RegFile.scala 32:17]
+  wire [63:0] csr_sstatus; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mepc; // @[RegFile.scala 32:17]
+  wire [63:0] csr_sepc; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mtval; // @[RegFile.scala 32:17]
+  wire [63:0] csr_stval; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mtvec; // @[RegFile.scala 32:17]
+  wire [63:0] csr_stvec; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mcause; // @[RegFile.scala 32:17]
+  wire [63:0] csr_scause; // @[RegFile.scala 32:17]
+  wire [63:0] csr_satp; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mip; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mie; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mscratch; // @[RegFile.scala 32:17]
+  wire [63:0] csr_sscratch; // @[RegFile.scala 32:17]
+  wire [63:0] csr_mideleg; // @[RegFile.scala 32:17]
+  wire [63:0] csr_medeleg; // @[RegFile.scala 32:17]
   reg [63:0] rf__0; // @[RegFile.scala 16:19]
   reg [63:0] rf__1; // @[RegFile.scala 16:19]
   reg [63:0] rf__2; // @[RegFile.scala 16:19]
@@ -497,6 +517,28 @@ module RegFile(
     .gpr_30(dt_ar_gpr_30),
     .gpr_31(dt_ar_gpr_31)
   );
+  DifftestCSRState csr ( // @[RegFile.scala 32:17]
+    .clock(csr_clock),
+    .coreid(csr_coreid),
+    .priviledgeMode(csr_priviledgeMode),
+    .mstatus(csr_mstatus),
+    .sstatus(csr_sstatus),
+    .mepc(csr_mepc),
+    .sepc(csr_sepc),
+    .mtval(csr_mtval),
+    .stval(csr_stval),
+    .mtvec(csr_mtvec),
+    .stvec(csr_stvec),
+    .mcause(csr_mcause),
+    .scause(csr_scause),
+    .satp(csr_satp),
+    .mip(csr_mip),
+    .mie(csr_mie),
+    .mscratch(csr_mscratch),
+    .sscratch(csr_sscratch),
+    .mideleg(csr_mideleg),
+    .medeleg(csr_medeleg)
+  );
   assign io_rs1_data = io_rs1_addr != 5'h0 ? _GEN_95 : 64'h0; // @[RegFile.scala 22:21]
   assign io_rs2_data = io_rs2_addr != 5'h0 ? _GEN_127 : 64'h0; // @[RegFile.scala 23:21]
   assign rf_10 = rf__10;
@@ -534,6 +576,26 @@ module RegFile(
   assign dt_ar_gpr_29 = rf__29; // @[RegFile.scala 28:19]
   assign dt_ar_gpr_30 = rf__30; // @[RegFile.scala 28:19]
   assign dt_ar_gpr_31 = rf__31; // @[RegFile.scala 28:19]
+  assign csr_clock = clock; // @[RegFile.scala 33:18]
+  assign csr_coreid = 8'h0; // @[RegFile.scala 34:19]
+  assign csr_priviledgeMode = 2'h0; // @[RegFile.scala 52:27]
+  assign csr_mstatus = 64'h0; // @[RegFile.scala 35:20]
+  assign csr_sstatus = 64'h0; // @[RegFile.scala 38:20]
+  assign csr_mepc = 64'h0; // @[RegFile.scala 37:17]
+  assign csr_sepc = 64'h0; // @[RegFile.scala 40:17]
+  assign csr_mtval = 64'h0; // @[RegFile.scala 48:17]
+  assign csr_stval = 64'h0; // @[RegFile.scala 49:17]
+  assign csr_mtvec = 64'h0; // @[RegFile.scala 50:18]
+  assign csr_stvec = 64'h0; // @[RegFile.scala 51:18]
+  assign csr_mcause = 64'h0; // @[RegFile.scala 36:19]
+  assign csr_scause = 64'h0; // @[RegFile.scala 39:19]
+  assign csr_satp = 64'h0; // @[RegFile.scala 41:17]
+  assign csr_mip = 64'h0; // @[RegFile.scala 42:16]
+  assign csr_mie = 64'h0; // @[RegFile.scala 43:16]
+  assign csr_mscratch = 64'h0; // @[RegFile.scala 44:21]
+  assign csr_sscratch = 64'h0; // @[RegFile.scala 45:21]
+  assign csr_mideleg = 64'h0; // @[RegFile.scala 46:20]
+  assign csr_medeleg = 64'h0; // @[RegFile.scala 47:20]
   always @(posedge clock) begin
     if (reset) begin // @[RegFile.scala 16:19]
       rf__0 <= 64'h0; // @[RegFile.scala 16:19]
