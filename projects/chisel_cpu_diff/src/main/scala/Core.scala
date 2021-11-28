@@ -24,7 +24,7 @@ class Core extends Module {
 
 //Initialize
 
-io.dmem.wdata := 0.U
+io.dmem.wdata := 1.U
 io.dmem.wmask := 0.U
 io.dmem.addr := 0.U
 io.dmem.wen := false.B
@@ -37,7 +37,7 @@ regfile.io.rd_data := 0.U
 // InstFetch
   io.imem.addr  := pc.asUInt()
   io.imem.en    := true.B
-  val inst = RegNext(io.imem.rdata)
+  val inst = io.imem.rdata
   
 
   //Decode
