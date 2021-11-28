@@ -13,7 +13,7 @@ class Core extends Module {
   })
    
   
-  val pc = RegInit("h0000000080000000".U(64.W))
+  val pc = RegInit("h80000000".U(32.W))
   
   val nxt_pc = Module(new Nxt_PC)
   val decode = Module(new Decode)
@@ -42,6 +42,8 @@ regfile.io.rd_data := 0.U
   printf("%d inst = ", io.imem.rdata)
 
   //Decode
+  
+  pc := nxt_pc.io.pc_nxt
 
   //if need reg address, gain from instruction directly
   regfile.io.rs1_addr := inst(19,15)
@@ -146,7 +148,7 @@ io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 regfile.io.rd_data := pc + 4.U 
 }
 
- pc := nxt_pc.io.pc_nxt
+ 
 
 
 
