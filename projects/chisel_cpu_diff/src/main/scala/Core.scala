@@ -192,7 +192,7 @@ regfile.io.rd_data := pc + 4.U
   dt_te.io.coreid   := 0.U
   dt_te.io.valid    := (inst === "h0000006b".U)
   dt_te.io.code     := rf_a0(2, 0)
-  dt_te.io.pc       := pc
+  dt_te.io.pc       := RegNext(pc)
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
