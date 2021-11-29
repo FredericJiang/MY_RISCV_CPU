@@ -45,7 +45,7 @@ pc := Mux(pc_en, pc, 0.U)
   io.imem.addr  := pc
   
   val inst = Mux(pc_en, io.imem.rdata, 0.U)
- 
+ printf("inst in core =%x, pc in core =%x",inst,pc)
 
 
   //Decode
