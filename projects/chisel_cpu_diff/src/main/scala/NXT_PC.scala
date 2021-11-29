@@ -4,13 +4,13 @@ import Constant._
 
 class Nxt_PC extends Module{
 val io = IO(new Bundle{
- val pc = Input(UInt(64.W))
+ val pc = Input(UInt(32.W))
  val imm_type = Input(UInt(3.W))
  val imm  = Input(UInt(64.W))
  val alu_type = Input(UInt(3.W))
  val alu_out  = Input(UInt(64.W))
  val wb_type  = Input(UInt(3.W))
- val pc_nxt = Output(UInt(64.W))
+ val pc_nxt = Output(UInt(32.W))
 })
 
 

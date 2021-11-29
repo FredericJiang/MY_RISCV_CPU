@@ -35,10 +35,12 @@ class Ram2r1w extends Module {
     val dmem = Flipped(new RamIO)
   })
   val mem = Module(new ram_2r1w)
+  //instruction
   mem.io.clk        := clock
   mem.io.imem_en    := io.imem.en
-  mem.io.imem_addr  := io.imem.addr
-  io.imem.rdata     := mem.io.imem_data
+  mem.io.imem_addr  := Cat(Fill(36, 0.U), io.imem.addr(30, 3))
+  io.imem.rdata     := Mux(io.imem.addr(2), mem.io.imem_data(63, 32), mem.io.imem_data(31, 0))
+  //data memory : Input := Output
   mem.io.dmem_en    := io.dmem.en
   mem.io.dmem_addr  := io.dmem.addr
   io.dmem.rdata     := mem.io.dmem_rdata
