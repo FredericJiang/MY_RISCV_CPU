@@ -44,7 +44,7 @@ pc := Mux(pc_en,nxt_pc.io.pc_nxt, 0.U)
 
   io.imem.addr  := pc
   
-  val inst = Mux(pc_en, io.imem.rdata, 0.U)
+  val inst = io.imem.rdata
  printf("inst in core =%x, pc in core =%x",inst,pc)
 
 

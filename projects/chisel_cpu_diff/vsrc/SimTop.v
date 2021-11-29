@@ -1028,7 +1028,6 @@ module Core(
   wire [63:0] dt_cs_medeleg; // @[Core.scala 205:21]
   reg [31:0] pc; // @[Core.scala 16:19]
   reg  pc_en; // @[Core.scala 17:21]
-  wire [63:0] inst = pc_en ? io_imem_rdata : 64'h0; // @[Core.scala 47:17]
   wire  _regfile_io_rd_en_T = decode_io_wb_type == 3'h1; // @[Core.scala 76:42]
   wire  _io_dmem_en_T = decode_io_mem_rtype != 3'h0; // @[Core.scala 78:38]
   wire  _io_dmem_wen_T = decode_io_wb_type == 3'h2; // @[Core.scala 80:37]
@@ -1195,17 +1194,17 @@ module Core(
   assign nxt_pc_io_alu_type = decode_io_alu_type[2:0]; // @[Core.scala 65:22]
   assign nxt_pc_io_alu_out = alu_io_alu_out; // @[Core.scala 68:21]
   assign nxt_pc_io_wb_type = decode_io_wb_type; // @[Core.scala 66:21]
-  assign decode_io_inst = inst[31:0]; // @[Core.scala 61:18]
+  assign decode_io_inst = io_imem_rdata[31:0]; // @[Core.scala 61:18]
   assign regfile_clock = clock;
   assign regfile_reset = reset;
-  assign regfile_io_rs1_addr = inst[19:15]; // @[Core.scala 55:30]
-  assign regfile_io_rs2_addr = inst[24:20]; // @[Core.scala 56:30]
-  assign regfile_io_rd_addr = inst[11:7]; // @[Core.scala 57:30]
+  assign regfile_io_rs1_addr = io_imem_rdata[19:15]; // @[Core.scala 55:30]
+  assign regfile_io_rs2_addr = io_imem_rdata[24:20]; // @[Core.scala 56:30]
+  assign regfile_io_rd_addr = io_imem_rdata[11:7]; // @[Core.scala 57:30]
   assign regfile_io_rd_data = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 4'h0 ?
     alu_io_alu_out : _GEN_23; // @[Core.scala 130:101 Core.scala 131:20]
   assign regfile_io_rd_en = decode_io_wb_type == 3'h1 | decode_io_wb_type == 3'h5; // @[Core.scala 76:54]
   assign imm_gen_io_imm_type = decode_io_imm_type; // @[Core.scala 71:23]
-  assign imm_gen_io_inst = inst[31:0]; // @[Core.scala 72:19]
+  assign imm_gen_io_inst = io_imem_rdata[31:0]; // @[Core.scala 72:19]
   assign alu_io_alu_type = decode_io_alu_type; // @[Core.scala 81:19]
   assign alu_io_in1 = alu_io_alu_type != 4'h0 & decode_io_op1_type == 3'h1 ? regfile_io_rs1_data : {{32'd0}, _GEN_0}; // @[Core.scala 91:68 Core.scala 92:14]
   assign alu_io_in2 = decode_io_op2_type == 3'h1 & decode_io_imm_type == 3'h0 ? regfile_io_rs2_data : _GEN_4; // @[Core.scala 99:70 Core.scala 101:14]
@@ -1230,7 +1229,7 @@ module Core(
   assign dt_ae_exceptionInst = 32'h0;
   assign dt_te_clock = clock; // @[Core.scala 197:21]
   assign dt_te_coreid = 8'h0; // @[Core.scala 198:21]
-  assign dt_te_valid = inst == 64'h6b; // @[Core.scala 199:30]
+  assign dt_te_valid = io_imem_rdata == 64'h6b; // @[Core.scala 199:30]
   assign dt_te_code = rf_a0_0[2:0]; // @[Core.scala 200:29]
   assign dt_te_pc = {{32'd0}, pc}; // @[Core.scala 201:21]
   assign dt_te_cycleCnt = cycle_cnt; // @[Core.scala 202:21]
@@ -1269,11 +1268,7 @@ module Core(
       pc_en <= 1'h1; // @[Core.scala 36:7]
     end
     dt_ic_io_pc_REG <= pc; // @[Core.scala 170:31]
-    if (pc_en) begin // @[Core.scala 47:17]
-      dt_ic_io_instr_REG <= io_imem_rdata;
-    end else begin
-      dt_ic_io_instr_REG <= 64'h0;
-    end
+    dt_ic_io_instr_REG <= io_imem_rdata; // @[Core.scala 171:31]
     dt_ic_io_wen_REG <= regfile_io_rd_en; // @[Core.scala 176:31]
     dt_ic_io_wdata_REG <= regfile_io_rd_data; // @[Core.scala 177:31]
     dt_ic_io_wdest_REG <= regfile_io_rd_addr; // @[Core.scala 178:31]
@@ -1292,7 +1287,7 @@ module Core(
       if (`PRINTF_COND) begin
     `endif
         if (~reset) begin
-          $fwrite(32'h80000002,"inst in core =%x, pc in core =%x",inst,pc); // @[Core.scala 48:8]
+          $fwrite(32'h80000002,"inst in core =%x, pc in core =%x",io_imem_rdata,pc); // @[Core.scala 48:8]
         end
     `ifdef PRINTF_COND
       end
