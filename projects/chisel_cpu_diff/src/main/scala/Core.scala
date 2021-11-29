@@ -31,7 +31,9 @@ io.dmem.wen := false.B
 
 regfile.io.rd_data := 0.U
 
-
+val pc_zero_reset = RegInit(true.B) // todo: fix pc reset
+pc_zero_reset := false.B
+pc := Mux(pc_zero_reset, "h80000000".U , nxt_pc.io.pc_nxt)
 
 
 // InstFetch
