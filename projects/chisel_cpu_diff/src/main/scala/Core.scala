@@ -14,6 +14,9 @@ class Core extends Module {
    
   
   val pc = RegInit("h80000000".U(32.W))
+  val pc_en =RegInit(false.B)
+  pc_en :=true.B
+  pc := Mux(pc_en, pc, 0.U)
   
   val nxt_pc = Module(new Nxt_PC)
   val decode = Module(new Decode)
@@ -39,7 +42,7 @@ regfile.io.rd_data := 0.U
   io.imem.en    := true.B
   io.imem.addr  := pc
   
-  val inst = io.imem.rdata
+  val inst = Mux(pc_en, io.imem.rdata(31, 0), 0.U)
  
 
 
