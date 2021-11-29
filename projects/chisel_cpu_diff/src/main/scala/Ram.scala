@@ -10,7 +10,7 @@ class RomIO extends Bundle {
 class RamIO extends RomIO {
   val wdata = Output(UInt(64.W))
   val wmask = Output(UInt(64.W))
-  val wen   = Output(Bool())
+  val wen = Output(Bool())
 }
 
 class ram_2r1w extends BlackBox with HasBlackBoxResource {
@@ -18,7 +18,7 @@ class ram_2r1w extends BlackBox with HasBlackBoxResource {
     val clk = Input(Clock())
     val imem_en = Input(Bool())
     val imem_addr = Input(UInt(64.W))
-    val imem_data = Output(UInt(64.W))
+    val imem_data = Output(UInt(32.W))
     val dmem_en = Input(Bool())
     val dmem_addr = Input(UInt(64.W))
     val dmem_rdata = Output(UInt(64.W))
@@ -35,12 +35,10 @@ class Ram2r1w extends Module {
     val dmem = Flipped(new RamIO)
   })
   val mem = Module(new ram_2r1w)
-  //instruction
   mem.io.clk        := clock
   mem.io.imem_en    := io.imem.en
-  mem.io.imem_addr  := Cat(Fill(36, 0.U), io.imem.addr(30, 3))
-  io.imem.rdata     := Mux(io.imem.addr(2), mem.io.imem_data(63, 32), mem.io.imem_data(31, 0))
-  //data memory : Input := Output
+  mem.io.imem_addr  := io.imem.addr
+  io.imem.rdata     := mem.io.imem_data
   mem.io.dmem_en    := io.dmem.en
   mem.io.dmem_addr  := io.dmem.addr
   io.dmem.rdata     := mem.io.dmem_rdata

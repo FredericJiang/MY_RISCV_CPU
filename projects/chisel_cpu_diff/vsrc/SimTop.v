@@ -349,26 +349,6 @@ module RegFile(
   wire [63:0] dt_ar_gpr_29; // @[RegFile.scala 25:21]
   wire [63:0] dt_ar_gpr_30; // @[RegFile.scala 25:21]
   wire [63:0] dt_ar_gpr_31; // @[RegFile.scala 25:21]
-  wire  csr_clock; // @[RegFile.scala 36:21]
-  wire [7:0] csr_coreid; // @[RegFile.scala 36:21]
-  wire [1:0] csr_priviledgeMode; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mstatus; // @[RegFile.scala 36:21]
-  wire [63:0] csr_sstatus; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mepc; // @[RegFile.scala 36:21]
-  wire [63:0] csr_sepc; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mtval; // @[RegFile.scala 36:21]
-  wire [63:0] csr_stval; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mtvec; // @[RegFile.scala 36:21]
-  wire [63:0] csr_stvec; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mcause; // @[RegFile.scala 36:21]
-  wire [63:0] csr_scause; // @[RegFile.scala 36:21]
-  wire [63:0] csr_satp; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mip; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mie; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mscratch; // @[RegFile.scala 36:21]
-  wire [63:0] csr_sscratch; // @[RegFile.scala 36:21]
-  wire [63:0] csr_mideleg; // @[RegFile.scala 36:21]
-  wire [63:0] csr_medeleg; // @[RegFile.scala 36:21]
   reg [63:0] rf__0; // @[RegFile.scala 16:19]
   reg [63:0] rf__1; // @[RegFile.scala 16:19]
   reg [63:0] rf__2; // @[RegFile.scala 16:19]
@@ -499,28 +479,6 @@ module RegFile(
     .gpr_30(dt_ar_gpr_30),
     .gpr_31(dt_ar_gpr_31)
   );
-  DifftestCSRState csr ( // @[RegFile.scala 36:21]
-    .clock(csr_clock),
-    .coreid(csr_coreid),
-    .priviledgeMode(csr_priviledgeMode),
-    .mstatus(csr_mstatus),
-    .sstatus(csr_sstatus),
-    .mepc(csr_mepc),
-    .sepc(csr_sepc),
-    .mtval(csr_mtval),
-    .stval(csr_stval),
-    .mtvec(csr_mtvec),
-    .stvec(csr_stvec),
-    .mcause(csr_mcause),
-    .scause(csr_scause),
-    .satp(csr_satp),
-    .mip(csr_mip),
-    .mie(csr_mie),
-    .mscratch(csr_mscratch),
-    .sscratch(csr_sscratch),
-    .mideleg(csr_mideleg),
-    .medeleg(csr_medeleg)
-  );
   assign io_rs1_data = io_rs1_addr != 5'h0 ? _GEN_95 : 64'h0; // @[RegFile.scala 22:21]
   assign io_rs2_data = io_rs2_addr != 5'h0 ? _GEN_127 : 64'h0; // @[RegFile.scala 23:21]
   assign rf_10 = rf__10;
@@ -558,26 +516,6 @@ module RegFile(
   assign dt_ar_gpr_29 = rf__29; // @[RegFile.scala 28:19]
   assign dt_ar_gpr_30 = rf__30; // @[RegFile.scala 28:19]
   assign dt_ar_gpr_31 = rf__31; // @[RegFile.scala 28:19]
-  assign csr_clock = clock; // @[RegFile.scala 37:18]
-  assign csr_coreid = 8'h0; // @[RegFile.scala 38:19]
-  assign csr_priviledgeMode = 2'h0; // @[RegFile.scala 56:27]
-  assign csr_mstatus = 64'h0; // @[RegFile.scala 39:20]
-  assign csr_sstatus = 64'h0; // @[RegFile.scala 42:20]
-  assign csr_mepc = 64'h0; // @[RegFile.scala 41:17]
-  assign csr_sepc = 64'h0; // @[RegFile.scala 44:17]
-  assign csr_mtval = 64'h0; // @[RegFile.scala 52:17]
-  assign csr_stval = 64'h0; // @[RegFile.scala 53:17]
-  assign csr_mtvec = 64'h0; // @[RegFile.scala 54:18]
-  assign csr_stvec = 64'h0; // @[RegFile.scala 55:18]
-  assign csr_mcause = 64'h0; // @[RegFile.scala 40:19]
-  assign csr_scause = 64'h0; // @[RegFile.scala 43:19]
-  assign csr_satp = 64'h0; // @[RegFile.scala 45:17]
-  assign csr_mip = 64'h0; // @[RegFile.scala 46:16]
-  assign csr_mie = 64'h0; // @[RegFile.scala 47:16]
-  assign csr_mscratch = 64'h0; // @[RegFile.scala 48:21]
-  assign csr_sscratch = 64'h0; // @[RegFile.scala 49:21]
-  assign csr_mideleg = 64'h0; // @[RegFile.scala 50:20]
-  assign csr_medeleg = 64'h0; // @[RegFile.scala 51:20]
   always @(posedge clock) begin
     if (reset) begin // @[RegFile.scala 16:19]
       rf__0 <= 64'h0; // @[RegFile.scala 16:19]
@@ -1037,6 +975,26 @@ module Core(
   wire [63:0] dt_te_pc; // @[Core.scala 191:21]
   wire [63:0] dt_te_cycleCnt; // @[Core.scala 191:21]
   wire [63:0] dt_te_instrCnt; // @[Core.scala 191:21]
+  wire  dt_cs_clock; // @[Core.scala 200:21]
+  wire [7:0] dt_cs_coreid; // @[Core.scala 200:21]
+  wire [1:0] dt_cs_priviledgeMode; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mstatus; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_sstatus; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mepc; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_sepc; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mtval; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_stval; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mtvec; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_stvec; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mcause; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_scause; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_satp; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mip; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mie; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mscratch; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_sscratch; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_mideleg; // @[Core.scala 200:21]
+  wire [63:0] dt_cs_medeleg; // @[Core.scala 200:21]
   wire  _regfile_io_rd_en_T = decode_io_wb_type == 3'h1; // @[Core.scala 71:42]
   wire  _regfile_io_rd_en_T_1 = decode_io_wb_type == 3'h5; // @[Core.scala 71:76]
   wire  _io_dmem_en_T = decode_io_mem_rtype != 3'h0; // @[Core.scala 73:38]
@@ -1171,6 +1129,28 @@ module Core(
     .cycleCnt(dt_te_cycleCnt),
     .instrCnt(dt_te_instrCnt)
   );
+  DifftestCSRState dt_cs ( // @[Core.scala 200:21]
+    .clock(dt_cs_clock),
+    .coreid(dt_cs_coreid),
+    .priviledgeMode(dt_cs_priviledgeMode),
+    .mstatus(dt_cs_mstatus),
+    .sstatus(dt_cs_sstatus),
+    .mepc(dt_cs_mepc),
+    .sepc(dt_cs_sepc),
+    .mtval(dt_cs_mtval),
+    .stval(dt_cs_stval),
+    .mtvec(dt_cs_mtvec),
+    .stvec(dt_cs_stvec),
+    .mcause(dt_cs_mcause),
+    .scause(dt_cs_scause),
+    .satp(dt_cs_satp),
+    .mip(dt_cs_mip),
+    .mie(dt_cs_mie),
+    .mscratch(dt_cs_mscratch),
+    .sscratch(dt_cs_sscratch),
+    .mideleg(dt_cs_mideleg),
+    .medeleg(dt_cs_medeleg)
+  );
   assign io_dmem_en = decode_io_mem_rtype != 3'h0; // @[Core.scala 73:38]
   assign io_dmem_addr = io_dmem_en | io_dmem_wen ? alu_io_alu_out : 64'h0; // @[Core.scala 113:32 Core.scala 115:14 Core.scala 29:14]
   assign io_dmem_wdata = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 4'h0 ? 64'h0 :
@@ -1216,6 +1196,26 @@ module Core(
   assign dt_te_pc = 64'h80000000; // @[Core.scala 196:21]
   assign dt_te_cycleCnt = cycle_cnt; // @[Core.scala 197:21]
   assign dt_te_instrCnt = instr_cnt; // @[Core.scala 198:21]
+  assign dt_cs_clock = clock; // @[Core.scala 201:27]
+  assign dt_cs_coreid = 8'h0; // @[Core.scala 202:27]
+  assign dt_cs_priviledgeMode = 2'h3; // @[Core.scala 203:27]
+  assign dt_cs_mstatus = 64'h0; // @[Core.scala 204:27]
+  assign dt_cs_sstatus = 64'h0; // @[Core.scala 205:27]
+  assign dt_cs_mepc = 64'h0; // @[Core.scala 206:27]
+  assign dt_cs_sepc = 64'h0; // @[Core.scala 207:27]
+  assign dt_cs_mtval = 64'h0; // @[Core.scala 208:27]
+  assign dt_cs_stval = 64'h0; // @[Core.scala 209:27]
+  assign dt_cs_mtvec = 64'h0; // @[Core.scala 210:27]
+  assign dt_cs_stvec = 64'h0; // @[Core.scala 211:27]
+  assign dt_cs_mcause = 64'h0; // @[Core.scala 212:27]
+  assign dt_cs_scause = 64'h0; // @[Core.scala 213:27]
+  assign dt_cs_satp = 64'h0; // @[Core.scala 214:27]
+  assign dt_cs_mip = 64'h0; // @[Core.scala 215:27]
+  assign dt_cs_mie = 64'h0; // @[Core.scala 216:27]
+  assign dt_cs_mscratch = 64'h0; // @[Core.scala 217:27]
+  assign dt_cs_sscratch = 64'h0; // @[Core.scala 218:27]
+  assign dt_cs_mideleg = 64'h0; // @[Core.scala 219:27]
+  assign dt_cs_medeleg = 64'h0; // @[Core.scala 220:27]
   always @(posedge clock) begin
     dt_ic_io_instr_REG <= io_imem_rdata; // @[Core.scala 166:31]
     dt_ic_io_wen_REG <= regfile_io_rd_en; // @[Core.scala 171:31]
@@ -1300,7 +1300,7 @@ module Ram2r1w(
   wire  mem_clk; // @[Ram.scala 37:19]
   wire  mem_imem_en; // @[Ram.scala 37:19]
   wire [63:0] mem_imem_addr; // @[Ram.scala 37:19]
-  wire [63:0] mem_imem_data; // @[Ram.scala 37:19]
+  wire [31:0] mem_imem_data; // @[Ram.scala 37:19]
   wire  mem_dmem_en; // @[Ram.scala 37:19]
   wire [63:0] mem_dmem_addr; // @[Ram.scala 37:19]
   wire [63:0] mem_dmem_rdata; // @[Ram.scala 37:19]
@@ -1319,16 +1319,16 @@ module Ram2r1w(
     .dmem_wmask(mem_dmem_wmask),
     .dmem_wen(mem_dmem_wen)
   );
-  assign io_imem_rdata = {{32'd0}, mem_imem_data[31:0]}; // @[Ram.scala 42:87]
-  assign io_dmem_rdata = mem_dmem_rdata; // @[Ram.scala 46:21]
-  assign mem_clk = clock; // @[Ram.scala 39:21]
-  assign mem_imem_en = 1'h1; // @[Ram.scala 40:21]
-  assign mem_imem_addr = 64'h0; // @[Cat.scala 30:58]
-  assign mem_dmem_en = io_dmem_en; // @[Ram.scala 44:21]
-  assign mem_dmem_addr = io_dmem_addr; // @[Ram.scala 45:21]
-  assign mem_dmem_wdata = io_dmem_wdata; // @[Ram.scala 47:21]
-  assign mem_dmem_wmask = 64'h0; // @[Ram.scala 48:21]
-  assign mem_dmem_wen = io_dmem_wen; // @[Ram.scala 49:21]
+  assign io_imem_rdata = {{32'd0}, mem_imem_data}; // @[Ram.scala 41:21]
+  assign io_dmem_rdata = mem_dmem_rdata; // @[Ram.scala 44:21]
+  assign mem_clk = clock; // @[Ram.scala 38:21]
+  assign mem_imem_en = 1'h1; // @[Ram.scala 39:21]
+  assign mem_imem_addr = 64'h80000000; // @[Ram.scala 40:21]
+  assign mem_dmem_en = io_dmem_en; // @[Ram.scala 42:21]
+  assign mem_dmem_addr = io_dmem_addr; // @[Ram.scala 43:21]
+  assign mem_dmem_wdata = io_dmem_wdata; // @[Ram.scala 45:21]
+  assign mem_dmem_wmask = 64'h0; // @[Ram.scala 46:21]
+  assign mem_dmem_wen = io_dmem_wen; // @[Ram.scala 47:21]
 endmodule
 module SimTop(
   input         clock,
