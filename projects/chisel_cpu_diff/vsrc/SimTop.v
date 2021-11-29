@@ -980,11 +980,9 @@ module Core(
   output        io_dmem_wen
 );
 `ifdef RANDOMIZE_REG_INIT
-  reg [31:0] _RAND_0;
+  reg [63:0] _RAND_0;
   reg [63:0] _RAND_1;
-  reg [31:0] _RAND_2;
-  reg [63:0] _RAND_3;
-  reg [63:0] _RAND_4;
+  reg [63:0] _RAND_2;
 `endif // RANDOMIZE_REG_INIT
   wire [31:0] decode_io_inst; // @[Core.scala 19:22]
   wire [3:0] decode_io_alu_type; // @[Core.scala 19:22]
@@ -1097,9 +1095,7 @@ module Core(
   wire [63:0] _GEN_22 = _regfile_io_rd_en_T & _io_dmem_en_T ? 64'h0 : _GEN_19; // @[Core.scala 131:74 Core.scala 27:15]
   wire [63:0] _GEN_23 = _T_23 & decode_io_alu_type == 4'h0 ? imm_gen_io_imm : _GEN_21; // @[Core.scala 128:106 Core.scala 129:20]
   wire [63:0] _GEN_24 = _T_23 & decode_io_alu_type == 4'h0 ? 64'h0 : _GEN_22; // @[Core.scala 128:106 Core.scala 27:15]
-  reg  dt_ic_io_wen_REG; // @[Core.scala 171:31]
   reg [63:0] dt_ic_io_wdata_REG; // @[Core.scala 172:31]
-  reg [4:0] dt_ic_io_wdest_REG; // @[Core.scala 173:31]
   reg [63:0] cycle_cnt; // @[Core.scala 182:26]
   reg [63:0] instr_cnt; // @[Core.scala 183:26]
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 185:26]
@@ -1193,14 +1189,14 @@ module Core(
   assign dt_ic_index = 8'h0; // @[Core.scala 163:21]
   assign dt_ic_valid = 1'h1; // @[Core.scala 164:21]
   assign dt_ic_pc = 64'h80000000; // @[Core.scala 165:21]
-  assign dt_ic_instr = 32'h0;
+  assign dt_ic_instr = io_imem_rdata[31:0]; // @[Core.scala 166:21]
   assign dt_ic_special = 8'h0; // @[Core.scala 167:21]
   assign dt_ic_skip = 1'h0; // @[Core.scala 168:21]
   assign dt_ic_isRVC = 1'h0; // @[Core.scala 169:21]
   assign dt_ic_scFailed = 1'h0; // @[Core.scala 170:21]
-  assign dt_ic_wen = dt_ic_io_wen_REG; // @[Core.scala 171:21]
+  assign dt_ic_wen = regfile_io_rd_en; // @[Core.scala 171:21]
   assign dt_ic_wdata = dt_ic_io_wdata_REG; // @[Core.scala 172:21]
-  assign dt_ic_wdest = {{3'd0}, dt_ic_io_wdest_REG}; // @[Core.scala 173:21]
+  assign dt_ic_wdest = {{3'd0}, regfile_io_rd_addr}; // @[Core.scala 173:21]
   assign dt_ae_clock = clock; // @[Core.scala 176:25]
   assign dt_ae_coreid = 8'h0; // @[Core.scala 177:25]
   assign dt_ae_intrNO = 32'h0; // @[Core.scala 178:25]
@@ -1215,9 +1211,7 @@ module Core(
   assign dt_te_cycleCnt = cycle_cnt; // @[Core.scala 197:21]
   assign dt_te_instrCnt = instr_cnt; // @[Core.scala 198:21]
   always @(posedge clock) begin
-    dt_ic_io_wen_REG <= regfile_io_rd_en; // @[Core.scala 171:31]
     dt_ic_io_wdata_REG <= regfile_io_rd_data; // @[Core.scala 172:31]
-    dt_ic_io_wdest_REG <= regfile_io_rd_addr; // @[Core.scala 173:31]
     if (reset) begin // @[Core.scala 182:26]
       cycle_cnt <= 64'h0; // @[Core.scala 182:26]
     end else begin
@@ -1265,16 +1259,12 @@ initial begin
       `endif
     `endif
 `ifdef RANDOMIZE_REG_INIT
-  _RAND_0 = {1{`RANDOM}};
-  dt_ic_io_wen_REG = _RAND_0[0:0];
+  _RAND_0 = {2{`RANDOM}};
+  dt_ic_io_wdata_REG = _RAND_0[63:0];
   _RAND_1 = {2{`RANDOM}};
-  dt_ic_io_wdata_REG = _RAND_1[63:0];
-  _RAND_2 = {1{`RANDOM}};
-  dt_ic_io_wdest_REG = _RAND_2[4:0];
-  _RAND_3 = {2{`RANDOM}};
-  cycle_cnt = _RAND_3[63:0];
-  _RAND_4 = {2{`RANDOM}};
-  instr_cnt = _RAND_4[63:0];
+  cycle_cnt = _RAND_1[63:0];
+  _RAND_2 = {2{`RANDOM}};
+  instr_cnt = _RAND_2[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
