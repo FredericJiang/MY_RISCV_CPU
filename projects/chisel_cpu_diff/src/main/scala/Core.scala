@@ -38,12 +38,9 @@ regfile.io.rd_data := 0.U
 
   io.imem.addr  := pc
   io.imem.en    := true.B
-  val inst = RegNext(io.imem.rdata)
+  val inst = io.imem.rdata
  
 
-  val pc_zero_reset = RegInit(true.B) // todo: fix pc reset
-  pc_zero_reset := false.B
-  pc := Mux(pc_zero_reset, "h80000000".U, nxt_pc.io.pc_nxt)
 
   //Decode
   
