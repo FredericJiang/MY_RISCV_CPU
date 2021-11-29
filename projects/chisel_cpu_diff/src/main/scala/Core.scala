@@ -31,9 +31,7 @@ io.dmem.wen := false.B
 
 regfile.io.rd_data := 0.U
 
-val pc_zero_reset = RegInit(true.B) // todo: fix pc reset
-pc_zero_reset := false.B
-pc := Mux(pc_zero_reset, "h80000000".U , nxt_pc.io.pc_nxt)
+
 
 
 // InstFetch
@@ -164,15 +162,15 @@ regfile.io.rd_data := pc + 4.U
   dt_ic.io.coreid   := 0.U
   dt_ic.io.index    := 0.U
   dt_ic.io.valid    := true.B
-  dt_ic.io.pc       := pc
-  dt_ic.io.instr    := inst
+  dt_ic.io.pc       := RegNext(pc)
+  dt_ic.io.instr    := RegNext(inst)
   dt_ic.io.special  := 0.U
   dt_ic.io.skip     := false.B
   dt_ic.io.isRVC    := false.B
   dt_ic.io.scFailed := false.B
-  dt_ic.io.wen      := regfile.io.rd_en
+  dt_ic.io.wen      := RegNext(regfile.io.rd_en)
   dt_ic.io.wdata    := RegNext(regfile.io.rd_data)
-  dt_ic.io.wdest    := regfile.io.rd_addr
+  dt_ic.io.wdest    := RegNext(regfile.io.rd_addr)
 
   val dt_ae = Module(new DifftestArchEvent)
   dt_ae.io.clock        := clock
@@ -195,7 +193,7 @@ regfile.io.rd_data := pc + 4.U
   dt_te.io.coreid   := 0.U
   dt_te.io.valid    := (inst === "h0000006b".U)
   dt_te.io.code     := rf_a0(2, 0)
-  dt_te.io.pc       := RegNext(pc)
+  dt_te.io.pc       := pc
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
