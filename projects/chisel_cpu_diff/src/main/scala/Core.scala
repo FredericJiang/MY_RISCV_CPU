@@ -35,9 +35,10 @@ regfile.io.rd_data := 0.U
 
 
 // InstFetch
-
-  io.imem.addr  := pc
+  
   io.imem.en    := true.B
+  io.imem.addr  := pc
+  
   val inst = io.imem.rdata
  
 

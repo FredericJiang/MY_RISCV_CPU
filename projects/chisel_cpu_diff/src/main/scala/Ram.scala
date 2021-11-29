@@ -18,7 +18,7 @@ class ram_2r1w extends BlackBox with HasBlackBoxResource {
     val clk = Input(Clock())
     val imem_en = Input(Bool())
     val imem_addr = Input(UInt(64.W))
-    val imem_data = Output(UInt(32.W))
+    val imem_data = Output(UInt(64.W))
     val dmem_en = Input(Bool())
     val dmem_addr = Input(UInt(64.W))
     val dmem_rdata = Output(UInt(64.W))
