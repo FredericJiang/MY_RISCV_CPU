@@ -44,7 +44,7 @@ pc := Mux(pc_en, pc, 0.U)
 
   io.imem.addr  := pc
   
-  val inst = Mux(pc_en, io.imem.rdata(31, 0), 0.U)
+  val inst = Mux(pc_en, io.imem.rdata, 0.U)
  
 
 
