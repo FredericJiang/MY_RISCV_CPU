@@ -36,9 +36,9 @@ regfile.io.rd_data := 0.U
 
 // InstFetch
 
-  io.imem.addr  := pc.asUInt()
+  io.imem.addr  := pc
   io.imem.en    := true.B
-  val inst = io.imem.rdata
+  val inst = RegNext(io.imem.rdata)
  
 
   val pc_zero_reset = RegInit(true.B) // todo: fix pc reset
