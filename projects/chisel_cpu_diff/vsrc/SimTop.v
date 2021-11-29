@@ -1,3 +1,23 @@
+module Nxt_PC(
+  input  [31:0] io_pc,
+  input  [2:0]  io_imm_type,
+  input  [63:0] io_imm,
+  input  [2:0]  io_alu_type,
+  input  [63:0] io_alu_out,
+  input  [2:0]  io_wb_type,
+  output [31:0] io_pc_nxt
+);
+  wire  _T = io_imm_type == 3'h3; // @[NXT_PC.scala 18:18]
+  wire [3:0] _GEN_4 = {{1'd0}, io_alu_type}; // @[NXT_PC.scala 18:43]
+  wire [63:0] _GEN_5 = {{32'd0}, io_pc}; // @[NXT_PC.scala 20:22]
+  wire [63:0] _io_pc_nxt_T_1 = _GEN_5 + io_imm; // @[NXT_PC.scala 20:22]
+  wire [31:0] _io_pc_nxt_T_7 = io_pc + 32'h4; // @[NXT_PC.scala 32:20]
+  wire [63:0] _GEN_0 = io_wb_type == 3'h5 ? io_alu_out : {{32'd0}, _io_pc_nxt_T_7}; // @[NXT_PC.scala 27:35 NXT_PC.scala 29:13 NXT_PC.scala 32:11]
+  wire [63:0] _GEN_1 = io_imm_type == 3'h5 ? _io_pc_nxt_T_1 : _GEN_0; // @[NXT_PC.scala 24:34 NXT_PC.scala 26:13]
+  wire [63:0] _GEN_2 = _T & _GEN_4 != 4'h2 & io_alu_out != 64'h0 ? _io_pc_nxt_T_1 : _GEN_1; // @[NXT_PC.scala 21:84 NXT_PC.scala 23:13]
+  wire [63:0] _GEN_3 = io_imm_type == 3'h3 & _GEN_4 == 4'h2 & io_alu_out == 64'h0 ? _io_pc_nxt_T_1 : _GEN_2; // @[NXT_PC.scala 18:77 NXT_PC.scala 20:13]
+  assign io_pc_nxt = _GEN_3[31:0];
+endmodule
 module Decode(
   input  [31:0] io_inst,
   output [3:0]  io_alu_type,
@@ -929,6 +949,13 @@ module Core(
   reg [63:0] _RAND_7;
   reg [63:0] _RAND_8;
 `endif // RANDOMIZE_REG_INIT
+  wire [31:0] nxt_pc_io_pc; // @[Core.scala 20:22]
+  wire [2:0] nxt_pc_io_imm_type; // @[Core.scala 20:22]
+  wire [63:0] nxt_pc_io_imm; // @[Core.scala 20:22]
+  wire [2:0] nxt_pc_io_alu_type; // @[Core.scala 20:22]
+  wire [63:0] nxt_pc_io_alu_out; // @[Core.scala 20:22]
+  wire [2:0] nxt_pc_io_wb_type; // @[Core.scala 20:22]
+  wire [31:0] nxt_pc_io_pc_nxt; // @[Core.scala 20:22]
   wire [31:0] decode_io_inst; // @[Core.scala 21:22]
   wire [3:0] decode_io_alu_type; // @[Core.scala 21:22]
   wire [2:0] decode_io_op1_type; // @[Core.scala 21:22]
@@ -1062,6 +1089,15 @@ module Core(
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 190:26]
   wire [63:0] _instr_cnt_T_1 = instr_cnt + 64'h1; // @[Core.scala 191:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
+  Nxt_PC nxt_pc ( // @[Core.scala 20:22]
+    .io_pc(nxt_pc_io_pc),
+    .io_imm_type(nxt_pc_io_imm_type),
+    .io_imm(nxt_pc_io_imm),
+    .io_alu_type(nxt_pc_io_alu_type),
+    .io_alu_out(nxt_pc_io_alu_out),
+    .io_wb_type(nxt_pc_io_wb_type),
+    .io_pc_nxt(nxt_pc_io_pc_nxt)
+  );
   Decode decode ( // @[Core.scala 21:22]
     .io_inst(decode_io_inst),
     .io_alu_type(decode_io_alu_type),
@@ -1153,6 +1189,12 @@ module Core(
   assign io_dmem_addr = alu_io_alu_out; // @[Core.scala 118:32 Core.scala 120:14]
   assign io_dmem_wdata = _io_dmem_wen_T ? _io_dmem_wdata_T : _GEN_17; // @[Core.scala 146:44 Core.scala 147:14]
   assign io_dmem_wen = decode_io_wb_type == 3'h2 | decode_io_wb_type == 3'h3 | decode_io_wb_type == 3'h4; // @[Core.scala 80:87]
+  assign nxt_pc_io_pc = pc; // @[Core.scala 63:16]
+  assign nxt_pc_io_imm_type = decode_io_imm_type; // @[Core.scala 64:22]
+  assign nxt_pc_io_imm = imm_gen_io_imm; // @[Core.scala 67:17]
+  assign nxt_pc_io_alu_type = decode_io_alu_type[2:0]; // @[Core.scala 65:22]
+  assign nxt_pc_io_alu_out = alu_io_alu_out; // @[Core.scala 68:21]
+  assign nxt_pc_io_wb_type = decode_io_wb_type; // @[Core.scala 66:21]
   assign decode_io_inst = inst[31:0]; // @[Core.scala 61:18]
   assign regfile_clock = clock;
   assign regfile_reset = reset;
@@ -1216,7 +1258,9 @@ module Core(
   always @(posedge clock) begin
     if (reset) begin // @[Core.scala 16:19]
       pc <= 32'h80000000; // @[Core.scala 16:19]
-    end else if (!(pc_en)) begin // @[Core.scala 38:10]
+    end else if (pc_en) begin // @[Core.scala 38:10]
+      pc <= nxt_pc_io_pc_nxt;
+    end else begin
       pc <= 32'h0;
     end
     if (reset) begin // @[Core.scala 17:21]

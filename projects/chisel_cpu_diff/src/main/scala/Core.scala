@@ -35,7 +35,7 @@ regfile.io.rd_data := DontCare
 
 pc_en :=true.B
 pc:= nxt_pc.io.pc_nxt
-pc := Mux(pc_en, pc, 0.U)
+pc := Mux(pc_en,nxt_pc.io.pc_nxt, 0.U)
 
 
 // InstFetch
