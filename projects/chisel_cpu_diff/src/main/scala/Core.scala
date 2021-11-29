@@ -40,7 +40,7 @@ regfile.io.rd_data := 0.U
 // InstFetch
   
   io.imem.en    := true.B
-  io.imem.addr  := pc
+  io.imem.addr  := pc + 4.U
   
   val inst = Mux(pc_en, io.imem.rdata(31, 0), 0.U)
  

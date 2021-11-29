@@ -1001,6 +1001,7 @@ module Core(
   wire [63:0] dt_cs_medeleg; // @[Core.scala 203:21]
   reg [31:0] pc; // @[Core.scala 16:19]
   reg  pc_en; // @[Core.scala 17:21]
+  wire [31:0] _io_imem_addr_T_1 = pc + 32'h4; // @[Core.scala 43:23]
   wire [31:0] inst = pc_en ? io_imem_rdata[31:0] : 32'h0; // @[Core.scala 45:17]
   wire  _regfile_io_rd_en_T = decode_io_wb_type == 3'h1; // @[Core.scala 74:42]
   wire  _regfile_io_rd_en_T_1 = decode_io_wb_type == 3'h5; // @[Core.scala 74:76]
@@ -1052,8 +1053,7 @@ module Core(
   wire [63:0] _io_dmem_wdata_T_1 = {48'h0,io_dmem_wdata_lo_1}; // @[Cat.scala 30:58]
   wire [31:0] io_dmem_wdata_lo_2 = regfile_io_rs2_data[31:0]; // @[Core.scala 149:54]
   wire [63:0] _io_dmem_wdata_T_2 = {32'h0,io_dmem_wdata_lo_2}; // @[Cat.scala 30:58]
-  wire [31:0] _regfile_io_rd_data_T_16 = pc + 32'h4; // @[Core.scala 152:26]
-  wire [31:0] _GEN_14 = _regfile_io_rd_en_T_1 ? _regfile_io_rd_data_T_16 : 32'h0; // @[Core.scala 151:42 Core.scala 152:20 Core.scala 35:20]
+  wire [31:0] _GEN_14 = _regfile_io_rd_en_T_1 ? _io_imem_addr_T_1 : 32'h0; // @[Core.scala 151:42 Core.scala 152:20 Core.scala 35:20]
   wire [63:0] _GEN_15 = _io_dmem_wen_T_3 ? _io_dmem_wdata_T_2 : 64'h0; // @[Core.scala 148:43 Core.scala 149:14 Core.scala 30:15]
   wire [31:0] _GEN_16 = _io_dmem_wen_T_3 ? 32'h0 : _GEN_14; // @[Core.scala 148:43 Core.scala 35:20]
   wire [63:0] _GEN_17 = _io_dmem_wen_T_1 ? _io_dmem_wdata_T_1 : _GEN_15; // @[Core.scala 146:43 Core.scala 147:14]
@@ -1160,7 +1160,7 @@ module Core(
     .mideleg(dt_cs_mideleg),
     .medeleg(dt_cs_medeleg)
   );
-  assign io_imem_addr = {{32'd0}, pc}; // @[Core.scala 43:17]
+  assign io_imem_addr = {{32'd0}, _io_imem_addr_T_1}; // @[Core.scala 43:23]
   assign io_dmem_en = decode_io_mem_rtype != 3'h0; // @[Core.scala 76:38]
   assign io_dmem_addr = io_dmem_en | io_dmem_wen ? alu_io_alu_out : 64'h0; // @[Core.scala 116:32 Core.scala 118:14 Core.scala 32:14]
   assign io_dmem_wdata = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 4'h0 ? 64'h0 :
