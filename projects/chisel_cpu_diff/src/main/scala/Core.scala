@@ -39,13 +39,12 @@ pc := Mux(pc_en,nxt_pc.io.pc_nxt, 0.U)
 
 // InstFetch
   
-  io.imem.en    := true.B
-
-  io.imem.addr  := pc
+io.imem.en    := true.B
+io.imem.addr  := pc
   
-  val inst = io.imem.rdata
- printf("inst in core =%x, pc in core =%x",inst,pc)
-
+val inst = io.imem.rdata
+printf("pc in core =%x, inst in core =%x, nxt pc =%x ",pc,inst,nxt_pc.io.pc_nxt)
+//printf("dt_pc in core =%x, dt_inst in core =%x ",dt_ic.io.pc,dt_ic.io.instr)
 
   //Decode
   
@@ -154,6 +153,7 @@ regfile.io.rd_data := pc + 4.U
 }
 
  
+
 
 
 
