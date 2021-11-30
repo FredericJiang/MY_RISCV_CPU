@@ -1291,6 +1291,29 @@ module Core(
       end
     `endif
     `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_46) begin
+          $fwrite(32'h80000002,"dt_ic.io.wen =%x, dt_ic.io.wdata =%x, dt_ic.io.wdest =%x \n",dt_ic_wen,dt_ic_wdata,
+            dt_ic_wdest); // @[Core.scala 228:7]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_46) begin
+          $fwrite(32'h80000002,"alu type =%x, alu out =%x, imm =%x \n",alu_io_alu_type,alu_io_alu_out,imm_gen_io_imm); // @[Core.scala 229:7]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
