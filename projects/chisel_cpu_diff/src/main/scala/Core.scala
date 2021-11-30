@@ -93,7 +93,7 @@ io.imem.addr  := pc
 
   
   // generate operand_2
-  when(decode.io.op2_type === OP_REG && decode.io.imm_type === IMM_X){
+  when(decode.io.op2_type === OP_REG && (decode.io.imm_type === IMM_X || decode.io.imm_type === IMM_B)){
   //R-type instruction
   alu.io.in2 := regfile.io.rs2_data
   }.elsewhen(decode.io.op2_type === OP_X && decode.io.imm_type =/= IMM_X && decode.io.imm_type =/= IMM_J){
@@ -171,9 +171,9 @@ regfile.io.rd_data := pc + 4.U
   dt_ic.io.skip     := RegNext(false.B)
   dt_ic.io.isRVC    := RegNext(false.B)
   dt_ic.io.scFailed := RegNext(false.B)
-  dt_ic.io.wen      := regfile.io.rd_en && dt_ic.io.valid
-  dt_ic.io.wdata    := regfile.io.rd_data
-  dt_ic.io.wdest    := regfile.io.rd_addr
+  dt_ic.io.wen      := RegNext(regfile.io.rd_en && dt_ic.io.valid)
+  dt_ic.io.wdata    := RegNext(regfile.io.rd_data)
+  dt_ic.io.wdest    := RegNext(regfile.io.rd_addr)
 
   val dt_ae = Module(new DifftestArchEvent)
   dt_ae.io.clock        := clock
