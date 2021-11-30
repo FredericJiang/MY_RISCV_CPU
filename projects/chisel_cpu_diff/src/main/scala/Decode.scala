@@ -23,7 +23,7 @@ class Decode extends Module{
   
   val ctrl = ListLookup( 
   inst, List( N,    ALU_X,    OP_X ,   OP_X,   IMM_X,   MEM_X, WB_X     ),
-Array(//valid, rv32i, nxtpc_type, alu_type, op1_type,op2_type, imm?,men_r_type ,wb_type
+Array(//valid,  nxtpc_type, alu_type, op1_type,op2_type, imm?,men_r_type ,wb_type
 // R-type
 ADD     -> List( Y,   ALU_ADD , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ), //NXT_PC +4
 SUB     -> List( Y,   ALU_SUB , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
