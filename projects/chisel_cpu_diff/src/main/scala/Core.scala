@@ -164,9 +164,9 @@ regfile.io.rd_data := pc + 4.U
   dt_ic.io.clock    := clock
   dt_ic.io.coreid   := 0.U
   dt_ic.io.index    := 0.U
-  dt_ic.io.valid    := true.B
+  dt_ic.io.valid    := pc_en && (inst=/=0.U)
   dt_ic.io.pc       := RegNext(pc)
-  dt_ic.io.instr    := RegNext(inst)
+  dt_ic.io.instr    := inst
   dt_ic.io.special  := 0.U
   dt_ic.io.skip     := false.B
   dt_ic.io.isRVC    := false.B
