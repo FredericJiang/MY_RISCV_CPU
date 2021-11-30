@@ -135,7 +135,7 @@ switch(decode.io.mem_rtype){
 is(MEM_B) {regfile.io.rd_data := Cat(Fill(57, io.dmem.rdata(7)),  io.dmem.rdata(6, 0))}
 is(MEM_H) {regfile.io.rd_data := Cat(Fill(49, io.dmem.rdata(15)), io.dmem.rdata(14, 0))}
 is(MEM_W) {regfile.io.rd_data := Cat(Fill(33, io.dmem.rdata(31)), io.dmem.rdata(30, 0))}
-is(MEM_D) {regfile.io.rd_data := Cat(Fill(33, io.dmem.rdata(31)), io.dmem.rdata(30, 0))}
+is(MEM_D) {regfile.io.rd_data := Cat(Fill(33, 0.U), io.dmem.rdata(31, 0))}
 is(MEM_BU){regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(7, 0))}
 is(MEM_HU){regfile.io.rd_data := Cat(Fill(48, 0.U),  io.dmem.rdata(15, 0))}
 is(MEM_WU){regfile.io.rd_data := Cat(Fill(32, 0.U),  io.dmem.rdata(31, 0))}
