@@ -30,11 +30,11 @@ io.dmem.wdata := DontCare
 io.dmem.wmask := DontCare
 io.dmem.addr := DontCare
 io.dmem.wen := DontCare
-
 regfile.io.rd_data := DontCare
 
+val inst = io.imem.rdata
 pc_en :=true.B
-pc := Mux(pc_en,nxt_pc.io.pc_nxt, 0.U)
+pc := Mux(pc_en && (inst=/=0.U),nxt_pc.io.pc_nxt, "h80000000".U)
 
 
 // InstFetch
@@ -42,7 +42,7 @@ pc := Mux(pc_en,nxt_pc.io.pc_nxt, 0.U)
 io.imem.en    := true.B
 io.imem.addr  := pc
   
-val inst = io.imem.rdata
+
 printf("pc in core =%x, inst in core =%x, nxt pc =%x ",pc,inst,nxt_pc.io.pc_nxt)
 //printf("dt_pc in core =%x, dt_inst in core =%x ",dt_ic.io.pc,dt_ic.io.instr)
 

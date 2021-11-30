@@ -1257,10 +1257,10 @@ module Core(
   always @(posedge clock) begin
     if (reset) begin // @[Core.scala 16:19]
       pc <= 32'h80000000; // @[Core.scala 16:19]
-    end else if (pc_en) begin // @[Core.scala 37:10]
+    end else if (pc_en & io_imem_rdata != 64'h0) begin // @[Core.scala 37:10]
       pc <= nxt_pc_io_pc_nxt;
     end else begin
-      pc <= 32'h0;
+      pc <= 32'h80000000;
     end
     if (reset) begin // @[Core.scala 17:21]
       pc_en <= 1'h0; // @[Core.scala 17:21]
