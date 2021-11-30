@@ -43,6 +43,8 @@ object Constant{
   val ALU_SLL   = 8.asUInt(4.W)
   val ALU_SRL   = 9.asUInt(4.W)
   val ALU_SRA   = 10.asUInt(4.W)
+  val ALU_BGE   = 11.asUInt(4.W)
+  val ALU_BGEU  = 12.asUInt(4.W)
 
 
   val MEM_X    = 0.asUInt(3.W)

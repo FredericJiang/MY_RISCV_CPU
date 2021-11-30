@@ -64,9 +64,9 @@ AUIPC   -> List( Y,   ALU_ADD,  OP_PC ,  OP_X,   IMM_U,   MEM_X, WB_REG ),
 BEQ     -> List( Y ,  ALU_SUB,  OP_REG, OP_REG , IMM_B ,  MEM_X, WB_X  ), //NXT_PC FROM IMM
 BNE     -> List( Y ,  ALU_XOR,  OP_REG, OP_REG , IMM_B ,  MEM_X, WB_X  ),
 BLT     -> List( Y ,  ALU_SLT,  OP_REG, OP_REG , IMM_B ,  MEM_X, WB_X  ),
-BGE     -> List( Y ,  ALU_SUB,  OP_REG, OP_REG , IMM_B ,  MEM_X, WB_X  ),
+BGE     -> List( Y ,  ALU_BGE,  OP_REG, OP_REG , IMM_B ,  MEM_X, WB_X  ),
 BLTU    -> List( Y ,  ALU_SLTU, OP_REG, OP_REG , IMM_B  , MEM_X, WB_X  ),
-BGEU    -> List( Y ,  ALU_SUB,  OP_REG, OP_REG , IMM_B  , MEM_X, WB_X  ),
+BGEU    -> List( Y ,  ALU_BGEU,  OP_REG, OP_REG , IMM_B  , MEM_X, WB_X  ),
 //J-type
 JAL     -> List( Y ,  ALU_ADD,  OP_PC,   OP_X,   IMM_J,  MEM_X,  WB_REG  ), //NXT_PC FROM IMM
 JALR    -> List( Y ,  ALU_ADD,  OP_REG,  OP_X,   IMM_I,  MEM_X,  WB_JALR ) //NXT_PC FROM ALU

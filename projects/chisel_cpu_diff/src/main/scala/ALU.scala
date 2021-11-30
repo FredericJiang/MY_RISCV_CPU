@@ -31,7 +31,10 @@ ALU_OR   -> (in1 | in2).asUInt(),
 ALU_AND  -> (in1 & in2).asUInt(),
 ALU_SLL  -> (in1 << in2(5,0)).asUInt(),
 ALU_SRL  -> (in1 >> in2(5,0)).asUInt(),
-ALU_SRA  -> (in1 >> in2(5,0)).asUInt()
+ALU_SRA  -> (in1 >> in2(5,0)).asUInt(),
+ALU_BGE  -> (in1.asSInt >= in2.asSInt).asUInt(),
+ALU_BGEU -> (in1 >= in2).asUInt()
+
 ))
 
 io.alu_out := alu_out
