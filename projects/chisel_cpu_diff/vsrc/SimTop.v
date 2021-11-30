@@ -68,7 +68,7 @@ module Decode(
   wire  _ctrl_T_69 = 32'h5063 == _ctrl_T_20; // @[Lookup.scala 31:38]
   wire  _ctrl_T_71 = 32'h6063 == _ctrl_T_20; // @[Lookup.scala 31:38]
   wire  _ctrl_T_73 = 32'h7063 == _ctrl_T_20; // @[Lookup.scala 31:38]
-  wire  _ctrl_T_75 = 32'h4f == _ctrl_T_58; // @[Lookup.scala 31:38]
+  wire  _ctrl_T_75 = 32'h6f == _ctrl_T_58; // @[Lookup.scala 31:38]
   wire  _ctrl_T_77 = 32'h67 == _ctrl_T_20; // @[Lookup.scala 31:38]
   wire [3:0] _ctrl_T_116 = _ctrl_T_77 ? 4'h1 : 4'h0; // @[Lookup.scala 33:37]
   wire [3:0] _ctrl_T_117 = _ctrl_T_75 ? 4'h1 : _ctrl_T_116; // @[Lookup.scala 33:37]
