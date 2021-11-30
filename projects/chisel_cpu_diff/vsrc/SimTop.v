@@ -1094,7 +1094,6 @@ module Core(
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 188:26]
   wire [63:0] _instr_cnt_T_1 = instr_cnt + 64'h1; // @[Core.scala 189:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
-  wire  _T_46 = ~reset; // @[Core.scala 226:7]
   Nxt_PC nxt_pc ( // @[Core.scala 20:22]
     .io_pc(nxt_pc_io_pc),
     .io_imm_type(nxt_pc_io_imm_type),
@@ -1289,51 +1288,6 @@ module Core(
     end else if (dt_ic_valid) begin // @[Core.scala 187:24]
       instr_cnt <= _instr_cnt_T_1; // @[Core.scala 189:13]
     end
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (~reset) begin
-          $fwrite(32'h80000002,"pc in core =%x, inst in core =%x, nxt pc =%x \n",pc,io_imem_rdata,nxt_pc_io_pc_nxt); // @[Core.scala 226:7]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_T_46) begin
-          $fwrite(32'h80000002,"dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic_valid,dt_ic_pc,dt_ic_instr); // @[Core.scala 227:7]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_T_46) begin
-          $fwrite(32'h80000002,"dt_ic.io.wen =%x, dt_ic.io.wdata =%x, dt_ic.io.wdest =%x \n",dt_ic_wen,dt_ic_wdata,
-            dt_ic_wdest); // @[Core.scala 228:7]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_T_46) begin
-          $fwrite(32'h80000002,"alu type =%x, alu out =%x, imm =%x \n",alu_io_alu_type,alu_io_alu_out,imm_gen_io_imm); // @[Core.scala 229:7]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN

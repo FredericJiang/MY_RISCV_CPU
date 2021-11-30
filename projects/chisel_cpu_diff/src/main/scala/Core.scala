@@ -223,8 +223,8 @@ regfile.io.rd_data := pc + 4.U
   dt_cs.io.medeleg        := 0.U
 
 
-printf("pc in core =%x, inst in core =%x, nxt pc =%x \n",pc,inst,nxt_pc.io.pc_nxt)
-printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
-printf("dt_ic.io.wen =%x, dt_ic.io.wdata =%x, dt_ic.io.wdest =%x \n",dt_ic.io.wen ,dt_ic.io.wdata ,dt_ic.io.wdest)
-printf("alu type =%x, alu out =%x, imm =%x \n",alu.io.alu_type,alu.io.alu_out,imm_gen.io.imm)
+//printf("pc in core =%x, inst in core =%x, nxt pc =%x \n",pc,inst,nxt_pc.io.pc_nxt)
+//printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
+//printf("dt_ic.io.wen =%x, dt_ic.io.wdata =%x, dt_ic.io.wdest =%x \n",dt_ic.io.wen ,dt_ic.io.wdata ,dt_ic.io.wdest)
+//printf("alu type =%x, alu out =%x, imm =%x \n",alu.io.alu_type,alu.io.alu_out,imm_gen.io.imm)
 }
