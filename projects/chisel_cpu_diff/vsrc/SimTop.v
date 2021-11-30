@@ -1270,12 +1270,12 @@ module Core(
     dt_ic_io_wdest_REG <= regfile_io_rd_addr; // @[Core.scala 176:31]
     if (reset) begin // @[Core.scala 185:26]
       cycle_cnt <= 64'h0; // @[Core.scala 185:26]
-    end else begin
+    end else if (dt_ic_valid) begin // @[Core.scala 187:24]
       cycle_cnt <= _cycle_cnt_T_1; // @[Core.scala 188:13]
     end
     if (reset) begin // @[Core.scala 186:26]
       instr_cnt <= 64'h0; // @[Core.scala 186:26]
-    end else begin
+    end else if (dt_ic_valid) begin // @[Core.scala 187:24]
       instr_cnt <= _instr_cnt_T_1; // @[Core.scala 189:13]
     end
     `ifndef SYNTHESIS
