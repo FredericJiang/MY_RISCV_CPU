@@ -1234,7 +1234,7 @@ module Core(
   assign dt_te_instrCnt = instr_cnt; // @[Core.scala 201:21]
   assign dt_cs_clock = clock; // @[Core.scala 204:27]
   assign dt_cs_coreid = 8'h0; // @[Core.scala 205:27]
-  assign dt_cs_priviledgeMode = 2'h3; // @[Core.scala 206:27]
+  assign dt_cs_priviledgeMode = 2'h0; // @[Core.scala 206:27]
   assign dt_cs_mstatus = 64'h0; // @[Core.scala 207:27]
   assign dt_cs_sstatus = 64'h0; // @[Core.scala 208:27]
   assign dt_cs_mepc = 64'h0; // @[Core.scala 209:27]
