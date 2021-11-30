@@ -165,8 +165,8 @@ regfile.io.rd_data := pc + 4.U
   dt_ic.io.coreid   := 0.U
   dt_ic.io.index    := 0.U
   dt_ic.io.valid    := true.B
-  dt_ic.io.pc       := pc
-  dt_ic.io.instr    := inst
+  dt_ic.io.pc       := RegNext(pc)
+  dt_ic.io.instr    := RegNext(inst)
   dt_ic.io.special  := 0.U
   dt_ic.io.skip     := false.B
   dt_ic.io.isRVC    := false.B
@@ -223,6 +223,6 @@ regfile.io.rd_data := pc + 4.U
   dt_cs.io.medeleg        := 0.U
 
 
-printf("pc in core =%x, inst in core =%x, nxt pc =%x ",pc,inst,nxt_pc.io.pc_nxt)
-printf("dt_pc in core =%x, dt_inst in core =%x ",dt_ic.io.pc,dt_ic.io.instr)
+printf("pc in core =%x, inst in core =%x, nxt pc =%x \n",pc,inst,nxt_pc.io.pc_nxt)
+printf("dt_pc =%x, dt_inst =%x \n",dt_ic.io.pc,dt_ic.io.instr)
 }

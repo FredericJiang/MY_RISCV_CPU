@@ -945,7 +945,9 @@ module Core(
   reg [63:0] _RAND_3;
   reg [31:0] _RAND_4;
   reg [63:0] _RAND_5;
-  reg [63:0] _RAND_6;
+  reg [31:0] _RAND_6;
+  reg [63:0] _RAND_7;
+  reg [63:0] _RAND_8;
 `endif // RANDOMIZE_REG_INIT
   wire [31:0] nxt_pc_io_pc; // @[Core.scala 20:22]
   wire [2:0] nxt_pc_io_imm_type; // @[Core.scala 20:22]
@@ -1076,6 +1078,8 @@ module Core(
   wire [63:0] _GEN_17 = _io_dmem_wen_T_1 ? _io_dmem_wdata_T_1 : _io_dmem_wdata_T_2; // @[Core.scala 145:43 Core.scala 146:14]
   wire [63:0] _GEN_21 = _regfile_io_rd_en_T & _io_dmem_en_T ? _GEN_13 : {{32'd0}, _regfile_io_rd_data_T_16}; // @[Core.scala 133:74]
   wire [63:0] _GEN_23 = _T_23 & decode_io_alu_type == 4'h0 ? imm_gen_io_imm : _GEN_21; // @[Core.scala 130:106 Core.scala 131:20]
+  reg [31:0] dt_ic_io_pc_REG; // @[Core.scala 168:31]
+  reg [63:0] dt_ic_io_instr_REG; // @[Core.scala 169:31]
   reg  dt_ic_io_wen_REG; // @[Core.scala 174:31]
   reg [63:0] dt_ic_io_wdata_REG; // @[Core.scala 175:31]
   reg [4:0] dt_ic_io_wdest_REG; // @[Core.scala 176:31]
@@ -1209,8 +1213,8 @@ module Core(
   assign dt_ic_coreid = 8'h0; // @[Core.scala 165:21]
   assign dt_ic_index = 8'h0; // @[Core.scala 166:21]
   assign dt_ic_valid = 1'h1; // @[Core.scala 167:21]
-  assign dt_ic_pc = {{32'd0}, pc}; // @[Core.scala 168:21]
-  assign dt_ic_instr = io_imem_rdata[31:0]; // @[Core.scala 169:21]
+  assign dt_ic_pc = {{32'd0}, dt_ic_io_pc_REG}; // @[Core.scala 168:21]
+  assign dt_ic_instr = dt_ic_io_instr_REG[31:0]; // @[Core.scala 169:21]
   assign dt_ic_special = 8'h0; // @[Core.scala 170:21]
   assign dt_ic_skip = 1'h0; // @[Core.scala 171:21]
   assign dt_ic_isRVC = 1'h0; // @[Core.scala 172:21]
@@ -1264,6 +1268,8 @@ module Core(
     end else begin
       pc_en <= 1'h1; // @[Core.scala 36:7]
     end
+    dt_ic_io_pc_REG <= pc; // @[Core.scala 168:31]
+    dt_ic_io_instr_REG <= io_imem_rdata; // @[Core.scala 169:31]
     dt_ic_io_wen_REG <= regfile_io_rd_en; // @[Core.scala 174:31]
     dt_ic_io_wdata_REG <= regfile_io_rd_data; // @[Core.scala 175:31]
     dt_ic_io_wdest_REG <= regfile_io_rd_addr; // @[Core.scala 176:31]
@@ -1282,7 +1288,7 @@ module Core(
       if (`PRINTF_COND) begin
     `endif
         if (~reset) begin
-          $fwrite(32'h80000002,"pc in core =%x, inst in core =%x, nxt pc =%x ",pc,io_imem_rdata,nxt_pc_io_pc_nxt); // @[Core.scala 226:7]
+          $fwrite(32'h80000002,"pc in core =%x, inst in core =%x, nxt pc =%x \n",pc,io_imem_rdata,nxt_pc_io_pc_nxt); // @[Core.scala 226:7]
         end
     `ifdef PRINTF_COND
       end
@@ -1293,7 +1299,7 @@ module Core(
       if (`PRINTF_COND) begin
     `endif
         if (_T_46) begin
-          $fwrite(32'h80000002,"dt_pc in core =%x, dt_inst in core =%x ",dt_ic_pc,dt_ic_instr); // @[Core.scala 227:7]
+          $fwrite(32'h80000002,"dt_pc =%x, dt_inst =%x \n",dt_ic_pc,dt_ic_instr); // @[Core.scala 227:7]
         end
     `ifdef PRINTF_COND
       end
@@ -1341,15 +1347,19 @@ initial begin
   _RAND_1 = {1{`RANDOM}};
   pc_en = _RAND_1[0:0];
   _RAND_2 = {1{`RANDOM}};
-  dt_ic_io_wen_REG = _RAND_2[0:0];
+  dt_ic_io_pc_REG = _RAND_2[31:0];
   _RAND_3 = {2{`RANDOM}};
-  dt_ic_io_wdata_REG = _RAND_3[63:0];
+  dt_ic_io_instr_REG = _RAND_3[63:0];
   _RAND_4 = {1{`RANDOM}};
-  dt_ic_io_wdest_REG = _RAND_4[4:0];
+  dt_ic_io_wen_REG = _RAND_4[0:0];
   _RAND_5 = {2{`RANDOM}};
-  cycle_cnt = _RAND_5[63:0];
-  _RAND_6 = {2{`RANDOM}};
-  instr_cnt = _RAND_6[63:0];
+  dt_ic_io_wdata_REG = _RAND_5[63:0];
+  _RAND_6 = {1{`RANDOM}};
+  dt_ic_io_wdest_REG = _RAND_6[4:0];
+  _RAND_7 = {2{`RANDOM}};
+  cycle_cnt = _RAND_7[63:0];
+  _RAND_8 = {2{`RANDOM}};
+  instr_cnt = _RAND_8[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
