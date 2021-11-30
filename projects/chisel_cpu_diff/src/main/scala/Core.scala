@@ -43,8 +43,7 @@ io.imem.en    := true.B
 io.imem.addr  := pc
   
 
-printf("pc in core =%x, inst in core =%x, nxt pc =%x ",pc,inst,nxt_pc.io.pc_nxt)
-//printf("dt_pc in core =%x, dt_inst in core =%x ",dt_ic.io.pc,dt_ic.io.instr)
+
 
   //Decode
   
@@ -222,4 +221,8 @@ regfile.io.rd_data := pc + 4.U
   dt_cs.io.sscratch       := 0.U
   dt_cs.io.mideleg        := 0.U
   dt_cs.io.medeleg        := 0.U
+
+
+printf("pc in core =%x, inst in core =%x, nxt pc =%x ",pc,inst,nxt_pc.io.pc_nxt)
+printf("dt_pc in core =%x, dt_inst in core =%x ",dt_ic.io.pc,dt_ic.io.instr)
 }
