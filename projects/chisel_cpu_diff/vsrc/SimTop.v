@@ -1294,7 +1294,7 @@ module Core(
       if (`PRINTF_COND) begin
     `endif
         if (_T_46) begin
-          $fwrite(32'h80000002,"dt_ic_valid %x, dt_pc =%x, dt_inst =%x = \n",dt_ic_valid,dt_ic_pc,dt_ic_instr); // @[Core.scala 227:7]
+          $fwrite(32'h80000002,"dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic_valid,dt_ic_pc,dt_ic_instr); // @[Core.scala 227:7]
         end
     `ifdef PRINTF_COND
       end
