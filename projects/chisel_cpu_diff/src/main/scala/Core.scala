@@ -225,4 +225,5 @@ regfile.io.rd_data := pc + 4.U
 
 printf("pc in core =%x, inst in core =%x, nxt pc =%x \n",pc,inst,nxt_pc.io.pc_nxt)
 printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
+
 }
