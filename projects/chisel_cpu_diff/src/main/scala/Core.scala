@@ -74,7 +74,7 @@ io.imem.addr  := pc
 // read memory enable
   io.dmem.en := (decode.io.mem_rtype =/= MEM_X)
 // write memory enable
-  io.dmem.wen := (decode.io.wb_type === WB_MEM_B) || (decode.io.wb_type === WB_MEM_H) || (decode.io.wb_type === WB_MEM_W )
+  io.dmem.wen := (decode.io.wb_type === WB_MEM_B) || (decode.io.wb_type === WB_MEM_H) || (decode.io.wb_type === WB_MEM_W) || (decode.io.wb_type === WB_MEM_D)
   alu.io.alu_type := decode.io.alu_type
   
 
@@ -146,6 +146,8 @@ io.dmem.wdata:= Cat(Fill(56, 0.U),regfile.io.rs2_data(7,0))
 io.dmem.wdata:= Cat(Fill(48, 0.U),regfile.io.rs2_data(15,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_W){
 io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
+}.elsewhen(decode.io.wb_type === WB_MEM_D){
+io.dmem.wdata:= regfile.io.rs2_data
 //JALR
 }.elsewhen(decode.io.wb_type === WB_JALR){
 regfile.io.rd_data := pc + 4.U 

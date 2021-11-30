@@ -57,6 +57,7 @@ LWU     -> List( Y,   ALU_ADD , OP_REG , OP_X   , IMM_I , MEM_WU, WB_REG ),
 SB      -> List( Y,   ALU_ADD , OP_REG , OP_REG , IMM_S , MEM_X,  WB_MEM_B ),
 SH      -> List( Y,   ALU_ADD , OP_REG , OP_REG , IMM_S , MEM_X,  WB_MEM_H ),
 SW      -> List( Y,   ALU_ADD , OP_REG , OP_REG , IMM_S , MEM_X,  WB_MEM_W ),
+SD      -> List( Y,   ALU_ADD , OP_REG , OP_REG , IMM_S , MEM_X,  WB_MEM_D ),
 //U-type
 LUI     -> List( Y,   ALU_X,    OP_X ,   OP_X,   IMM_U,   MEM_X, WB_REG ),
 AUIPC   -> List( Y,   ALU_ADD,  OP_PC ,  OP_X,   IMM_U,   MEM_X, WB_REG ),
