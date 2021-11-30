@@ -30,7 +30,7 @@ when(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out === 0.U){
   io.pc_nxt := io.pc + io.imm
 }.elsewhen(io.wb_type === WB_JALR){
 //JALR
-  io.pc_nxt := io.alu_out
+  io.pc_nxt := (io.alu_out & ~1.U(1.W))
 }.otherwise{
 // other types of instruction
 io.pc_nxt := io.pc + 4.U
