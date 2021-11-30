@@ -15,7 +15,7 @@ val io = IO(new Bundle{
 
 
 
-when(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out === 0.U){
+when(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out >= 0.U){
 // BEQ BGE BGEU alu_out is zero, pc + offset
   io.pc_nxt := io.pc + io.imm
 }.elsewhen(io.imm_type === IMM_B && io.alu_type =/= ALU_SUB && io.alu_out =/= 0.U ){

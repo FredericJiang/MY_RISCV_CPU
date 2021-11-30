@@ -15,7 +15,7 @@ module Nxt_PC(
   wire [63:0] _GEN_0 = io_wb_type == 3'h5 ? io_alu_out : {{32'd0}, _io_pc_nxt_T_7}; // @[NXT_PC.scala 27:35 NXT_PC.scala 29:13 NXT_PC.scala 32:11]
   wire [63:0] _GEN_1 = io_imm_type == 3'h5 ? _io_pc_nxt_T_1 : _GEN_0; // @[NXT_PC.scala 24:34 NXT_PC.scala 26:13]
   wire [63:0] _GEN_2 = _T & _GEN_4 != 4'h2 & io_alu_out != 64'h0 ? _io_pc_nxt_T_1 : _GEN_1; // @[NXT_PC.scala 21:84 NXT_PC.scala 23:13]
-  wire [63:0] _GEN_3 = io_imm_type == 3'h3 & _GEN_4 == 4'h2 & io_alu_out == 64'h0 ? _io_pc_nxt_T_1 : _GEN_2; // @[NXT_PC.scala 18:77 NXT_PC.scala 20:13]
+  wire [63:0] _GEN_3 = io_imm_type == 3'h3 & _GEN_4 == 4'h2 ? _io_pc_nxt_T_1 : _GEN_2; // @[NXT_PC.scala 18:76 NXT_PC.scala 20:13]
   assign io_pc_nxt = _GEN_3[31:0];
 endmodule
 module Decode(
