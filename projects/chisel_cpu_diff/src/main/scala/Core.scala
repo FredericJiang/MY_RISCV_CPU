@@ -162,18 +162,18 @@ regfile.io.rd_data := pc + 4.U
 
   val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.clock    := clock
-  dt_ic.io.coreid   := 0.U
-  dt_ic.io.index    := 0.U
-  dt_ic.io.valid    := pc_en && (inst=/=0.U)
-  dt_ic.io.pc       := pc
-  dt_ic.io.instr    := inst
-  dt_ic.io.special  := 0.U
-  dt_ic.io.skip     := false.B
-  dt_ic.io.isRVC    := false.B
-  dt_ic.io.scFailed := false.B
-  dt_ic.io.wen      := regfile.io.rd_en && dt_ic.io.valid
-  dt_ic.io.wdata    := regfile.io.rd_data
-  dt_ic.io.wdest    := regfile.io.rd_addr
+  dt_ic.io.coreid   := RegNext(0.U)
+  dt_ic.io.index    := RegNext(0.U)
+  dt_ic.io.valid    := RegNext(pc_en && (inst=/=0.U))
+  dt_ic.io.pc       := RegNext(pc)
+  dt_ic.io.instr    := RegNext(inst)
+  dt_ic.io.special  := RegNext(0.U)
+  dt_ic.io.skip     := RegNext(false.B)
+  dt_ic.io.isRVC    := RegNext(false.B)
+  dt_ic.io.scFailed := RegNext(false.B)
+  dt_ic.io.wen      := RegNext(regfile.io.rd_en && dt_ic.io.valid)
+  dt_ic.io.wdata    := RegNext(regfile.io.rd_data)
+  dt_ic.io.wdest    := RegNext(regfile.io.rd_addr)
 
   val dt_ae = Module(new DifftestArchEvent)
   dt_ae.io.clock        := clock
