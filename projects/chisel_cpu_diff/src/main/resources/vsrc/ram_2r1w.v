@@ -59,6 +59,7 @@ module ram_2r1w (
     ram_write_helper({3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3}, dmem_wdata, dmem_wmask, dmem_en & dmem_wen);
     //$display("imem_addr = %x",imem_addr,"  imem_data = %x",imem_data);
     //$display("dmem_addr = %x",dmem_addr,"  dmem_data = %x",dmem_wdata);
+    if(dmem_en & dmem_wen)
     $display("tmp = %x\n" ,tmp);
 
   end
