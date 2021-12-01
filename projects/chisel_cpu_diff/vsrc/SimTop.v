@@ -1098,11 +1098,8 @@ module Core(
   wire [63:0] _GEN_19 = _io_dmem_wen_T_3 ? _io_dmem_wdata_T_2 : _GEN_16; // @[Core.scala 148:43 Core.scala 150:14]
   wire [63:0] _GEN_21 = _io_dmem_wen_T_1 ? 64'hffff : _GEN_18; // @[Core.scala 145:43 Core.scala 146:14]
   wire [63:0] _GEN_22 = _io_dmem_wen_T_1 ? _io_dmem_wdata_T_1 : _GEN_19; // @[Core.scala 145:43 Core.scala 147:14]
-  wire [63:0] _GEN_24 = _io_dmem_wen_T ? 64'hff : _GEN_21; // @[Core.scala 142:44 Core.scala 143:14]
   wire [63:0] _GEN_27 = _regfile_io_rd_en_T & _io_dmem_en_T ? _GEN_13 : {{32'd0}, _regfile_io_rd_data_T_13}; // @[Core.scala 132:74]
-  wire [63:0] _GEN_28 = _regfile_io_rd_en_T & _io_dmem_en_T ? 64'hffffffffffffffff : _GEN_24; // @[Core.scala 132:74 Core.scala 30:15]
   wire [63:0] _GEN_30 = _T_25 & decode_io_alu_type == 4'h0 ? imm_gen_io_imm : _GEN_27; // @[Core.scala 129:106 Core.scala 130:20]
-  wire [63:0] _GEN_31 = _T_25 & decode_io_alu_type == 4'h0 ? 64'hffffffffffffffff : _GEN_28; // @[Core.scala 129:106 Core.scala 30:15]
   reg  dt_ic_io_valid_REG; // @[Core.scala 172:31]
   reg [31:0] dt_ic_io_pc_REG; // @[Core.scala 173:31]
   reg [63:0] dt_ic_io_instr_REG; // @[Core.scala 174:31]
@@ -1213,8 +1210,7 @@ module Core(
   assign io_dmem_en = decode_io_mem_rtype != 3'h0 | io_dmem_wen; // @[Core.scala 75:49]
   assign io_dmem_addr = alu_io_alu_out; // @[Core.scala 114:32 Core.scala 116:14]
   assign io_dmem_wdata = _io_dmem_wen_T ? _io_dmem_wdata_T : _GEN_22; // @[Core.scala 142:44 Core.scala 144:14]
-  assign io_dmem_wmask = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 4'h0 ? 64'hffffffffffffffff
-     : _GEN_31; // @[Core.scala 126:101 Core.scala 30:15]
+  assign io_dmem_wmask = _io_dmem_wen_T ? 64'hff : _GEN_21; // @[Core.scala 142:44 Core.scala 143:14]
   assign io_dmem_wen = decode_io_wb_type == 3'h3 | decode_io_wb_type == 3'h4 | decode_io_wb_type == 3'h5 |
     decode_io_wb_type == 3'h6; // @[Core.scala 77:123]
   assign nxt_pc_io_pc = pc; // @[Core.scala 60:16]
