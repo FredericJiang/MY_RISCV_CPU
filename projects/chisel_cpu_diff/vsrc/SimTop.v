@@ -1210,7 +1210,7 @@ module Core(
     .medeleg(dt_cs_medeleg)
   );
   assign io_imem_addr = {{32'd0}, pc}; // @[Core.scala 43:15]
-  assign io_dmem_en = decode_io_mem_rtype != 3'h0; // @[Core.scala 75:38]
+  assign io_dmem_en = decode_io_mem_rtype != 3'h0 | io_dmem_wen; // @[Core.scala 75:49]
   assign io_dmem_addr = alu_io_alu_out; // @[Core.scala 114:32 Core.scala 116:14]
   assign io_dmem_wdata = _io_dmem_wen_T ? _io_dmem_wdata_T : _GEN_22; // @[Core.scala 142:44 Core.scala 144:14]
   assign io_dmem_wmask = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 4'h0 ? 64'hffffffffffffffff

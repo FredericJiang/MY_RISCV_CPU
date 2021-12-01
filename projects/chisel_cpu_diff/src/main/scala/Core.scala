@@ -71,8 +71,8 @@ io.imem.addr  := pc
 
 //write back to reg enalbe
   regfile.io.rd_en := (decode.io.wb_type === WB_REG) || (decode.io.wb_type === WB_JALR)
-// read memory enable
-  io.dmem.en := (decode.io.mem_rtype =/= MEM_X)
+// memory enable
+  io.dmem.en := (decode.io.mem_rtype =/= MEM_X) || io.dmem.wen
 // write memory enable
   io.dmem.wen := (decode.io.wb_type === WB_MEM_B) || (decode.io.wb_type === WB_MEM_H) || (decode.io.wb_type === WB_MEM_W) || (decode.io.wb_type === WB_MEM_D)
   alu.io.alu_type := decode.io.alu_type
