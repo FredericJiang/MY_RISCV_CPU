@@ -136,19 +136,19 @@ switch(decode.io.mem_rtype){
 is(MEM_B){
 when(io.dmem.addr(2,0)==="b000".U){
 regfile.io.rd_data := Cat(Fill(57, io.dmem.rdata(7)),  io.dmem.rdata(6, 0))
-}.elsewhen(io.dmem.addr(1,0)==="b001".U){
+}.elsewhen(io.dmem.addr(2,0)==="b001".U){
 regfile.io.rd_data := Cat(Fill(57, io.dmem.rdata(15)),  io.dmem.rdata(14, 8))
-}.elsewhen(io.dmem.addr(1,0)==="b010".U){
+}.elsewhen(io.dmem.addr(2,0)==="b010".U){
 regfile.io.rd_data := Cat(Fill(57, io.dmem.rdata(23)),  io.dmem.rdata(22, 16))
-}.elsewhen(io.dmem.addr(1,0)==="b011".U){
+}.elsewhen(io.dmem.addr(2,0)==="b011".U){
 regfile.io.rd_data := Cat(Fill(57,io.dmem.rdata(31)),  io.dmem.rdata(30, 24))
 }.elsewhen(io.dmem.addr(2,0)==="b100".U){
 regfile.io.rd_data := Cat(Fill(57, io.dmem.rdata(39)),  io.dmem.rdata(38, 32))
-}.elsewhen(io.dmem.addr(1,0)==="b101".U){
+}.elsewhen(io.dmem.addr(2,0)==="b101".U){
 regfile.io.rd_data := Cat(Fill(57, io.dmem.rdata(47)),  io.dmem.rdata(46, 40))
-}.elsewhen(io.dmem.addr(1,0)==="b110".U){
+}.elsewhen(io.dmem.addr(2,0)==="b110".U){
 regfile.io.rd_data := Cat(Fill(57, io.dmem.rdata(55)),  io.dmem.rdata(54, 48))
-}.elsewhen(io.dmem.addr(1,0)==="b111".U){
+}.elsewhen(io.dmem.addr(2,0)==="b111".U){
 regfile.io.rd_data := Cat(Fill(57,io.dmem.rdata(63)),  io.dmem.rdata(62, 56))
 }}
 
@@ -175,19 +175,19 @@ is(MEM_D) {regfile.io.rd_data := io.dmem.rdata}
 is(MEM_BU){
 when(io.dmem.addr(2,0)==="b000".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(7, 0))
-}.elsewhen(io.dmem.addr(1,0)==="b001".U){
+}.elsewhen(io.dmem.addr(2,0)==="b001".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(15, 8))
-}.elsewhen(io.dmem.addr(1,0)==="b010".U){
+}.elsewhen(io.dmem.addr(2,0)==="b010".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(23, 16))
-}.elsewhen(io.dmem.addr(1,0)==="b011".U){
+}.elsewhen(io.dmem.addr(2,0)==="b011".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(31, 24))
 }.elsewhen(io.dmem.addr(2,0)==="b100".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(39, 32))
-}.elsewhen(io.dmem.addr(1,0)==="b101".U){
+}.elsewhen(io.dmem.addr(2,0)==="b101".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(47, 40))
-}.elsewhen(io.dmem.addr(1,0)==="b110".U){
+}.elsewhen(io.dmem.addr(2,0)==="b110".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(55, 48))
-}.elsewhen(io.dmem.addr(1,0)==="b111".U){
+}.elsewhen(io.dmem.addr(2,0)==="b111".U){
 regfile.io.rd_data := Cat(Fill(56, 0.U),  io.dmem.rdata(63, 56))
 }}
 
