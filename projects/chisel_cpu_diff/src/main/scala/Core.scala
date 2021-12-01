@@ -140,12 +140,16 @@ is(MEM_HU){regfile.io.rd_data := Cat(Fill(48, 0.U),  io.dmem.rdata(15, 0))}
 is(MEM_WU){regfile.io.rd_data := Cat(Fill(32, 0.U),  io.dmem.rdata(31, 0))}
 //S-type 
 }}.elsewhen(decode.io.wb_type === WB_MEM_B){
+io.dmem.wmask:= ("h00000000000000ff".U)
 io.dmem.wdata:= Cat(Fill(56, 0.U),regfile.io.rs2_data(7,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_H){
+io.dmem.wmask:= ("h000000000000ffff".U)
 io.dmem.wdata:= Cat(Fill(48, 0.U),regfile.io.rs2_data(15,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_W){
+io.dmem.wmask:= ("h00000000ffffffff".U)
 io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_D){
+  io.dmem.wmask:= ("hffffffffffffffff".U)
 io.dmem.wdata:= regfile.io.rs2_data
 //JALR
 }.elsewhen(decode.io.wb_type === WB_JALR){
