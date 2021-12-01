@@ -109,10 +109,9 @@ io.imem.addr  := pc
 
 
 
-//MEM
-val mem_en = io.dmem.en || io.dmem.wen
+//MEMc 
 //read data from memory
-when(mem_en){
+when(io.dmem.en || io.dmem.wen){
 //ALL read & write memory address is from ALU
 io.dmem.addr := alu.io.alu_out 
 }

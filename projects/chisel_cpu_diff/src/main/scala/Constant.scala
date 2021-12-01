@@ -59,11 +59,12 @@ object Constant{
 
   val WB_X        = 0.asUInt(3.W)
   val WB_REG      = 1.asUInt(3.W)
-  val WB_MEM_B    = 2.asUInt(3.W)
-  val WB_MEM_H    = 3.asUInt(3.W)
-  val WB_MEM_W    = 4.asUInt(3.W)
-  val WB_MEM_D    = 5.asUInt(3.W)
-  val WB_JALR     = 6.asUInt(3.W)
+  val WB_JALR     = 2.asUInt(3.W)
+  val WB_MEM_B    = 3.asUInt(3.W)
+  val WB_MEM_H    = 4.asUInt(3.W)
+  val WB_MEM_W    = 5.asUInt(3.W)
+  val WB_MEM_D    = 6.asUInt(3.W)
+ 
 
 
 }
