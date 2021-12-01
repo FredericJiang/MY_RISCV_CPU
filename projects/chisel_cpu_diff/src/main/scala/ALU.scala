@@ -50,8 +50,7 @@ is(ALU_XOR)  { alu_out:= (in1 ^ in2).asUInt()}
 is(ALU_OR)   { alu_out:= (in1 | in2).asUInt()}
 is(ALU_AND)  { alu_out:= (in1 & in2).asUInt()}
 is(ALU_SLL)  { alu_out:= (in1 << in2(5,0)).asUInt()}
-is(ALU_SLLW) { 
-alu_out:= Cat(Fill(33,((in1 << in2(4,0)).asUInt())(31)),((in1 << in2(4,0)).asUInt())(30,0))}
+is(ALU_SLLW) { alu_out:= Cat(Fill(33,((in1 << in2(4,0)).asUInt())(31)),((in1 << in2(4,0)).asUInt())(30,0))}
 is(ALU_SRL)  { alu_out:= (in1 >> in2(5,0)).asUInt()}
 is(ALU_SRA)  { alu_out:= (in1 >> in2(5,0)).asUInt()}
 is(ALU_BGE)  { alu_out:= (in1.asSInt >= in2.asSInt).asUInt()}
