@@ -38,6 +38,7 @@ AND     -> List( Y,   ALU_AND , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 // I-type1
 ADDI    -> List( Y,   ALU_ADD , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 ADDIW   -> List( Y,   ALU_ADDW, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
+ADDW    -> List( Y,   ALU_ADDW, OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 SLLI    -> List( Y,   ALU_SLL , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SLTI    -> List( Y,   ALU_SLT , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SLTIU   -> List( Y,   ALU_SLTU, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
