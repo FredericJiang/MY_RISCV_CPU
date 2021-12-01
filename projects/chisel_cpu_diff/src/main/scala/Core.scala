@@ -26,7 +26,7 @@ class Core extends Module {
 
 //Initialize
 
-io.dmem.wdata := DontCare
+io.dmem.wdata := "hffffffffffffffff".U(64.W)
 io.dmem.wmask := DontCare
 io.dmem.addr := DontCare
 io.dmem.wen := DontCare
