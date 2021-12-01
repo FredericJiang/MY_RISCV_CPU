@@ -42,6 +42,7 @@ ADDW    -> List( Y,   ALU_ADDW, OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 
 SLLI    -> List( Y,   ALU_SLL , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SLLIW   -> List( Y,   ALU_SLLW , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG ),
+SLLW    -> List( Y,   ALU_SLLW , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG ),
 SLTI    -> List( Y,   ALU_SLT , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SLTIU   -> List( Y,   ALU_SLTU, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 XORI    -> List( Y,   ALU_XOR , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
