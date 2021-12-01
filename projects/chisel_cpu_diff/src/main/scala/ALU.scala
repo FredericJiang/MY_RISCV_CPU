@@ -23,6 +23,7 @@ val alu_out   = Wire(UInt(64.W))
 alu_out  := MuxLookup(io.alu_type, ALU_X, Array(
 
 ALU_ADD  -> (in1+in2).asUInt(),
+ALU_ADDW -> Cat(Fill(33,(in1+in2)(31)),(in1+in2)(30,0)),
 ALU_SUB  -> (in1-in2).asUInt(),
 ALU_SLT  -> (in1.asSInt < in2.asSInt).asUInt(),
 ALU_SLTU -> (in1 < in2).asUInt(),
