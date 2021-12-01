@@ -25,7 +25,7 @@ class RegFile extends Module {
   val dt_ar = Module(new DifftestArchIntRegState)
   dt_ar.io.clock  := clock
   dt_ar.io.coreid := 0.U
-  dt_ar.io.gpr    := rf
+  dt_ar.io.gpr    := RegNext(rf)
 
   BoringUtils.addSource(rf(10), "rf_a0")
 }

@@ -173,8 +173,8 @@ regfile.io.rd_data := pc + 4.U
   dt_ic.io.isRVC    := RegNext(false.B)
   dt_ic.io.scFailed := RegNext(false.B)
   dt_ic.io.wen      := RegNext(regfile.io.rd_en && dt_ic.io.valid)
-  dt_ic.io.wdata    := regfile.io.rd_data
-  dt_ic.io.wdest    := regfile.io.rd_addr
+  dt_ic.io.wdata    := RegNext(regfile.io.rd_data)
+  dt_ic.io.wdest    := RegNext(regfile.io.rd_addr)
 
   val dt_ae = Module(new DifftestArchEvent)
   dt_ae.io.clock        := clock
