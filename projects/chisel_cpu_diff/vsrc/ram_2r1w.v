@@ -60,7 +60,7 @@ module ram_2r1w (
     //$display("imem_addr = %x",imem_addr,"  imem_data = %x",imem_data);
     //$display("dmem_addr = %x",dmem_addr,"  dmem_data = %x",dmem_wdata);
     if(dmem_en & dmem_wen)
-    $display("tmp = %x\n" ,tmp);
+    $display("dmem_addr = %x",dmem_addr,"  tmp = %x",tmp);
 
   end
 
