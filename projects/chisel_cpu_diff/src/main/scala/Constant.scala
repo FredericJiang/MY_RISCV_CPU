@@ -45,7 +45,8 @@ object Constant{
   val ALU_SRA   = 10.asUInt(4.W)
   val ALU_BGE   = 11.asUInt(4.W)
   val ALU_BGEU  = 12.asUInt(4.W)
-  val ALU_ADDW   = 13.asUInt(4.W)
+  val ALU_ADDW  = 13.asUInt(4.W)
+  val ALU_SLLW  = 14.asUInt(4.W)
 
 
   val MEM_X    = 0.asUInt(3.W)
