@@ -45,18 +45,18 @@ module ram_2r1w (
   input         dmem_wen
 );
   wire [63:0] tmp;
-  assign tmp =  (dmem_addr-64'h0000_0000_8000_0000) >> 3;
+  assign tmp =  {3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3} & 64'hffff_ffff_ffff_fff8;
   
   wire [63:0] imem_data_0 = ram_read_helper(imem_en, {3'b000, (imem_addr - 64'h0000_0000_8000_0000) >> 3});
 
   assign imem_data = {32'b0000_0000_0000_0000, (imem_addr[2] ? imem_data_0[63:32] : imem_data_0[31:0])};
 
-  assign dmem_rdata = ram_read_helper(dmem_en, {3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3});
-  //assign dmem_rdata = ram_read_helper(dmem_en, tmp);
+  //assign dmem_rdata = ram_read_helper(dmem_en, {3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3});
+  assign dmem_rdata = ram_read_helper(dmem_en, tmp);
 
   always @(posedge clk) begin
-    //ram_write_helper(tmp, dmem_wdata, dmem_wmask, dmem_en & dmem_wen);
-    ram_write_helper({3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3}, dmem_wdata, dmem_wmask, dmem_en & dmem_wen);
+    ram_write_helper(tmp, dmem_wdata, dmem_wmask, dmem_en & dmem_wen);
+    //ram_write_helper({3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3}, dmem_wdata, dmem_wmask, dmem_en & dmem_wen);
     //$display("imem_addr = %x",imem_addr,"  imem_data = %x",imem_data);
     //$display("dmem_addr = %x",dmem_addr,"  dmem_data = %x",dmem_wdata);
     if(dmem_en & dmem_wen)
