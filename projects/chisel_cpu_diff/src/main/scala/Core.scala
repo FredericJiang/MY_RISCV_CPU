@@ -218,21 +218,20 @@ regfile.io.rd_data := Cat(Fill(32, 0.U), io.dmem.rdata(63, 32))
 when(io.dmem.addr(2,0)==="b000".U){
 io.dmem.wdata:= Cat(Fill(56, 0.U),regfile.io.rs2_data(7,0))
 }.elsewhen(io.dmem.addr(2,0)==="b001".U){
-io.dmem.wdata:= Cat(Fill(48, 0.U),regfile.io.rs2_data(15,8),Fill(8,0.U))
+io.dmem.wdata:= Cat(Fill(48, 0.U),regfile.io.rs2_data(7,0),Fill(8,0.U))
 }.elsewhen(io.dmem.addr(2,0)==="b010".U){
-io.dmem.wdata:= Cat(Fill(40, 0.U),regfile.io.rs2_data(23,16),Fill(15,0.U))
+io.dmem.wdata:= Cat(Fill(40, 0.U),regfile.io.rs2_data(7,0),Fill(15,0.U))
 }.elsewhen(io.dmem.addr(2,0)==="b011".U){
-io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,24),Fill(23,0.U))
+io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(7,0),Fill(23,0.U))
 }.elsewhen(io.dmem.addr(2,0)==="b100".U){
-io.dmem.wdata:= Cat(Fill(24, 0.U),regfile.io.rs2_data(39,32),Fill(31,0.U))
+io.dmem.wdata:= Cat(Fill(24, 0.U),regfile.io.rs2_data(7,0),Fill(31,0.U))
 }.elsewhen(io.dmem.addr(2,0)==="b101".U){
-io.dmem.wdata:= Cat(Fill(16, 0.U),regfile.io.rs2_data(47,40),Fill(39,0.U))
+io.dmem.wdata:= Cat(Fill(16, 0.U),regfile.io.rs2_data(7,0),Fill(39,0.U))
 }.elsewhen(io.dmem.addr(2,0)==="b110".U){
-io.dmem.wdata:= Cat(Fill(8, 0.U),regfile.io.rs2_data(55,48),Fill(8,0.U))
+io.dmem.wdata:= Cat(Fill(8, 0.U),regfile.io.rs2_data(7,0),Fill(8,0.U))
 }.elsewhen(io.dmem.addr(2,0)==="b111".U){
-io.dmem.wdata:= Cat(regfile.io.rs2_data(63,56),Fill(55,0.U))
+io.dmem.wdata:= Cat(regfile.io.rs2_data(7,0),Fill(55,0.U))
 }
-
 
 //io.dmem.wdata:= Cat(Fill(56, 0.U),regfile.io.rs2_data(7,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_H){
