@@ -168,7 +168,7 @@ is(MEM_W) {
 when(io.dmem.addr(2)==="b0".U){
 regfile.io.rd_data := Cat(Fill(32, 0.U), io.dmem.rdata(31, 0))
 }.elsewhen(io.dmem.addr(2)==="b1".U){
-regfile.io.rd_data := Cat(io.dmem.rdata(31,0),Fill(32, 0.U))}
+regfile.io.rd_data := Cat(Fill(32, 0.U), io.dmem.rdata(63, 32))}
 }
 
 is(MEM_D) {regfile.io.rd_data := io.dmem.rdata}
@@ -208,9 +208,9 @@ regfile.io.rd_data := Cat(Fill(48, 0.U),  io.dmem.rdata(63, 48))
 
 is(MEM_WU) {
 when(io.dmem.addr(2)=== "b0".U){
-regfile.io.rd_data := Cat(Fill(32, 0.U), io.dmem.rdata(63, 32))
+regfile.io.rd_data := Cat(Fill(32, 0.U), io.dmem.rdata(31, 0))
 }.elsewhen(io.dmem.addr(2)=== "b1".U){
-regfile.io.rd_data := Cat(Fill(32,0.U), io.dmem.rdata(31, 0))}
+regfile.io.rd_data := Cat(Fill(32,0.U), io.dmem.rdata(63, 32))}
 }}
 
 
