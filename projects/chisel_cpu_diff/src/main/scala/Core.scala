@@ -235,11 +235,23 @@ io.dmem.wdata:= Cat(regfile.io.rs2_data(7,0),Fill(55,0.U))
 
 //io.dmem.wdata:= Cat(Fill(56, 0.U),regfile.io.rs2_data(7,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_H){
-io.dmem.wmask:= ("h000000000000ffff".U)
+
+when(io.dmem.addr(1,0)==="b00".U){
 io.dmem.wdata:= Cat(Fill(48, 0.U),regfile.io.rs2_data(15,0))
+}.elsewhen(io.dmem.addr(1,0)==="b01".U){
+io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(15,0),Fill(15,0.U))
+}.elsewhen(io.dmem.addr(1,0)==="b10".U){
+io.dmem.wdata:= Cat(Fill(16, 0.U),regfile.io.rs2_data(15,0),Fill(31,0.U))
+}.elsewhen(io.dmem.addr(1,0)==="b11".U){
+io.dmem.wdata:= Cat(regfile.io.rs2_data(15,0),Fill(47,0.U))
+}  
+//io.dmem.wdata:= Cat(Fill(48, 0.U),regfile.io.rs2_data(15,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_W){
-io.dmem.wmask:= ("h00000000ffffffff".U)
+
+when(io.dmem.addr(2)){
 io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
+}.otherwise{io.dmem.wdata:= Cat(regfile.io.rs2_data(31,0),Fill(32, 0.U))}  
+//io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_D){
 io.dmem.wmask:= ("hffffffffffffffff".U)
 io.dmem.wdata:= regfile.io.rs2_data
