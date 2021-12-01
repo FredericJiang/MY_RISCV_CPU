@@ -166,7 +166,7 @@ regfile.io.rd_data := Cat(Fill(49,io.dmem.rdata(63)),  io.dmem.rdata(62, 48))
 
 is(MEM_W) {
 when(io.dmem.addr(2)==="b0".U){
-regfile.io.rd_data := Cat(Fill(33, io.dmem.rdata(31)), io.dmem.rdata(30, 0))
+regfile.io.rd_data := Cat(Fill(32, 0.U), io.dmem.rdata(31, 0))
 }.elsewhen(io.dmem.addr(2)==="b1".U){
 regfile.io.rd_data := Cat(io.dmem.rdata(31,0),Fill(32, 0.U))}
 }
