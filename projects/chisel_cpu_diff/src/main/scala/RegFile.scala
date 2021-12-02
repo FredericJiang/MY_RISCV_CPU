@@ -16,7 +16,7 @@ class RegFile extends Module {
   val rf = RegInit(VecInit(Seq.fill(32)(0.U(64.W))))
 
   when (io.rd_en && (io.rd_addr =/= 0.U)) {
-    rf(io.rd_addr) := io.rd_data;
+    rf(io.rd_data) := io.rd_data;
   }
 
   io.rs1_data := Mux((io.rs1_addr =/= 0.U), rf(io.rs1_addr), 0.U)
