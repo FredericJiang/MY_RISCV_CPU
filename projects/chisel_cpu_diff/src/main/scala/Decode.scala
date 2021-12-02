@@ -75,7 +75,10 @@ JALR    -> List( Y ,Y, ALU_ADD,  OP_REG,  OP_X,   IMM_I,  MEM_X,  WB_JALR ), //N
 // RV64I only
 ADDIW   -> List( Y, N, ALU_ADDW, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 ADDW    -> List( Y, N, ALU_ADDW, OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
-SLLIW   -> List( Y, N, ALU_SLLW , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG ),
+SLLIW   -> List( Y, N, ALU_SLLW ,OP_REG , OP_X  , IMM_I , MEM_X, WB_REG ),
+SRLIW   -> List( Y, N, ALU_SRLW , OP_REG, OP_X , IMM_I , MEM_X, WB_REG ),
+SRAIW   -> List( Y, N, ALU_SRLW ,OP_REG , OP_X , IMM_I , MEM_X, WB_REG ),
+SUBW    -> List( Y, N, ALU_SUBW ,OP_REG , OP_REG , IMM_X , MEM_X, WB_REG ),
 SLLW    -> List( Y, Y, ALU_SLLW , OP_REG ,OP_REG , IMM_X , MEM_X, WB_REG ) //although RV64I shamt[4,0],so regards as RV32I
 
  ))

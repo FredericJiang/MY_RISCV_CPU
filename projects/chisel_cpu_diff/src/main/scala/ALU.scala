@@ -29,17 +29,18 @@ switch(io.alu_type){
 is(ALU_ADD)  { alu_out:= (in1+in2).asUInt()}
 is(ALU_ADDW) { alu_out:= Cat(Fill(33,(in1+in2)(31)),(in1+in2)(30,0))}
 is(ALU_SUB)  { alu_out:= (in1-in2).asUInt()}
+is(ALU_SUBW) { alu_out:= Cat(Fill(33,(in1-in2)(31)),(in1-in2)(30,0))}
 is(ALU_SLT)  { alu_out:= (in1.asSInt < in2.asSInt).asUInt()}
 is(ALU_SLTU) { alu_out:= (in1 < in2).asUInt()}
 is(ALU_XOR)  { alu_out:= (in1 ^ in2).asUInt()}
 is(ALU_OR)   { alu_out:= (in1 | in2).asUInt()}
 is(ALU_AND)  { alu_out:= (in1 & in2).asUInt()}
 is(ALU_SLL)  { alu_out:= (in1 << shamt).asUInt()(63,0)}
-is(ALU_SLLW) { 
-val x = (in1 << shamt).asUInt()
-alu_out:= Cat(Fill(33,x(31)), x(30,0))}
+is(ALU_SLLW) { val x = (in1 << shamt).asUInt(); alu_out:= Cat(Fill(33,x(31)), x(30,0))}
 is(ALU_SRL)  { alu_out:= (in1 >> shamt).asUInt()} //logic right shift
+is(ALU_SRLW) { val x = (in1 >> shamt).asUInt();alu_out:= Cat(Fill(33,x(31)), x(30,0))}
 is(ALU_SRA)  { alu_out:= (in1.asSInt >> shamt).asUInt()} //arithmetic right shift
+is(ALU_SRAW) { val x = (in1.asSInt >> shamt).asUInt(); alu_out:= Cat(Fill(33,x(31)), x(30,0))}
 is(ALU_BGE)  { alu_out:= (in1.asSInt >= in2.asSInt).asUInt()}
 is(ALU_BGEU) { alu_out:= (in1 >= in2).asUInt()}
 
