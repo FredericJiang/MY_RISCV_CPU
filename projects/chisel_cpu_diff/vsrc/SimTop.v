@@ -87,7 +87,7 @@ module Decode(
   wire [4:0] _ctrl_T_195 = _ctrl_T_95 ? 5'hf : _ctrl_T_194; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_196 = _ctrl_T_93 ? 5'he : _ctrl_T_195; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_197 = _ctrl_T_91 ? 5'h11 : _ctrl_T_196; // @[Lookup.scala 33:37]
-  wire [4:0] _ctrl_T_198 = _ctrl_T_89 ? 5'hf : _ctrl_T_197; // @[Lookup.scala 33:37]
+  wire [4:0] _ctrl_T_198 = _ctrl_T_89 ? 5'h10 : _ctrl_T_197; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_199 = _ctrl_T_87 ? 5'hf : _ctrl_T_198; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_200 = _ctrl_T_85 ? 5'he : _ctrl_T_199; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_201 = _ctrl_T_83 ? 5'hd : _ctrl_T_200; // @[Lookup.scala 33:37]
