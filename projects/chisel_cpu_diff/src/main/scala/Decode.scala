@@ -38,11 +38,7 @@ OR      -> List( Y, Y,  ALU_OR  , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 AND     -> List( Y, Y,  ALU_AND , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 // I-type1
 ADDI    -> List( Y, Y, ALU_ADD , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
-ADDIW   -> List( Y, Y, ALU_ADDW, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
-ADDW    -> List( Y, Y, ALU_ADDW, OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
-
 SLLI    -> List( Y, N, ALU_SLL , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
-SLLIW   -> List( Y, N, ALU_SLLW , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG ),
 SLLW    -> List( Y, N, ALU_SLLW , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG ),
 SLTI    -> List( Y, Y, ALU_SLT , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SLTIU   -> List( Y, Y, ALU_SLTU, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
@@ -76,7 +72,11 @@ BLTU    -> List( Y ,Y, ALU_SLTU, OP_REG, OP_REG , IMM_B  , MEM_X, WB_X  ),
 BGEU    -> List( Y ,Y, ALU_BGEU,  OP_REG, OP_REG , IMM_B  , MEM_X, WB_X  ),
 //J-type
 JAL     -> List( Y ,Y, ALU_ADD,  OP_PC,   OP_X,   IMM_J,  MEM_X,  WB_REG  ), //NXT_PC FROM IMM
-JALR    -> List( Y ,Y, ALU_ADD,  OP_REG,  OP_X,   IMM_I,  MEM_X,  WB_JALR ) //NXT_PC FROM ALU
+JALR    -> List( Y ,Y, ALU_ADD,  OP_REG,  OP_X,   IMM_I,  MEM_X,  WB_JALR ), //NXT_PC FROM ALU
+ADDIW   -> List( Y, N, ALU_ADDW, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
+ADDW    -> List( Y, N, ALU_ADDW, OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
+SLLIW   -> List( Y, N, ALU_SLLW , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG )
+
 
  ))
 
