@@ -29,7 +29,7 @@ switch(io.alu_type){
 is(ALU_ADD)  { alu_out:= (in1+in2).asUInt()}
 is(ALU_ADDW) { alu_out:= Cat(Fill(33,(in1+in2)(31)),(in1+in2)(30,0))}
 is(ALU_SUB)  { alu_out:= (in1-in2).asUInt()}
-is(ALU_SUBW) { val x = (in1.asUInt()-in2.asUInt()); alu_out:= Cat(Fill(33,x(31)),x(30,0))}
+is(ALU_SUBW) { val x = (in1-in2); alu_out:= Cat(Fill(33,x(31)),x(30,0))}
 is(ALU_SLT)  { alu_out:= (in1.asSInt < in2.asSInt).asUInt()}
 is(ALU_SLTU) { alu_out:= (in1 < in2).asUInt()}
 is(ALU_XOR)  { alu_out:= (in1 ^ in2).asUInt()}
