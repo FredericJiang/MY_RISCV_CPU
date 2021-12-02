@@ -159,13 +159,13 @@ regfile.io.rd_data := Cat(Fill(57,io.dmem.rdata(63)),  io.dmem.rdata(62, 56))
 //lh
 is(MEM_H){
 when(io.dmem.addr(1,0)==="b00".U){
-regfile.io.rd_data := Cat(Fill(49, io.dmem.rdata(15)),  io.dmem.rdata(14, 0))
+regfile.io.rd_data := Cat(Fill(48, io.dmem.rdata(15)),  io.dmem.rdata(15, 0))
 }.elsewhen(io.dmem.addr(1,0)==="b01".U){
-regfile.io.rd_data := Cat(Fill(49, io.dmem.rdata(31)),  io.dmem.rdata(30, 16))
+regfile.io.rd_data := Cat(Fill(48, io.dmem.rdata(31)),  io.dmem.rdata(31, 16))
 }.elsewhen(io.dmem.addr(1,0)==="b10".U){
-regfile.io.rd_data := Cat(Fill(49, io.dmem.rdata(47)),  io.dmem.rdata(46, 32))
+regfile.io.rd_data := Cat(Fill(48, io.dmem.rdata(47)),  io.dmem.rdata(47, 32))
 }.elsewhen(io.dmem.addr(1,0)==="b11".U){
-regfile.io.rd_data := Cat(Fill(49,io.dmem.rdata(63)),  io.dmem.rdata(62, 48))
+regfile.io.rd_data := Cat(Fill(48,io.dmem.rdata(63)),  io.dmem.rdata(63, 48))
 }}
 
 //lw
