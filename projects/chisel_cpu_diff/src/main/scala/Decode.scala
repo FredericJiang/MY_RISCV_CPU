@@ -38,7 +38,7 @@ OR      -> List( Y, Y,  ALU_OR  , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 AND     -> List( Y, Y,  ALU_AND , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 // I-type1
 ADDI    -> List( Y, Y, ALU_ADD , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
-SLLI    -> List( Y, N, ALU_SLL , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
+SLLI    -> List( Y, Y, ALU_SLL , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SLTI    -> List( Y, Y, ALU_SLT , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SLTIU   -> List( Y, Y, ALU_SLTU, OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 XORI    -> List( Y, Y, ALU_XOR , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
@@ -79,7 +79,11 @@ SLLIW   -> List( Y, N, ALU_SLLW ,OP_REG , OP_X  , IMM_I , MEM_X, WB_REG ),
 SRLIW   -> List( Y, N, ALU_SRLW , OP_REG, OP_X , IMM_I , MEM_X, WB_REG ),
 SRAIW   -> List( Y, N, ALU_SRLW ,OP_REG , OP_X , IMM_I , MEM_X, WB_REG ),
 SUBW    -> List( Y, N, ALU_SUBW ,OP_REG , OP_REG , IMM_X , MEM_X, WB_REG ),
-SLLW    -> List( Y, Y, ALU_SLLW , OP_REG ,OP_REG , IMM_X , MEM_X, WB_REG ) //although RV64I shamt[4,0],so regards as RV32I
+SLLW    -> List( Y, Y, ALU_SLLW , OP_REG ,OP_REG , IMM_X , MEM_X, WB_REG ),
+SRLW    -> List( Y, Y, ALU_SRLW , OP_REG ,OP_REG , IMM_X , MEM_X, WB_REG ),
+SRAW    -> List( Y, Y, ALU_SRAW , OP_REG ,OP_REG , IMM_X , MEM_X, WB_REG )
+
+ //although RV64I shamt[4,0],so regards as RV32I
 
  ))
 
