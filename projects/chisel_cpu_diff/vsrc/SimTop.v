@@ -2,29 +2,28 @@ module Nxt_PC(
   input  [31:0] io_pc,
   input  [2:0]  io_imm_type,
   input  [63:0] io_imm,
-  input  [2:0]  io_alu_type,
+  input  [4:0]  io_alu_type,
   input  [63:0] io_alu_out,
   input  [2:0]  io_wb_type,
   output [31:0] io_pc_nxt
 );
   wire  _T = io_imm_type == 3'h3; // @[NXT_PC.scala 18:18]
-  wire [4:0] _GEN_5 = {{2'd0}, io_alu_type}; // @[NXT_PC.scala 18:43]
-  wire [63:0] _GEN_6 = {{32'd0}, io_pc}; // @[NXT_PC.scala 20:22]
-  wire [63:0] _io_pc_nxt_T_1 = _GEN_6 + io_imm; // @[NXT_PC.scala 20:22]
+  wire [63:0] _GEN_5 = {{32'd0}, io_pc}; // @[NXT_PC.scala 20:22]
+  wire [63:0] _io_pc_nxt_T_1 = _GEN_5 + io_imm; // @[NXT_PC.scala 20:22]
   wire  _T_10 = io_alu_out != 64'h0; // @[NXT_PC.scala 21:107]
   wire [62:0] io_pc_nxt_hi = io_alu_out[63:1]; // @[NXT_PC.scala 33:30]
   wire [63:0] _io_pc_nxt_T_8 = {io_pc_nxt_hi,1'h0}; // @[Cat.scala 30:58]
   wire [31:0] _io_pc_nxt_T_10 = io_pc + 32'h4; // @[NXT_PC.scala 36:20]
   wire [63:0] _GEN_0 = io_wb_type == 3'h2 ? _io_pc_nxt_T_8 : {{32'd0}, _io_pc_nxt_T_10}; // @[NXT_PC.scala 31:35 NXT_PC.scala 33:13 NXT_PC.scala 36:11]
   wire [63:0] _GEN_1 = io_imm_type == 3'h5 ? _io_pc_nxt_T_1 : _GEN_0; // @[NXT_PC.scala 28:34 NXT_PC.scala 30:13]
-  wire [63:0] _GEN_2 = _T & _GEN_5 != 5'h2 & _T_10 ? _io_pc_nxt_T_1 : _GEN_1; // @[NXT_PC.scala 25:83 NXT_PC.scala 27:13]
-  wire [63:0] _GEN_3 = _T & (_GEN_5 == 5'hb | _GEN_5 == 5'hc) & io_alu_out != 64'h0 ? _io_pc_nxt_T_1 : _GEN_2; // @[NXT_PC.scala 21:115 NXT_PC.scala 23:12]
-  wire [63:0] _GEN_4 = io_imm_type == 3'h3 & _GEN_5 == 5'h2 & io_alu_out == 64'h0 ? _io_pc_nxt_T_1 : _GEN_3; // @[NXT_PC.scala 18:77 NXT_PC.scala 20:13]
+  wire [63:0] _GEN_2 = _T & io_alu_type != 5'h2 & _T_10 ? _io_pc_nxt_T_1 : _GEN_1; // @[NXT_PC.scala 25:83 NXT_PC.scala 27:13]
+  wire [63:0] _GEN_3 = _T & (io_alu_type == 5'hb | io_alu_type == 5'hc) & io_alu_out != 64'h0 ? _io_pc_nxt_T_1 : _GEN_2; // @[NXT_PC.scala 21:115 NXT_PC.scala 23:12]
+  wire [63:0] _GEN_4 = io_imm_type == 3'h3 & io_alu_type == 5'h2 & io_alu_out == 64'h0 ? _io_pc_nxt_T_1 : _GEN_3; // @[NXT_PC.scala 18:77 NXT_PC.scala 20:13]
   assign io_pc_nxt = _GEN_4[31:0];
 endmodule
 module Decode(
   input  [31:0] io_inst,
-  output [3:0]  io_alu_type,
+  output [4:0]  io_alu_type,
   output [2:0]  io_op1_type,
   output [2:0]  io_op2_type,
   output [2:0]  io_imm_type,
@@ -132,7 +131,6 @@ module Decode(
   wire [4:0] _ctrl_T_239 = _ctrl_T_7 ? 5'h3 : _ctrl_T_238; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_240 = _ctrl_T_5 ? 5'h8 : _ctrl_T_239; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_241 = _ctrl_T_3 ? 5'h2 : _ctrl_T_240; // @[Lookup.scala 33:37]
-  wire [4:0] alu_type = _ctrl_T_1 ? 5'h1 : _ctrl_T_241; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_242 = _ctrl_T_97 ? 3'h1 : 3'h0; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_243 = _ctrl_T_95 ? 3'h1 : _ctrl_T_242; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_244 = _ctrl_T_93 ? 3'h1 : _ctrl_T_243; // @[Lookup.scala 33:37]
@@ -333,7 +331,7 @@ module Decode(
   wire [2:0] _ctrl_T_479 = _ctrl_T_7 ? 3'h1 : _ctrl_T_478; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_480 = _ctrl_T_5 ? 3'h1 : _ctrl_T_479; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_481 = _ctrl_T_3 ? 3'h1 : _ctrl_T_480; // @[Lookup.scala 33:37]
-  assign io_alu_type = alu_type[3:0]; // @[Decode.scala 97:13]
+  assign io_alu_type = _ctrl_T_1 ? 5'h1 : _ctrl_T_241; // @[Lookup.scala 33:37]
   assign io_op1_type = _ctrl_T_1 ? 3'h1 : _ctrl_T_289; // @[Lookup.scala 33:37]
   assign io_op2_type = _ctrl_T_1 ? 3'h1 : _ctrl_T_337; // @[Lookup.scala 33:37]
   assign io_imm_type = _ctrl_T_1 ? 3'h0 : _ctrl_T_385; // @[Lookup.scala 33:37]
@@ -951,55 +949,54 @@ module ImmGen(
   assign io_imm = 3'h5 == io_imm_type ? imm_j : _io_imm_T_7; // @[Mux.scala 80:57]
 endmodule
 module ALU(
-  input  [3:0]  io_alu_type,
+  input  [4:0]  io_alu_type,
   input  [63:0] io_in1,
   input  [63:0] io_in2,
   output [63:0] io_alu_out
 );
   wire [5:0] shamt = io_in2[5:0]; // @[ALU.scala 25:12]
-  wire [4:0] _GEN_17 = {{1'd0}, io_alu_type}; // @[Conditional.scala 37:30]
-  wire  _T = 5'h1 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T = 5'h1 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_1 = io_in1 + io_in2; // @[ALU.scala 29:30]
-  wire  _T_1 = 5'hd == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_1 = 5'hd == io_alu_type; // @[Conditional.scala 37:30]
   wire [32:0] alu_out_hi = _alu_out_T_1[31] ? 33'h1ffffffff : 33'h0; // @[Bitwise.scala 72:12]
   wire [30:0] alu_out_lo = _alu_out_T_1[30:0]; // @[ALU.scala 30:62]
   wire [63:0] _alu_out_T_8 = {alu_out_hi,alu_out_lo}; // @[Cat.scala 30:58]
-  wire  _T_2 = 5'h2 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_2 = 5'h2 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_10 = io_in1 - io_in2; // @[ALU.scala 31:30]
-  wire  _T_3 = 5'h11 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_3 = 5'h11 == io_alu_type; // @[Conditional.scala 37:30]
   wire [32:0] alu_out_hi_1 = _alu_out_T_10[31] ? 33'h1ffffffff : 33'h0; // @[Bitwise.scala 72:12]
   wire [30:0] alu_out_lo_1 = _alu_out_T_10[30:0]; // @[ALU.scala 32:88]
   wire [63:0] _alu_out_T_13 = {alu_out_hi_1,alu_out_lo_1}; // @[Cat.scala 30:58]
-  wire  _T_4 = 5'h3 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_4 = 5'h3 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_14 = io_in1; // @[ALU.scala 33:31]
   wire [63:0] _alu_out_T_15 = io_in2; // @[ALU.scala 33:44]
-  wire  _T_5 = 5'h4 == _GEN_17; // @[Conditional.scala 37:30]
-  wire  _T_6 = 5'h5 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_5 = 5'h4 == io_alu_type; // @[Conditional.scala 37:30]
+  wire  _T_6 = 5'h5 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_18 = io_in1 ^ io_in2; // @[ALU.scala 35:31]
-  wire  _T_7 = 5'h6 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_7 = 5'h6 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_19 = io_in1 | io_in2; // @[ALU.scala 36:31]
-  wire  _T_8 = 5'h7 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_8 = 5'h7 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_20 = io_in1 & io_in2; // @[ALU.scala 37:31]
-  wire  _T_9 = 5'h8 == _GEN_17; // @[Conditional.scala 37:30]
-  wire [126:0] _GEN_27 = {{63'd0}, io_in1}; // @[ALU.scala 38:31]
-  wire [126:0] _alu_out_T_21 = _GEN_27 << shamt; // @[ALU.scala 38:31]
-  wire  _T_10 = 5'he == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_9 = 5'h8 == io_alu_type; // @[Conditional.scala 37:30]
+  wire [126:0] _GEN_17 = {{63'd0}, io_in1}; // @[ALU.scala 38:31]
+  wire [126:0] _alu_out_T_21 = _GEN_17 << shamt; // @[ALU.scala 38:31]
+  wire  _T_10 = 5'he == io_alu_type; // @[Conditional.scala 37:30]
   wire [32:0] alu_out_hi_2 = _alu_out_T_21[31] ? 33'h1ffffffff : 33'h0; // @[Bitwise.scala 72:12]
   wire [30:0] alu_out_lo_2 = _alu_out_T_21[30:0]; // @[ALU.scala 39:80]
   wire [63:0] _alu_out_T_25 = {alu_out_hi_2,alu_out_lo_2}; // @[Cat.scala 30:58]
-  wire  _T_11 = 5'h9 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_11 = 5'h9 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_26 = io_in1 >> shamt; // @[ALU.scala 40:31]
-  wire  _T_12 = 5'hf == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_12 = 5'hf == io_alu_type; // @[Conditional.scala 37:30]
   wire [32:0] alu_out_hi_3 = _alu_out_T_26[31] ? 33'h1ffffffff : 33'h0; // @[Bitwise.scala 72:12]
   wire [30:0] alu_out_lo_3 = _alu_out_T_26[30:0]; // @[ALU.scala 41:79]
   wire [63:0] _alu_out_T_29 = {alu_out_hi_3,alu_out_lo_3}; // @[Cat.scala 30:58]
-  wire  _T_13 = 5'ha == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_13 = 5'ha == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_32 = $signed(io_in1) >>> shamt; // @[ALU.scala 42:54]
-  wire  _T_14 = 5'h10 == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_14 = 5'h10 == io_alu_type; // @[Conditional.scala 37:30]
   wire [32:0] alu_out_hi_4 = _alu_out_T_32[31] ? 33'h1ffffffff : 33'h0; // @[Bitwise.scala 72:12]
   wire [30:0] alu_out_lo_4 = _alu_out_T_32[30:0]; // @[ALU.scala 43:87]
   wire [63:0] _alu_out_T_35 = {alu_out_hi_4,alu_out_lo_4}; // @[Cat.scala 30:58]
-  wire  _T_15 = 5'hb == _GEN_17; // @[Conditional.scala 37:30]
+  wire  _T_15 = 5'hb == io_alu_type; // @[Conditional.scala 37:30]
   wire  _alu_out_T_39 = io_in1 >= io_in2; // @[ALU.scala 45:31]
   wire  _GEN_1 = _T_15 ? $signed(io_in1) >= $signed(io_in2) : _alu_out_T_39; // @[Conditional.scala 39:67 ALU.scala 44:23]
   wire [63:0] _GEN_2 = _T_14 ? _alu_out_T_35 : {{63'd0}, _GEN_1}; // @[Conditional.scala 39:67 ALU.scala 43:63]
@@ -1045,12 +1042,12 @@ module Core(
   wire [31:0] nxt_pc_io_pc; // @[Core.scala 20:22]
   wire [2:0] nxt_pc_io_imm_type; // @[Core.scala 20:22]
   wire [63:0] nxt_pc_io_imm; // @[Core.scala 20:22]
-  wire [2:0] nxt_pc_io_alu_type; // @[Core.scala 20:22]
+  wire [4:0] nxt_pc_io_alu_type; // @[Core.scala 20:22]
   wire [63:0] nxt_pc_io_alu_out; // @[Core.scala 20:22]
   wire [2:0] nxt_pc_io_wb_type; // @[Core.scala 20:22]
   wire [31:0] nxt_pc_io_pc_nxt; // @[Core.scala 20:22]
   wire [31:0] decode_io_inst; // @[Core.scala 21:22]
-  wire [3:0] decode_io_alu_type; // @[Core.scala 21:22]
+  wire [4:0] decode_io_alu_type; // @[Core.scala 21:22]
   wire [2:0] decode_io_op1_type; // @[Core.scala 21:22]
   wire [2:0] decode_io_op2_type; // @[Core.scala 21:22]
   wire [2:0] decode_io_imm_type; // @[Core.scala 21:22]
@@ -1069,7 +1066,7 @@ module Core(
   wire [2:0] imm_gen_io_imm_type; // @[Core.scala 23:23]
   wire [31:0] imm_gen_io_inst; // @[Core.scala 23:23]
   wire [63:0] imm_gen_io_imm; // @[Core.scala 23:23]
-  wire [3:0] alu_io_alu_type; // @[Core.scala 24:19]
+  wire [4:0] alu_io_alu_type; // @[Core.scala 24:19]
   wire [63:0] alu_io_in1; // @[Core.scala 24:19]
   wire [63:0] alu_io_in2; // @[Core.scala 24:19]
   wire [63:0] alu_io_alu_out; // @[Core.scala 24:19]
@@ -1127,8 +1124,7 @@ module Core(
   wire  _io_dmem_wen_T = decode_io_wb_type == 3'h3; // @[Core.scala 81:37]
   wire  _io_dmem_wen_T_1 = decode_io_wb_type == 3'h4; // @[Core.scala 81:73]
   wire  _io_dmem_wen_T_3 = decode_io_wb_type == 3'h5; // @[Core.scala 81:109]
-  wire [4:0] _GEN_93 = {{1'd0}, alu_io_alu_type}; // @[Core.scala 92:25]
-  wire  _T = _GEN_93 != 5'h0; // @[Core.scala 92:25]
+  wire  _T = alu_io_alu_type != 5'h0; // @[Core.scala 92:25]
   wire [31:0] _GEN_0 = _T & decode_io_op1_type == 3'h3 ? pc : 32'h0; // @[Core.scala 94:72 Core.scala 95:14 Core.scala 96:26]
   wire  _T_6 = decode_io_op2_type == 3'h1; // @[Core.scala 100:27]
   wire  _T_11 = decode_io_op2_type == 3'h0; // @[Core.scala 103:33]
@@ -1137,7 +1133,6 @@ module Core(
   wire [63:0] _GEN_4 = decode_io_op2_type == 3'h0 & decode_io_imm_type != 3'h0 & decode_io_imm_type != 3'h5 ?
     imm_gen_io_imm : _GEN_3; // @[Core.scala 103:106 Core.scala 105:14]
   wire  _T_25 = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0; // @[Core.scala 130:36]
-  wire [4:0] _GEN_95 = {{1'd0}, decode_io_alu_type}; // @[Core.scala 130:91]
   wire  _T_36 = 3'h1 == decode_io_mem_rtype; // @[Conditional.scala 37:30]
   wire  _T_38 = io_dmem_addr[2:0] == 3'h0; // @[Core.scala 141:23]
   wire [56:0] regfile_io_rd_data_hi = io_dmem_rdata[7] ? 57'h1ffffffffffffff : 57'h0; // @[Bitwise.scala 72:12]
@@ -1306,8 +1301,8 @@ module Core(
   wire [63:0] _GEN_79 = _io_dmem_wen_T ? _GEN_56 : _GEN_76; // @[Core.scala 231:43]
   wire [63:0] _GEN_82 = _regfile_io_rd_en_T & _io_dmem_en_T ? _GEN_41 : {{32'd0}, _regfile_io_rd_data_T_57}; // @[Core.scala 136:74]
   wire [63:0] _GEN_83 = _regfile_io_rd_en_T & _io_dmem_en_T ? 64'hffffffffffffffff : _GEN_79; // @[Core.scala 136:74 Core.scala 30:15]
-  wire [63:0] _GEN_85 = _T_25 & _GEN_95 == 5'h0 ? imm_gen_io_imm : _GEN_82; // @[Core.scala 133:106 Core.scala 134:20]
-  wire [63:0] _GEN_86 = _T_25 & _GEN_95 == 5'h0 ? 64'hffffffffffffffff : _GEN_83; // @[Core.scala 133:106 Core.scala 30:15]
+  wire [63:0] _GEN_85 = _T_25 & decode_io_alu_type == 5'h0 ? imm_gen_io_imm : _GEN_82; // @[Core.scala 133:106 Core.scala 134:20]
+  wire [63:0] _GEN_86 = _T_25 & decode_io_alu_type == 5'h0 ? 64'hffffffffffffffff : _GEN_83; // @[Core.scala 133:106 Core.scala 30:15]
   reg  dt_ic_io_valid_REG; // @[Core.scala 310:31]
   reg [31:0] dt_ic_io_pc_REG; // @[Core.scala 311:31]
   reg [63:0] dt_ic_io_instr_REG; // @[Core.scala 312:31]
@@ -1418,14 +1413,14 @@ module Core(
   assign io_dmem_en = decode_io_mem_rtype != 3'h0 | io_dmem_wen; // @[Core.scala 79:49]
   assign io_dmem_addr = alu_io_alu_out; // @[Core.scala 118:32 Core.scala 120:14]
   assign io_dmem_wdata = _io_dmem_wen_T ? _GEN_57 : _GEN_77; // @[Core.scala 231:43]
-  assign io_dmem_wmask = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & _GEN_95 != 5'h0 ? 64'hffffffffffffffff :
-    _GEN_86; // @[Core.scala 130:101 Core.scala 30:15]
+  assign io_dmem_wmask = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 5'h0 ? 64'hffffffffffffffff
+     : _GEN_86; // @[Core.scala 130:101 Core.scala 30:15]
   assign io_dmem_wen = decode_io_wb_type == 3'h3 | decode_io_wb_type == 3'h4 | decode_io_wb_type == 3'h5 |
     decode_io_wb_type == 3'h6; // @[Core.scala 81:123]
   assign nxt_pc_io_pc = pc; // @[Core.scala 64:16]
   assign nxt_pc_io_imm_type = decode_io_imm_type; // @[Core.scala 65:22]
   assign nxt_pc_io_imm = imm_gen_io_imm; // @[Core.scala 68:17]
-  assign nxt_pc_io_alu_type = decode_io_alu_type[2:0]; // @[Core.scala 66:22]
+  assign nxt_pc_io_alu_type = decode_io_alu_type; // @[Core.scala 66:22]
   assign nxt_pc_io_alu_out = alu_io_alu_out; // @[Core.scala 69:21]
   assign nxt_pc_io_wb_type = decode_io_wb_type; // @[Core.scala 67:21]
   assign decode_io_inst = io_imem_rdata[31:0]; // @[Core.scala 60:18]
@@ -1434,13 +1429,13 @@ module Core(
   assign regfile_io_rs1_addr = io_imem_rdata[19:15]; // @[Core.scala 54:30]
   assign regfile_io_rs2_addr = io_imem_rdata[24:20]; // @[Core.scala 55:30]
   assign regfile_io_rd_addr = io_imem_rdata[11:7]; // @[Core.scala 56:30]
-  assign regfile_io_rd_data = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & _GEN_95 != 5'h0 ? alu_io_alu_out :
-    _GEN_85; // @[Core.scala 130:101 Core.scala 131:20]
+  assign regfile_io_rd_data = _regfile_io_rd_en_T & decode_io_mem_rtype == 3'h0 & decode_io_alu_type != 5'h0 ?
+    alu_io_alu_out : _GEN_85; // @[Core.scala 130:101 Core.scala 131:20]
   assign regfile_io_rd_en = decode_io_wb_type == 3'h1 | decode_io_wb_type == 3'h2; // @[Core.scala 77:54]
   assign imm_gen_io_imm_type = decode_io_imm_type; // @[Core.scala 72:23]
   assign imm_gen_io_inst = io_imem_rdata[31:0]; // @[Core.scala 73:19]
   assign alu_io_alu_type = decode_io_alu_type; // @[Core.scala 82:19]
-  assign alu_io_in1 = _GEN_93 != 5'h0 & decode_io_op1_type == 3'h1 ? regfile_io_rs1_data : {{32'd0}, _GEN_0}; // @[Core.scala 92:68 Core.scala 93:14]
+  assign alu_io_in1 = alu_io_alu_type != 5'h0 & decode_io_op1_type == 3'h1 ? regfile_io_rs1_data : {{32'd0}, _GEN_0}; // @[Core.scala 92:68 Core.scala 93:14]
   assign alu_io_in2 = decode_io_op2_type == 3'h1 & (decode_io_imm_type == 3'h0 | decode_io_imm_type == 3'h3) ?
     regfile_io_rs2_data : _GEN_4; // @[Core.scala 100:104 Core.scala 102:14]
   assign dt_ic_clock = clock; // @[Core.scala 307:21]

@@ -6,7 +6,7 @@ import scala.annotation.switch
 
 class ALU extends Module{
 val io = IO( new Bundle{
-val alu_type = Input(UInt(4.W))
+val alu_type = Input(UInt(5.W))
 val inst_width32 = Input(Bool())
 val in1 = Input(UInt(64.W))
 val in2 = Input(UInt(64.W))

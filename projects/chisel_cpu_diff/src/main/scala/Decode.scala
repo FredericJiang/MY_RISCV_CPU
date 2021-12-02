@@ -11,7 +11,7 @@ class Decode extends Module{
 
     val valid         = Output(Bool())
     val inst_width32  = Output(Bool())
-    val alu_type    = Output(UInt(4.W))   
+    val alu_type    = Output(UInt(5.W))   
     val op1_type    = Output(UInt(3.W))
     val op2_type    = Output(UInt(3.W))
     val imm_type    = Output(UInt(3.W))
