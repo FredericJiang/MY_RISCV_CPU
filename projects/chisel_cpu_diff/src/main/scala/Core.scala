@@ -266,8 +266,10 @@ io.dmem.wdata:= Cat(regfile.io.rs2_data(15,0),Fill(47,0.U))
 //sw
 
 when(io.dmem.addr(2)==="b0".U){
+io.dmem.wmask := "h00000000ffffffff".U
 io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 }.elsewhen(io.dmem.addr(2)==="b1".U){
+io.dmem.wmask := "hffffffff00000000".U
 io.dmem.wdata:= Cat(regfile.io.rs2_data(31,0),Fill(32, 0.U))}
 
 //io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
