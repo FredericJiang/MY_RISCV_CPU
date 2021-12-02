@@ -22,7 +22,7 @@ class Core extends Module {
   val regfile = Module(new RegFile)
   val imm_gen = Module(new ImmGen)
   val alu = Module(new ALU)
-  alu.io.inst_width32 := false.B
+
 
 //Initialize
 
@@ -31,6 +31,8 @@ io.dmem.wmask := "hffffffffffffffff".U
 io.dmem.addr := DontCare
 io.dmem.wen := DontCare
 regfile.io.rd_data := DontCare
+
+
 
 val inst = io.imem.rdata
 pc_en :=true.B
@@ -85,7 +87,7 @@ io.imem.addr  := pc
 
   // EXE
   
-
+  alu.io.inst_width32 := decode.io.inst_width32 
   // generate operand_1
   when( alu.io.alu_type =/= ALU_X && decode.io.op1_type === OP_REG){
   alu.io.in1 := regfile.io.rs1_data
