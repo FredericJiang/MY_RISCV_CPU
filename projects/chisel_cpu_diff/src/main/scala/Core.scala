@@ -22,7 +22,7 @@ class Core extends Module {
   val regfile = Module(new RegFile)
   val imm_gen = Module(new ImmGen)
   val alu = Module(new ALU)
-
+  alu.io.inst_width32 := false.B
 
 //Initialize
 
@@ -57,6 +57,8 @@ io.imem.addr  := pc
   
   decode.io.inst := inst
  
+ 
+
   nxt_pc.io.pc := pc
   nxt_pc.io.imm_type := decode.io.imm_type
   nxt_pc.io.alu_type := decode.io.alu_type
