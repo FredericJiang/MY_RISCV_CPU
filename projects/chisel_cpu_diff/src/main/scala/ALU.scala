@@ -16,6 +16,7 @@ val alu_out = Output(UInt(64.W))
 
 val in1         = io.in1
 val in2         = io.in2
+val shamt       = in2(5,0).asUInt
 
 val alu_out   = Wire(UInt(64.W))
 alu_out := DontCare
