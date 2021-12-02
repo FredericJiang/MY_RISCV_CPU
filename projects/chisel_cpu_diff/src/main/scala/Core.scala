@@ -264,13 +264,13 @@ io.dmem.wdata:= Cat(regfile.io.rs2_data(15,0),Fill(47,0.U))
 
 }.elsewhen(decode.io.wb_type === WB_MEM_W){
 //sw
-/*
+
 when(io.dmem.addr(2)==="b0".U){
 io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 }.elsewhen(io.dmem.addr(2)==="b1".U){
 io.dmem.wdata:= Cat(regfile.io.rs2_data(31,0),Fill(32, 0.U))}
-*/  
-io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
+  
+//io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(31,0))
 
 }.elsewhen(decode.io.wb_type === WB_MEM_D){
 //sd
