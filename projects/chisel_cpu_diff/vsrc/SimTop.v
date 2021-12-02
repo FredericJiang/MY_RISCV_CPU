@@ -591,224 +591,224 @@ module RegFile(
     if (reset) begin // @[RegFile.scala 16:19]
       rf__0 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h0 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h0 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__0 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__1 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h1 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h1 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__1 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__2 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h2 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h2 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__2 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__3 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h3 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h3 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__3 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__4 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h4 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h4 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__4 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__5 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h5 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h5 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__5 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__6 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h6 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h6 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__6 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__7 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h7 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h7 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__7 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__8 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h8 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h8 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__8 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__9 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h9 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h9 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__9 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__10 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'ha == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'ha == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__10 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__11 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'hb == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'hb == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__11 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__12 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'hc == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'hc == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__12 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__13 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'hd == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'hd == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__13 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__14 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'he == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'he == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__14 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__15 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'hf == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'hf == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__15 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__16 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h10 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h10 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__16 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__17 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h11 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h11 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__17 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__18 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h12 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h12 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__18 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__19 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h13 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h13 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__19 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__20 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h14 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h14 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__20 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__21 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h15 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h15 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__21 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__22 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h16 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h16 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__22 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__23 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h17 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h17 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__23 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__24 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h18 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h18 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__24 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__25 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h19 == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h19 == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__25 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__26 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h1a == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h1a == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__26 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__27 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h1b == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h1b == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__27 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__28 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h1c == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h1c == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__28 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__29 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h1d == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h1d == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__29 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__30 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h1e == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h1e == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__30 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
     if (reset) begin // @[RegFile.scala 16:19]
       rf__31 <= 64'h0; // @[RegFile.scala 16:19]
     end else if (io_rd_en & io_rd_addr != 5'h0) begin // @[RegFile.scala 18:43]
-      if (5'h1f == io_rd_data[4:0]) begin // @[RegFile.scala 19:20]
+      if (5'h1f == io_rd_addr) begin // @[RegFile.scala 19:20]
         rf__31 <= io_rd_data; // @[RegFile.scala 19:20]
       end
     end
