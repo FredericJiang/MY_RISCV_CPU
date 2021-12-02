@@ -259,16 +259,16 @@ io.dmem.wdata:= Cat(regfile.io.rs2_data(7,0),Fill(56,0.U))
 //io.dmem.wdata:= Cat(Fill(56, 0.U),regfile.io.rs2_data(7,0))
 }.elsewhen(decode.io.wb_type === WB_MEM_H){
 //sh
-when(io.dmem.addr(1,0)==="b00".U){
+when(io.dmem.addr(2,1)==="b00".U){
 io.dmem.wmask := "h000000000000ffff".U
 io.dmem.wdata:= Cat(Fill(48, 0.U),regfile.io.rs2_data(15,0))
-}.elsewhen(io.dmem.addr(1,0)==="b01".U){
+}.elsewhen(io.dmem.addr(2,1)==="b01".U){
 io.dmem.wmask := "h00000000ffff0000".U
 io.dmem.wdata:= Cat(Fill(32, 0.U),regfile.io.rs2_data(15,0),Fill(16,0.U))
-}.elsewhen(io.dmem.addr(1,0)==="b10".U){
+}.elsewhen(io.dmem.addr(2,1)==="b10".U){
 io.dmem.wmask := "h0000ffff00000000".U
 io.dmem.wdata:= Cat(Fill(16, 0.U),regfile.io.rs2_data(15,0),Fill(32,0.U))
-}.elsewhen(io.dmem.addr(1,0)==="b11".U){
+}.elsewhen(io.dmem.addr(2,1)==="b11".U){
 io.dmem.wmask := "hffff000000000000".U
 io.dmem.wdata:= Cat(regfile.io.rs2_data(15,0),Fill(48,0.U))
 }  
