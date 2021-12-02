@@ -22,7 +22,7 @@ val alu_out   = Wire(UInt(64.W))
 alu_out := DontCare
 
 val shamt = Wire(UInt(6.W))
-shamt := Mux(io.inst_width32, in2(4, 0).asUInt(), in2(5, 0))
+shamt :=in2(5, 0)
 
 
 switch(io.alu_type){
