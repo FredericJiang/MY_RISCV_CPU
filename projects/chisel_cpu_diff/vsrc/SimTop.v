@@ -24,6 +24,7 @@ module Nxt_PC(
 endmodule
 module Decode(
   input  [31:0] io_inst,
+  output        io_inst_width32,
   output [3:0]  io_alu_type,
   output [2:0]  io_op1_type,
   output [2:0]  io_op2_type,
@@ -79,6 +80,8 @@ module Decode(
   wire  _ctrl_T_83 = 32'h7063 == _ctrl_T_20; // @[Lookup.scala 31:38]
   wire  _ctrl_T_85 = 32'h6f == _ctrl_T_68; // @[Lookup.scala 31:38]
   wire  _ctrl_T_87 = 32'h67 == _ctrl_T_20; // @[Lookup.scala 31:38]
+  wire  _ctrl_T_160 = _ctrl_T_29 ? 1'h0 : 1'h1; // @[Lookup.scala 33:37]
+  wire  _ctrl_T_161 = _ctrl_T_27 ? 1'h0 : _ctrl_T_160; // @[Lookup.scala 33:37]
   wire [3:0] _ctrl_T_174 = _ctrl_T_87 ? 4'h1 : 4'h0; // @[Lookup.scala 33:37]
   wire [3:0] _ctrl_T_175 = _ctrl_T_85 ? 4'h1 : _ctrl_T_174; // @[Lookup.scala 33:37]
   wire [3:0] _ctrl_T_176 = _ctrl_T_83 ? 4'hc : _ctrl_T_175; // @[Lookup.scala 33:37]
@@ -320,6 +323,8 @@ module Decode(
   wire [2:0] _ctrl_T_429 = _ctrl_T_7 ? 3'h1 : _ctrl_T_428; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_430 = _ctrl_T_5 ? 3'h1 : _ctrl_T_429; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_431 = _ctrl_T_3 ? 3'h1 : _ctrl_T_430; // @[Lookup.scala 33:37]
+  assign io_inst_width32 = _ctrl_T_1 | (_ctrl_T_3 | (_ctrl_T_5 | (_ctrl_T_7 | (_ctrl_T_9 | (_ctrl_T_11 | (_ctrl_T_13 | (
+    _ctrl_T_15 | (_ctrl_T_17 | (_ctrl_T_19 | (_ctrl_T_21 | (_ctrl_T_23 | (_ctrl_T_25 | _ctrl_T_161)))))))))))); // @[Lookup.scala 33:37]
   assign io_alu_type = _ctrl_T_1 ? 4'h1 : _ctrl_T_216; // @[Lookup.scala 33:37]
   assign io_op1_type = _ctrl_T_1 ? 3'h1 : _ctrl_T_259; // @[Lookup.scala 33:37]
   assign io_op2_type = _ctrl_T_1 ? 3'h1 : _ctrl_T_302; // @[Lookup.scala 33:37]
@@ -939,11 +944,12 @@ module ImmGen(
 endmodule
 module ALU(
   input  [3:0]  io_alu_type,
+  input         io_inst_width32,
   input  [63:0] io_in1,
   input  [63:0] io_in2,
   output [63:0] io_alu_out
 );
-  wire [5:0] shamt = {{1'd0}, io_in2[4:0]}; // @[ALU.scala 25:13]
+  wire [5:0] shamt = io_inst_width32 ? {{1'd0}, io_in2[4:0]} : io_in2[5:0]; // @[ALU.scala 25:13]
   wire  _T = 4'h1 == io_alu_type; // @[Conditional.scala 37:30]
   wire [63:0] _alu_out_T_1 = io_in1 + io_in2; // @[ALU.scala 29:30]
   wire  _T_1 = 4'hd == io_alu_type; // @[Conditional.scala 37:30]
@@ -1020,6 +1026,7 @@ module Core(
   wire [2:0] nxt_pc_io_wb_type; // @[Core.scala 20:22]
   wire [31:0] nxt_pc_io_pc_nxt; // @[Core.scala 20:22]
   wire [31:0] decode_io_inst; // @[Core.scala 21:22]
+  wire  decode_io_inst_width32; // @[Core.scala 21:22]
   wire [3:0] decode_io_alu_type; // @[Core.scala 21:22]
   wire [2:0] decode_io_op1_type; // @[Core.scala 21:22]
   wire [2:0] decode_io_op2_type; // @[Core.scala 21:22]
@@ -1040,6 +1047,7 @@ module Core(
   wire [31:0] imm_gen_io_inst; // @[Core.scala 23:23]
   wire [63:0] imm_gen_io_imm; // @[Core.scala 23:23]
   wire [3:0] alu_io_alu_type; // @[Core.scala 24:19]
+  wire  alu_io_inst_width32; // @[Core.scala 24:19]
   wire [63:0] alu_io_in1; // @[Core.scala 24:19]
   wire [63:0] alu_io_in2; // @[Core.scala 24:19]
   wire [63:0] alu_io_alu_out; // @[Core.scala 24:19]
@@ -1277,6 +1285,7 @@ module Core(
   );
   Decode decode ( // @[Core.scala 21:22]
     .io_inst(decode_io_inst),
+    .io_inst_width32(decode_io_inst_width32),
     .io_alu_type(decode_io_alu_type),
     .io_op1_type(decode_io_op1_type),
     .io_op2_type(decode_io_op2_type),
@@ -1303,6 +1312,7 @@ module Core(
   );
   ALU alu ( // @[Core.scala 24:19]
     .io_alu_type(alu_io_alu_type),
+    .io_inst_width32(alu_io_inst_width32),
     .io_in1(alu_io_in1),
     .io_in2(alu_io_in2),
     .io_alu_out(alu_io_alu_out)
@@ -1385,6 +1395,7 @@ module Core(
   assign imm_gen_io_imm_type = decode_io_imm_type; // @[Core.scala 72:23]
   assign imm_gen_io_inst = io_imem_rdata[31:0]; // @[Core.scala 73:19]
   assign alu_io_alu_type = decode_io_alu_type; // @[Core.scala 82:19]
+  assign alu_io_inst_width32 = decode_io_inst_width32; // @[Core.scala 90:23]
   assign alu_io_in1 = alu_io_alu_type != 4'h0 & decode_io_op1_type == 3'h1 ? regfile_io_rs1_data : {{32'd0}, _GEN_0}; // @[Core.scala 92:68 Core.scala 93:14]
   assign alu_io_in2 = decode_io_op2_type == 3'h1 & (decode_io_imm_type == 3'h0 | decode_io_imm_type == 3'h3) ?
     regfile_io_rs2_data : _GEN_4; // @[Core.scala 100:104 Core.scala 102:14]
