@@ -44,8 +44,8 @@ module ram_2r1w (
   input  [63:0] dmem_wmask,
   input         dmem_wen
 );
-  //wire [63:0] tmp;
-  //assign tmp =  {3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3};
+  wire [63:0] tmp;
+  assign tmp =  {3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3};
   
   wire [63:0] imem_data_0 = ram_read_helper(imem_en, {3'b000, (imem_addr - 64'h0000_0000_8000_0000) >> 3});
 
@@ -58,7 +58,7 @@ module ram_2r1w (
     ram_write_helper({3'b000, (dmem_addr-64'h0000_0000_8000_0000) >> 3}, dmem_wdata, dmem_wmask, dmem_en & dmem_wen);
     //$display("dmem_addr = %x",dmem_addr,"  dmem_data = %x",dmem_wdata);
     if(dmem_en && dmem_wen)
-    $display("dmem_addr = %x",dmem_addr,"  dmem_wdata = %x",dmem_wdata);
+    $display("dmem_addr = %x",dmem_addr,"  tmp = %x",tmp,"  dmem_wdata = %x",dmem_wdata);
 
   end
 
