@@ -26,7 +26,7 @@ help() {
 }
 
 create_soft_link() {
-    mkdir ${1} 1>/dev/null 2>&1
+    mkdir ${1} 1>/dev/null 2>&1  #mkdir指令结果不输出，但是错误信息输出
     find -L ${1} -type l -delete
     FILES=`eval "find ${2} -mindepth 1 -maxdepth 1 -name ${3}"`
     for FILE in ${FILES[@]}
