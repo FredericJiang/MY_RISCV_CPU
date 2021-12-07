@@ -11,12 +11,11 @@ class Core extends Module {
     val imem = new RomIO
     val dmem = new RamIO
   })
-   
   
-  val pc = RegInit("h80000000".U(32.W))
-  val pc_en =RegInit(false.B)
- 
   
+  
+//Initialize
+
   val nxt_pc = Module(new Nxt_PC)
   val decode = Module(new Decode)
   val regfile = Module(new RegFile)
@@ -24,13 +23,52 @@ class Core extends Module {
   val alu = Module(new ALU)
 
 
-//Initialize
 
-io.dmem.wdata := DontCare
-io.dmem.wmask := "hffffffffffffffff".U
-io.dmem.addr := DontCare
-io.dmem.wen := DontCare
-regfile.io.rd_data := DontCare
+  io.dmem.wdata := DontCare
+  io.dmem.wmask := "hffffffffffffffff".U
+  io.dmem.addr := DontCare
+  io.dmem.wen := DontCare
+  regfile.io.rd_data := DontCare
+
+//*************************************************  
+
+// Pipline State Registers
+
+//*************************************************
+
+
+// Instruction Fetch State 
+
+  val pc    = RegInit("h80000000".U(32.W))
+  val pc_en = RegInit(false.B)
+ 
+  
+
+// Instruction Decode State 
+
+
+
+// Execute State
+
+
+
+// Memory State
+
+
+// Writeback State
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
