@@ -7,7 +7,6 @@ import scala.annotation.switch
 class ALU extends Module{
 val io = IO( new Bundle{
 val alu_type = Input(UInt(5.W))
-val inst_width32 = Input(Bool())
 val in1 = Input(UInt(64.W))
 val in2 = Input(UInt(64.W))
 val alu_out = Output(UInt(64.W))
@@ -43,6 +42,7 @@ is(ALU_SRA)  { alu_out:= (in1.asSInt >> shamt).asUInt()} //arithmetic right shif
 is(ALU_SRAW) { val x = (in1(31,0).asSInt >> shamt(4,0)).asUInt(); alu_out:= Cat(Fill(33,x(31)), x(30,0))}
 is(ALU_BGE)  { alu_out:= (in1.asSInt >= in2.asSInt).asUInt()}
 is(ALU_BGEU) { alu_out:= (in1 >= in2).asUInt()}
+is(ALU_COPY2){ alu_out:= in2}
 
 }
 

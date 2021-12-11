@@ -16,8 +16,10 @@ object Constant{
   
   val OP_X        = 0.asUInt(3.W)
   val OP_REG      = 1.asUInt(3.W)
-  val OP_MEM      = 2.asUInt(3.W)
+  val OP_IMM      = 2.asUInt(3.W)
   val OP_PC       = 3.asUInt(3.W)
+  val OP_4        = 4.asUInt(3.W)
+
   
 
 
@@ -50,6 +52,7 @@ object Constant{
   val ALU_SRLW  = 15.asUInt(5.W)
   val ALU_SRAW  = 16.asUInt(5.W)
   val ALU_SUBW  = 17.asUInt(5.W)
+  val ALU_COPY2 = 18.asUInt(5.W)
 
 
   val MEM_X    = 0.asUInt(3.W)
@@ -64,14 +67,16 @@ object Constant{
 
   val WB_X        = 0.asUInt(3.W)
   val WB_REG      = 1.asUInt(3.W)
-  val WB_JALR     = 2.asUInt(3.W)
-  val WB_MEM_B    = 3.asUInt(3.W)
-  val WB_MEM_H    = 4.asUInt(3.W)
-  val WB_MEM_W    = 5.asUInt(3.W)
-  val WB_MEM_D    = 6.asUInt(3.W)
+  val WB_MEM_B    = 2.asUInt(3.W)
+  val WB_MEM_H    = 3.asUInt(3.W)
+  val WB_MEM_W    = 4.asUInt(3.W)
+  val WB_MEM_D    = 5.asUInt(3.W)
  
 
 
+  val BUBBLE  = 0x4033.U(32.W)
+
+//  nop  =　addi r0, r0, x0
 }
 
 

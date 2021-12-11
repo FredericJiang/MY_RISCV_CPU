@@ -4,15 +4,21 @@ import Constant._
 
 class Nxt_PC extends Module{
 val io = IO(new Bundle{
- val pc = Input(UInt(32.W))
- val imm_type = Input(UInt(3.W))
- val imm  = Input(UInt(64.W))
- val alu_type = Input(UInt(5.W))
+ val pc       = Input(UInt(32.W))
+ val imm      = Input(UInt(64.W))
+ val rs1_data = Input(UInt(64.W))
  val alu_out  = Input(UInt(64.W))
- val wb_type  = Input(UInt(3.W))
+
+ val op2_type = Input(UInt(3.W))
+ val imm_type = Input(UInt(3.W))
+ val alu_type = Input(UInt(5.W))
+ 
+
  val pc_nxt = Output(UInt(32.W))
+ val pc_jmp = Output(Bool())
 })
 
+io.pc_jmp := true.B
 
 
 when(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out === 0.U){
@@ -28,12 +34,14 @@ when(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out === 0.U){
 }.elsewhen(io.imm_type === IMM_J){
 // JAL
   io.pc_nxt := io.pc + io.imm
-}.elsewhen(io.wb_type === WB_JALR){
+}.elsewhen(io.op2_type === OP_4 && io.imm_type === IMM_I ){
 //JALR
-  io.pc_nxt := Cat(io.alu_out(63,1).asUInt,0.U )
+  val x = io.rs1_data + io.imm
+  io.pc_nxt := Cat(x(63,1).asUInt,0.U )
 }.otherwise{
 // other types of instruction
-io.pc_nxt := io.pc + 4.U
+io.pc_jmp := false.B
+io.pc_nxt := 0.U
 }
 
 
