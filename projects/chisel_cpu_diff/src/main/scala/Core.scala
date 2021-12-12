@@ -126,7 +126,8 @@ io.imem.en   := true.B
 io.imem.addr := if_reg_pc
 
 
-if_reg_inst := io.imem.rdata
+
+val if_inst = io.imem.rdata
 
 
 
@@ -137,7 +138,7 @@ if_reg_inst := io.imem.rdata
 
 when(!stall && !exe_pc_jmp){
 id_reg_pc    := if_reg_pc
-id_reg_inst  := if_reg_inst
+id_reg_inst  := if_inst
 
 }.elsewhen(!stall && exe_pc_jmp){
 id_reg_pc    := if_reg_pc
