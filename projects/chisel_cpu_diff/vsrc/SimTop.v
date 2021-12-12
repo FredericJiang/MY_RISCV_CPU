@@ -1828,7 +1828,7 @@ module Core(
     end else begin
       exe_pc_nxt <= nxt_pc_io_pc_nxt; // @[Core.scala 303:13]
     end
-    dt_ic_io_valid_REG <= wb_reg_inst != 64'h33; // @[Core.scala 415:26]
+    dt_ic_io_valid_REG <= wb_reg_inst != 64'h33 & wb_reg_inst != 64'h0; // @[Core.scala 415:37]
     dt_ic_io_pc_REG <= wb_reg_pc; // @[Core.scala 425:31]
     dt_ic_io_instr_REG <= wb_reg_inst; // @[Core.scala 426:31]
     dt_ic_io_wen_REG <= wb_reg_wen; // @[Core.scala 431:31]
