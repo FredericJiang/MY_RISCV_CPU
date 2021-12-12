@@ -134,7 +134,7 @@ if_reg_nxt_pc := if_reg_pc
 
 if_reg_pc := if_reg_nxt_pc
 
-io.imem.en   := if_reg_pc_valid
+io.imem.en   := true.B
 io.imem.addr := if_reg_pc
 
 val if_inst   = io.imem.rdata

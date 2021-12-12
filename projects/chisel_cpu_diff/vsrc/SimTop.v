@@ -1992,7 +1992,7 @@ module Ram2r1w(
   assign io_imem_rdata = {{32'd0}, mem_imem_data}; // @[Ram.scala 43:21]
   assign io_dmem_rdata = mem_dmem_rdata; // @[Ram.scala 46:21]
   assign mem_clk = clock; // @[Ram.scala 40:21]
-  assign mem_imem_en = 1'h0; // @[Ram.scala 41:21]
+  assign mem_imem_en = 1'h1; // @[Ram.scala 41:21]
   assign mem_imem_addr = io_imem_addr; // @[Ram.scala 42:21]
   assign mem_dmem_en = io_dmem_en; // @[Ram.scala 44:21]
   assign mem_dmem_addr = io_dmem_addr; // @[Ram.scala 45:21]
