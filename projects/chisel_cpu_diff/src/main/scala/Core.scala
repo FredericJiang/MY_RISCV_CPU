@@ -110,7 +110,7 @@ val if_inst = io.imem.rdata
 
 when( if_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
-when(!stall && !exe_pc_jmp && if_reg_pc_valid ){
+when(!stall && !exe_pc_jmp ){
 
 if_reg_pc  := if_reg_pc + 4.U
 
