@@ -417,7 +417,7 @@ dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
   dt_ic.io.index    := RegNext(0.U)
   dt_ic.io.valid    := RegNext(dt_valid)
   dt_ic.io.pc       := RegNext(wb_reg_pc)
-  dt_ic.io.instr    := RegNext(RegNext(wb_reg_inst))
+  dt_ic.io.instr    := wb_reg_inst
   dt_ic.io.special  := RegNext(0.U)
   dt_ic.io.skip     := RegNext(false.B)
   dt_ic.io.isRVC    := RegNext(false.B)
