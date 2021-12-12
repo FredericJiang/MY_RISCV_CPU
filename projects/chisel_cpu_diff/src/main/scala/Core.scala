@@ -23,7 +23,7 @@ class Core extends Module {
 */
 
   val stall = Wire(Bool())
-  stall    := true.B
+  stall    := false.B
 //*******************************************************************
 
 // Pipline State Registers
@@ -116,18 +116,23 @@ val wb_rd_data = Wire(UInt(64.W))
 when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
 
+
+val if_reg_nxt_pc = Reg(UInt(32.W))
+
 when(!stall && !exe_pc_jmp ){
 
-if_reg_pc  := if_reg_pc + 4.U
+if_reg_nxt_pc  := if_reg_pc + 4.U
 
 }.elsewhen(stall){
 
-if_reg_pc := if_reg_pc
+if_reg_nxt_pc := if_reg_pc
 
 }.elsewhen(exe_pc_jmp){
 
-  if_reg_pc  := exe_pc_nxt
+  if_reg_nxt_pc  := exe_pc_nxt
 }
+
+if_reg_pc := if_reg_nxt_pc
 
 io.imem.en   := if_reg_pc_valid
 io.imem.addr := if_reg_pc
