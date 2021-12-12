@@ -142,16 +142,16 @@ val if_inst   = io.imem.rdata
 
 
 when(!stall && !exe_pc_jmp){
-
+id_reg_pc    := if_reg_pc
 id_reg_inst  := if_inst
 
 }.elsewhen(!stall && exe_pc_jmp){
-
+id_reg_pc    := if_reg_pc
 id_reg_inst  := BUBBLE
 
 }
 .elsewhen(stall){
- 
+id_reg_pc    := if_reg_pc
 id_reg_inst  := id_reg_inst 
 
 }
