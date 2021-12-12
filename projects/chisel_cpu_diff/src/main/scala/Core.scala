@@ -415,7 +415,7 @@ val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.clock    := RegNext(clock)
   dt_ic.io.coreid   := RegNext(0.U)
   dt_ic.io.index    := RegNext(0.U)
-  dt_ic.io.valid    := RegNext(dt_valid)
+  dt_ic.io.valid    := dt_valid
   dt_ic.io.special  := RegNext(0.U)
   dt_ic.io.skip     := RegNext(false.B)
   dt_ic.io.isRVC    := RegNext(false.B)
@@ -424,7 +424,7 @@ val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.wdata    := RegNext(wb_reg_wdata)
   dt_ic.io.wdest    := RegNext(wb_reg_wdest)
 
-when(RegNext(dt_valid)){
+when(dt_valid){
   dt_ic.io.pc       := RegNext(wb_reg_pc)
   dt_ic.io.instr    := RegNext(wb_reg_inst)}
 
