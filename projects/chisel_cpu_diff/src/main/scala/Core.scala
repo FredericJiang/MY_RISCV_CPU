@@ -411,16 +411,11 @@ regfile.io.rd_data := wb_rd_data
 val dt_valid = RegInit(false.B)
 dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
 
-
-
-
-  val dt_ic = Module(new DifftestInstrCommit)
+val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.clock    := RegNext(clock)
   dt_ic.io.coreid   := RegNext(0.U)
   dt_ic.io.index    := RegNext(0.U)
   dt_ic.io.valid    := RegNext(dt_valid)
-  dt_ic.io.pc       := RegNext(wb_reg_pc)
-  dt_ic.io.instr    := RegNext(wb_reg_inst)
   dt_ic.io.special  := RegNext(0.U)
   dt_ic.io.skip     := RegNext(false.B)
   dt_ic.io.isRVC    := RegNext(false.B)
@@ -428,6 +423,15 @@ dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
   dt_ic.io.wen      := RegNext(wb_reg_wen)
   dt_ic.io.wdata    := RegNext(wb_reg_wdata)
   dt_ic.io.wdest    := RegNext(wb_reg_wdest)
+
+when(dt_valid){
+  dt_ic.io.pc       := RegNext(wb_reg_pc)
+  dt_ic.io.instr    := RegNext(wb_reg_inst)}
+
+.otherwise{
+  dt_ic.io.pc       := "h7ffffffc".U(32.W)
+  dt_ic.io.instr    := 0.U
+}
 
   val dt_ae = Module(new DifftestArchEvent)
   dt_ae.io.clock        := clock
