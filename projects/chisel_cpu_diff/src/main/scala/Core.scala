@@ -23,7 +23,7 @@ class Core extends Module {
 */
 
   val stall = Wire(Bool())
-  stall    := false.B
+  stall    := true.B
 //*******************************************************************
 
 // Pipline State Registers
@@ -115,10 +115,6 @@ val wb_rd_data = Wire(UInt(64.W))
 
 when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
-io.imem.en   := true.B
-io.imem.addr := if_reg_pc
-
-val if_inst   = io.imem.rdata
 
 when(!stall && !exe_pc_jmp ){
 
@@ -133,7 +129,10 @@ if_reg_pc := if_reg_pc
   if_reg_pc  := exe_pc_nxt
 }
 
+io.imem.en   := if_reg_pc_valid
+io.imem.addr := if_reg_pc
 
+val if_inst   = io.imem.rdata
 
 
 
@@ -216,7 +215,7 @@ val id_rs2 =  MuxCase( regfile.io.rs2_data , Array(
 // load instruciton in exe stage, and address conflict
 //generate a bubble
 when(exe_reg_mem_rtype =/= MEM_X &&( exe_reg_rd_addr === id_rs2_addr || exe_reg_rd_addr === id_rs1_addr ))
-{ stall := true.B }
+{ stall := true.B }.otherwise{ stall := false.B }
 
 
 
