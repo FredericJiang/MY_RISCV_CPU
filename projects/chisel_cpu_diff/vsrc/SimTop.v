@@ -1395,6 +1395,7 @@ module Core(
   wire [63:0] _instr_cnt_T_1 = instr_cnt + 64'h1; // @[Core.scala 447:26]
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 449:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
+  wire  _T_19 = ~reset; // @[Core.scala 486:7]
   RegFile regfile ( // @[Core.scala 172:21]
     .clock(regfile_clock),
     .reset(regfile_reset),
@@ -1750,6 +1751,28 @@ module Core(
     end else if (dt_ic_valid) begin // @[Core.scala 446:24]
       instr_cnt <= _instr_cnt_T_1; // @[Core.scala 447:13]
     end
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (~reset) begin
+          $fwrite(32'h80000002,"pc in core =%x, inst in core =%x",32'h80000000,64'h0); // @[Core.scala 486:7]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_19) begin
+          $fwrite(32'h80000002,"dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic_valid,dt_ic_pc,dt_ic_instr); // @[Core.scala 487:7]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
