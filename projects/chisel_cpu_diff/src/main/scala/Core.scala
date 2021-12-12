@@ -106,7 +106,9 @@ val wb_rd_data = Wire(UInt(64.W))
 //********************************************************
 //Instruction Fetch Stage
 
-when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
+val if_inst = io.imem.rdata
+
+when( if_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
 when(!stall && !exe_pc_jmp && if_reg_pc_valid ){
 
@@ -127,7 +129,7 @@ io.imem.addr := if_reg_pc
 
 
 
-val if_inst = io.imem.rdata
+
 
 
 
