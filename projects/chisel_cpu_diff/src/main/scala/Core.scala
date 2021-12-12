@@ -409,7 +409,7 @@ regfile.io.rd_data := wb_rd_data
 /* ------------------ Difftest ------------------ */
 
 val dt_valid = RegInit(false.B)
-//dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
+dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
 
 
 
@@ -418,7 +418,7 @@ val dt_valid = RegInit(false.B)
   dt_ic.io.clock    := RegNext(clock)
   dt_ic.io.coreid   := RegNext(0.U)
   dt_ic.io.index    := RegNext(0.U)
-  dt_ic.io.valid    := RegNext(RegNext(dt_valid))
+  dt_ic.io.valid    := RegNext(dt_valid)
   dt_ic.io.pc       := RegNext(wb_reg_pc)
   dt_ic.io.instr    := RegNext(wb_reg_inst)
   dt_ic.io.special  := RegNext(0.U)
