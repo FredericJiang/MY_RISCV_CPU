@@ -1352,9 +1352,9 @@ module Core(
   wire [63:0] dt_cs_mideleg; // @[Core.scala 461:21]
   wire [63:0] dt_cs_medeleg; // @[Core.scala 461:21]
   reg [31:0] if_reg_pc; // @[Core.scala 35:33]
-  reg [31:0] id_reg_pc; // @[Core.scala 42:28]
+  reg [31:0] id_reg_pc; // @[Core.scala 42:24]
   reg [63:0] id_reg_inst; // @[Core.scala 43:28]
-  reg [31:0] exe_reg_pc; // @[Core.scala 47:32]
+  reg [31:0] exe_reg_pc; // @[Core.scala 47:28]
   reg [63:0] exe_reg_inst; // @[Core.scala 48:32]
   reg [4:0] exe_reg_alu_type; // @[Core.scala 50:32]
   reg [2:0] exe_reg_wb_type; // @[Core.scala 51:32]
@@ -1372,14 +1372,14 @@ module Core(
   reg  mem_reg_dmem_en; // @[Core.scala 71:28]
   reg  mem_reg_dmem_wen; // @[Core.scala 72:28]
   reg  mem_reg_rd_en; // @[Core.scala 73:28]
-  reg [31:0] mem_reg_pc; // @[Core.scala 74:32]
-  reg [63:0] mem_reg_inst; // @[Core.scala 75:33]
+  reg [31:0] mem_reg_pc; // @[Core.scala 74:28]
+  reg [63:0] mem_reg_inst; // @[Core.scala 75:32]
   reg [2:0] mem_reg_wb_type; // @[Core.scala 78:33]
   reg [2:0] mem_reg_mem_rtype; // @[Core.scala 79:33]
   reg [63:0] mem_reg_alu_out; // @[Core.scala 81:33]
   reg [63:0] mem_reg_rs2_data; // @[Core.scala 83:33]
   reg [63:0] mem_reg_rd_addr; // @[Core.scala 88:33]
-  reg [31:0] wb_reg_pc; // @[Core.scala 92:31]
+  reg [31:0] wb_reg_pc; // @[Core.scala 92:28]
   reg [63:0] wb_reg_inst; // @[Core.scala 93:32]
   reg [2:0] wb_reg_mem_rtype; // @[Core.scala 95:32]
   reg [63:0] wb_reg_alu_out; // @[Core.scala 96:28]
@@ -1389,7 +1389,7 @@ module Core(
   reg [63:0] wb_reg_wdata; // @[Core.scala 100:32]
   reg [63:0] wb_reg_wdest; // @[Core.scala 101:32]
   reg  wb_reg_wen; // @[Core.scala 102:28]
-  reg [31:0] exe_pc_nxt; // @[Core.scala 108:26]
+  reg [31:0] exe_pc_nxt; // @[Core.scala 108:22]
   wire [4:0] id_rs2_addr = id_reg_inst[24:20]; // @[Core.scala 168:30]
   wire [63:0] _GEN_41 = {{59'd0}, id_rs2_addr}; // @[Core.scala 217:54]
   wire  _T_10 = exe_reg_rd_addr == _GEN_41; // @[Core.scala 217:54]
@@ -1628,9 +1628,7 @@ module Core(
         if_reg_pc <= exe_pc_nxt; // @[Core.scala 129:14]
       end
     end
-    if (reset) begin // @[Core.scala 42:28]
-      id_reg_pc <= 32'h0; // @[Core.scala 42:28]
-    end else if (_T_3) begin // @[Core.scala 144:28]
+    if (_T_3) begin // @[Core.scala 144:28]
       id_reg_pc <= if_reg_pc; // @[Core.scala 145:14]
     end else if (_T_1 & exe_pc_jmp) begin // @[Core.scala 148:33]
       id_reg_pc <= if_reg_pc; // @[Core.scala 149:14]
@@ -1642,9 +1640,7 @@ module Core(
     end else if (_T_1 & exe_pc_jmp) begin // @[Core.scala 148:33]
       id_reg_inst <= 64'h33; // @[Core.scala 150:14]
     end
-    if (reset) begin // @[Core.scala 47:32]
-      exe_reg_pc <= 32'h0; // @[Core.scala 47:32]
-    end else if (_T_3) begin // @[Core.scala 230:28]
+    if (_T_3) begin // @[Core.scala 230:28]
       exe_reg_pc <= id_reg_pc; // @[Core.scala 231:19]
     end
     if (reset) begin // @[Core.scala 48:32]
@@ -1748,13 +1744,9 @@ module Core(
     mem_reg_dmem_en <= exe_reg_dmem_en; // @[Core.scala 323:20]
     mem_reg_dmem_wen <= exe_reg_dmem_wen; // @[Core.scala 322:20]
     mem_reg_rd_en <= exe_reg_rd_en; // @[Core.scala 321:20]
-    if (reset) begin // @[Core.scala 74:32]
-      mem_reg_pc <= 32'h0; // @[Core.scala 74:32]
-    end else begin
-      mem_reg_pc <= exe_reg_pc; // @[Core.scala 309:20]
-    end
-    if (reset) begin // @[Core.scala 75:33]
-      mem_reg_inst <= 64'h0; // @[Core.scala 75:33]
+    mem_reg_pc <= exe_reg_pc; // @[Core.scala 309:20]
+    if (reset) begin // @[Core.scala 75:32]
+      mem_reg_inst <= 64'h0; // @[Core.scala 75:32]
     end else begin
       mem_reg_inst <= exe_reg_inst; // @[Core.scala 310:20]
     end
@@ -1783,11 +1775,7 @@ module Core(
     end else begin
       mem_reg_rd_addr <= exe_reg_rd_addr; // @[Core.scala 319:20]
     end
-    if (reset) begin // @[Core.scala 92:31]
-      wb_reg_pc <= 32'h0; // @[Core.scala 92:31]
-    end else begin
-      wb_reg_pc <= mem_reg_pc; // @[Core.scala 368:20]
-    end
+    wb_reg_pc <= mem_reg_pc; // @[Core.scala 368:20]
     if (reset) begin // @[Core.scala 93:32]
       wb_reg_inst <= 64'h0; // @[Core.scala 93:32]
     end else begin
@@ -1819,11 +1807,7 @@ module Core(
       wb_reg_wdest <= 64'h0; // @[Core.scala 334:26]
     end
     wb_reg_wen <= mem_reg_dmem_wen; // @[Core.scala 371:21]
-    if (reset) begin // @[Core.scala 108:26]
-      exe_pc_nxt <= 32'h0; // @[Core.scala 108:26]
-    end else begin
-      exe_pc_nxt <= nxt_pc_io_pc_nxt; // @[Core.scala 303:13]
-    end
+    exe_pc_nxt <= nxt_pc_io_pc_nxt; // @[Core.scala 303:13]
     dt_ic_io_valid_REG <= wb_reg_inst != 64'h33 & wb_reg_pc != 32'h0; // @[Core.scala 415:37]
     dt_ic_io_pc_REG <= wb_reg_pc; // @[Core.scala 425:31]
     dt_ic_io_instr_REG <= wb_reg_inst; // @[Core.scala 426:31]

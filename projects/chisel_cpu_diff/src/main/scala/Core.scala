@@ -39,12 +39,12 @@ class Core extends Module {
 // Instruction Decode State 
 
 
-val id_reg_pc     = RegInit(0.U(32.W))
+val id_reg_pc     = Reg(UInt(32.W))
 val id_reg_inst   = RegInit(0.U(64.W))
 
 // Execute State
 
-val exe_reg_pc        = RegInit(0.U(32.W))
+val exe_reg_pc        = Reg(UInt(32.W))
 val exe_reg_inst      = RegInit(0.U(64.W))
 
 val exe_reg_alu_type  = RegInit(ALU_X) 
@@ -71,8 +71,8 @@ val exe_reg_rd_addr   =  RegInit(0.U(64.W))
 val mem_reg_dmem_en   = Reg(Bool())
 val mem_reg_dmem_wen  = Reg(Bool())
 val mem_reg_rd_en     = Reg(Bool())
-val mem_reg_pc        = RegInit(0.U(32.W))
-val mem_reg_inst      =  RegInit(0.U(64.W))  
+val mem_reg_pc        = Reg(UInt(32.W))
+val mem_reg_inst      = RegInit(0.U(64.W))  
 
 val mem_reg_alu_type  =  RegInit(ALU_X) 
 val mem_reg_wb_type   =  RegInit(WB_X)  
@@ -89,7 +89,7 @@ val mem_reg_rd_addr   =  RegInit(0.U(64.W))
 
 // Writeback State
 
-val wb_reg_pc        = RegInit(0.U(32.W))
+val wb_reg_pc        =  Reg(UInt(32.W))
 val wb_reg_inst      =  RegInit(0.U(64.W))   
 val wb_reg_wb_type   =  RegInit(WB_X)  
 val wb_reg_mem_rtype =  RegInit(MEM_X) 
@@ -105,7 +105,7 @@ val wb_reg_wen       =  Reg(Bool())
 
 
 val exe_pc_jmp  = Wire(Bool())
-val exe_pc_nxt  = RegInit(0.U(32.W)) 
+val exe_pc_nxt  = Reg(UInt(32.W))
 val exe_alu_out = Wire(UInt(64.W))
 val mem_rd_data = Wire(UInt(64.W))
 val wb_rd_data = Wire(UInt(64.W))
