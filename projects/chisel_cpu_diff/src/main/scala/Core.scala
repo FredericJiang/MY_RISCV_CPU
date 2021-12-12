@@ -117,22 +117,20 @@ when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
 
 
-val if_reg_nxt_pc = RegInit("h80000000".U(32.W))
+when(!stall && !exe_pc_jmp ){
 
-when(!stall && !exe_pc_jmp && if_reg_pc_valid){
-
-if_reg_nxt_pc  := if_reg_pc + 4.U
+if_reg_pc  := if_reg_pc + 4.U
 
 }.elsewhen(stall){
 
-if_reg_nxt_pc := if_reg_pc
+if_reg_pc := if_reg_pc
 
 }.elsewhen(exe_pc_jmp){
 
-  if_reg_nxt_pc  := exe_pc_nxt
+  if_reg_pc  := exe_pc_nxt
 }
 
-if_reg_pc := if_reg_nxt_pc
+
 
 io.imem.en   := true.B
 io.imem.addr := if_reg_pc
