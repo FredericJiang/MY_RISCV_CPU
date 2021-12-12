@@ -108,9 +108,9 @@ val wb_rd_data = Wire(UInt(64.W))
 
 val if_inst = io.imem.rdata
 
-when( if_inst =/= 0.U ){ if_reg_pc_valid := true.B }
-
-when(!stall && !exe_pc_jmp ){
+//when( if_inst =/= 0.U ){ if_reg_pc_valid := true.B }
+if_reg_pc_valid := true.B
+when(!stall && !exe_pc_jmp && if_reg_pc_valid){
 
 if_reg_pc  := if_reg_pc + 4.U
 
