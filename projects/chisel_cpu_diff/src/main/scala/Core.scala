@@ -411,7 +411,8 @@ regfile.io.rd_data := wb_rd_data
 
 /* ------------------ Difftest ------------------ */
 
-val dt_valid = (wb_reg_inst =/= BUBBLE)
+val dt_valid = Wire(Bool())
+dt_valid := (wb_reg_inst =/= BUBBLE)
 
 
 
