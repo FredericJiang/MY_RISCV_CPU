@@ -1619,14 +1619,14 @@ module Core(
     end else if (_T_3) begin // @[Core.scala 144:28]
       id_reg_inst <= io_imem_rdata; // @[Core.scala 146:14]
     end else if (_T_1 & exe_pc_jmp) begin // @[Core.scala 148:33]
-      id_reg_inst <= 64'h4033; // @[Core.scala 150:14]
+      id_reg_inst <= 64'h33; // @[Core.scala 150:14]
     end
     if (reset) begin // @[Core.scala 48:32]
       exe_reg_inst <= 64'h0; // @[Core.scala 48:32]
     end else if (_T_3) begin // @[Core.scala 230:28]
       exe_reg_inst <= id_reg_inst; // @[Core.scala 232:19]
     end else if (stall | exe_pc_jmp) begin // @[Core.scala 256:32]
-      exe_reg_inst <= 64'h4033; // @[Core.scala 259:19]
+      exe_reg_inst <= 64'h33; // @[Core.scala 259:19]
     end
     if (reset) begin // @[Core.scala 50:32]
       exe_reg_alu_type <= 5'h0; // @[Core.scala 50:32]
@@ -1788,7 +1788,7 @@ module Core(
     end else begin
       exe_pc_nxt <= nxt_pc_io_pc_nxt; // @[Core.scala 303:13]
     end
-    dt_ic_io_valid_REG <= wb_reg_inst != 64'h4033; // @[Core.scala 415:26]
+    dt_ic_io_valid_REG <= wb_reg_inst != 64'h33; // @[Core.scala 415:26]
     dt_ic_io_instr_REG <= wb_reg_inst; // @[Core.scala 426:31]
     dt_ic_io_wen_REG <= wb_reg_wen; // @[Core.scala 431:31]
     dt_ic_io_wdata_REG <= wb_reg_wdata; // @[Core.scala 432:31]
