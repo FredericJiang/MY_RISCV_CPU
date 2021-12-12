@@ -25,7 +25,7 @@ class Core extends Module {
 
 // Instruction Fetch State 
 
-  val if_reg_pc        = RegInit("h80000000".U(32.W))
+  val if_reg_pc        = RegInit("h00000000".U(32.W))
   val if_reg_pc_valid  = RegInit(false.B)
   val if_reg_inst      = RegInit(0.U(64.W))
 
@@ -108,7 +108,7 @@ val wb_rd_data = Wire(UInt(64.W))
 
 when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
-
+if_reg_pc :="h80000000".U(32.W)
 
 when(!stall && !exe_pc_jmp ){
 

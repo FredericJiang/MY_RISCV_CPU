@@ -1621,12 +1621,14 @@ module Core(
   assign dt_cs_medeleg = 64'h0; // @[Core.scala 476:27]
   always @(posedge clock) begin
     if (reset) begin // @[Core.scala 28:33]
-      if_reg_pc <= 32'h80000000; // @[Core.scala 28:33]
+      if_reg_pc <= 32'h0; // @[Core.scala 28:33]
     end else if (~stall & ~exe_pc_jmp) begin // @[Core.scala 113:29]
       if_reg_pc <= _if_reg_pc_T_1; // @[Core.scala 115:12]
     end else if (!(stall)) begin // @[Core.scala 117:18]
       if (exe_pc_jmp) begin // @[Core.scala 121:23]
         if_reg_pc <= exe_pc_nxt; // @[Core.scala 123:13]
+      end else begin
+        if_reg_pc <= 32'h80000000; // @[Core.scala 111:11]
       end
     end
     if (_T_3) begin // @[Core.scala 139:28]
