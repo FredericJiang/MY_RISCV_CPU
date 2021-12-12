@@ -32,12 +32,12 @@ class Core extends Module {
 // Instruction Decode State 
 
 
-val id_reg_pc     = Reg(UInt(32.W))
+val id_reg_pc     = RegInit("h7ffffffc".U(32.W))
 val id_reg_inst   = RegInit(0.U(64.W))
 
 // Execute State
 
-val exe_reg_pc        = Reg(UInt(32.W))
+val exe_reg_pc        = RegInit("h7ffffffc".U(32.W))
 val exe_reg_inst      = RegInit(0.U(64.W))
 
 val exe_reg_alu_type  = RegInit(ALU_X) 
@@ -64,7 +64,7 @@ val exe_reg_rd_addr   =  RegInit(0.U(64.W))
 val mem_reg_dmem_en   = Reg(Bool())
 val mem_reg_dmem_wen  = Reg(Bool())
 val mem_reg_rd_en     = Reg(Bool())
-val mem_reg_pc        = Reg(UInt(32.W))
+val mem_reg_pc        = RegInit("h7ffffffc".U(32.W))
 val mem_reg_inst      = RegInit(0.U(64.W))  
 
 val mem_reg_alu_type  =  RegInit(ALU_X) 
@@ -82,7 +82,7 @@ val mem_reg_rd_addr   =  RegInit(0.U(64.W))
 
 // Writeback State
 
-val wb_reg_pc        =  Reg(UInt(32.W))
+val wb_reg_pc        =  RegInit("h7ffffffc".U(32.W))
 val wb_reg_inst      =  RegInit(0.U(64.W))   
 val wb_reg_wb_type   =  RegInit(WB_X)  
 val wb_reg_mem_rtype =  RegInit(MEM_X) 
@@ -365,7 +365,7 @@ wb_reg_inst        := mem_reg_inst
 wb_reg_pc          := mem_reg_pc
 wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
-wb_reg_wen          := mem_reg_dmem_wen
+wb_reg_wen         := mem_reg_dmem_wen
 
 
 wb_reg_mem_rtype   := mem_reg_mem_rtype 
