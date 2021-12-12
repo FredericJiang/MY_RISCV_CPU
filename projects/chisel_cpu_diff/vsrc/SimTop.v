@@ -1398,8 +1398,8 @@ module Core(
   wire  _T_11 = exe_reg_rd_addr == _GEN_43; // @[Core.scala 214:89]
   wire  stall = exe_reg_mem_rtype != 3'h0 & (exe_reg_rd_addr == _GEN_42 | exe_reg_rd_addr == _GEN_43); // @[Core.scala 214:34]
   wire  _T = ~stall; // @[Core.scala 113:6]
-  wire  exe_pc_jmp = nxt_pc_io_pc_jmp; // @[Core.scala 100:23 Core.scala 303:13]
-  wire  _T_2 = ~stall & ~exe_pc_jmp; // @[Core.scala 113:13]
+  wire  kill_stage = nxt_pc_io_pc_jmp; // @[Core.scala 100:23 Core.scala 303:13]
+  wire  _T_2 = ~stall & ~kill_stage; // @[Core.scala 113:13]
   wire [31:0] _if_reg_pc_T_1 = if_reg_pc + 32'h4; // @[Core.scala 115:25]
   wire [31:0] exe_pc_nxt = nxt_pc_io_pc_nxt; // @[Core.scala 101:23 Core.scala 302:13]
   wire  _id_op1_T = decode_io_op1_type == 3'h2; // @[Core.scala 187:39]
@@ -1624,10 +1624,10 @@ module Core(
   always @(posedge clock) begin
     if (reset) begin // @[Core.scala 28:33]
       if_reg_pc <= 32'h80000000; // @[Core.scala 28:33]
-    end else if (~stall & ~exe_pc_jmp & if_reg_pc_valid) begin // @[Core.scala 113:47]
+    end else if (~stall & ~kill_stage & if_reg_pc_valid) begin // @[Core.scala 113:47]
       if_reg_pc <= _if_reg_pc_T_1; // @[Core.scala 115:12]
     end else if (!(stall)) begin // @[Core.scala 117:18]
-      if (exe_pc_jmp) begin // @[Core.scala 121:23]
+      if (kill_stage) begin // @[Core.scala 121:23]
         if_reg_pc <= exe_pc_nxt; // @[Core.scala 123:13]
       end
     end
@@ -1640,33 +1640,35 @@ module Core(
       id_reg_pc <= 32'h7ffffffc; // @[Core.scala 35:28]
     end else if (_T_2) begin // @[Core.scala 141:28]
       id_reg_pc <= if_reg_pc; // @[Core.scala 142:14]
-    end else if (_T & exe_pc_jmp) begin // @[Core.scala 145:33]
-      id_reg_pc <= if_reg_pc; // @[Core.scala 146:14]
+    end else if (_T & kill_stage) begin // @[Core.scala 145:33]
+      id_reg_pc <= 32'h0; // @[Core.scala 146:14]
     end
     if (reset) begin // @[Core.scala 36:28]
       id_reg_inst <= 64'h0; // @[Core.scala 36:28]
     end else if (_T_2) begin // @[Core.scala 141:28]
       id_reg_inst <= io_imem_rdata; // @[Core.scala 143:14]
-    end else if (_T & exe_pc_jmp) begin // @[Core.scala 145:33]
+    end else if (_T & kill_stage) begin // @[Core.scala 145:33]
       id_reg_inst <= 64'h13; // @[Core.scala 147:14]
     end
     if (reset) begin // @[Core.scala 40:32]
       exe_reg_pc <= 32'h7ffffffc; // @[Core.scala 40:32]
     end else if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_pc <= id_reg_pc; // @[Core.scala 228:19]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
+      exe_reg_pc <= 32'h0; // @[Core.scala 255:19]
     end
     if (reset) begin // @[Core.scala 41:32]
       exe_reg_inst <= 64'h0; // @[Core.scala 41:32]
     end else if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_inst <= id_reg_inst; // @[Core.scala 229:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_inst <= 64'h13; // @[Core.scala 256:19]
     end
     if (reset) begin // @[Core.scala 43:32]
       exe_reg_alu_type <= 5'h0; // @[Core.scala 43:32]
     end else if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_alu_type <= decode_io_alu_type; // @[Core.scala 233:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_alu_type <= 5'h0; // @[Core.scala 261:19]
     end
     if (reset) begin // @[Core.scala 44:32]
@@ -1683,14 +1685,14 @@ module Core(
       exe_reg_imm_type <= 3'h0; // @[Core.scala 46:32]
     end else if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_imm_type <= decode_io_imm_type; // @[Core.scala 235:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_imm_type <= 3'h0; // @[Core.scala 260:19]
     end
     if (reset) begin // @[Core.scala 48:32]
       exe_reg_op2_type <= 3'h0; // @[Core.scala 48:32]
     end else if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_op2_type <= decode_io_op2_type; // @[Core.scala 232:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_op2_type <= 3'h0; // @[Core.scala 263:19]
     end
     if (_T_2) begin // @[Core.scala 227:28]
@@ -1703,7 +1705,7 @@ module Core(
       end else begin
         exe_reg_op1_data <= _id_op1_T_15;
       end
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_op1_data <= 64'h0; // @[Core.scala 264:19]
     end
     if (_T_2) begin // @[Core.scala 227:28]
@@ -1730,22 +1732,22 @@ module Core(
     end
     if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_imm <= imm_gen_io_imm; // @[Core.scala 242:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_imm <= 64'h0; // @[Core.scala 262:19]
     end
     if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_rd_en <= decode_io_wb_type == 3'h1; // @[Core.scala 249:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_rd_en <= 1'h0; // @[Core.scala 257:19]
     end
     if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_dmem_en <= decode_io_mem_rtype != 3'h0 | exe_reg_dmem_wen; // @[Core.scala 251:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_dmem_en <= 1'h0; // @[Core.scala 259:19]
     end
     if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_dmem_wen <= decode_io_wb_type != 3'h1 & exe_reg_wb_type != 3'h0; // @[Core.scala 250:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 253:32]
+    end else if (stall | kill_stage) begin // @[Core.scala 253:32]
       exe_reg_dmem_wen <= 1'h0; // @[Core.scala 258:19]
     end
     if (reset) begin // @[Core.scala 60:33]

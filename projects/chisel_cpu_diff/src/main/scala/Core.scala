@@ -97,7 +97,7 @@ val wb_reg_wen       =  Reg(Bool())
 
 
 
-val exe_pc_jmp  = Wire(Bool())
+val kill_stage  = Wire(Bool())
 val exe_pc_nxt  = Wire(UInt(32.W))
 val exe_alu_out = Wire(UInt(64.W))
 val mem_rd_data = Wire(UInt(64.W))
@@ -110,7 +110,7 @@ val if_inst = io.imem.rdata
 
 //when( if_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 if_reg_pc_valid := true.B
-when(!stall && !exe_pc_jmp && if_reg_pc_valid){
+when(!stall && !kill_stage && if_reg_pc_valid){
 
 if_reg_pc  := if_reg_pc + 4.U
 
@@ -118,7 +118,7 @@ if_reg_pc  := if_reg_pc + 4.U
 
 if_reg_pc := if_reg_pc
 
-}.elsewhen(exe_pc_jmp){
+}.elsewhen(kill_stage){
 
  if_reg_pc  := exe_pc_nxt
 }
@@ -138,12 +138,12 @@ io.imem.addr := if_reg_pc
 //*******************************************************************
 
 
-when(!stall && !exe_pc_jmp){
+when(!stall && !kill_stage){
 id_reg_pc    := if_reg_pc
 id_reg_inst  := if_inst
 
-}.elsewhen(!stall && exe_pc_jmp){
-id_reg_pc    := if_reg_pc
+}.elsewhen(!stall && kill_stage){
+id_reg_pc    := 0.U
 id_reg_inst  := BUBBLE
 
 }
@@ -224,7 +224,7 @@ when(exe_reg_mem_rtype =/= MEM_X &&( exe_reg_rd_addr === id_rs2_addr || exe_reg_
 //*******************************************************************
 
 
-when(!stall && !exe_pc_jmp){
+when(!stall && !kill_stage){
 exe_reg_pc        := id_reg_pc
 exe_reg_inst      := id_reg_inst
 
@@ -250,9 +250,9 @@ exe_reg_rd_en     := (decode.io.wb_type === WB_REG)
 exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (exe_reg_wb_type =/= WB_X)
 exe_reg_dmem_en   := (decode.io.mem_rtype =/= MEM_X) || exe_reg_dmem_wen
 
-}.elsewhen(stall || exe_pc_jmp){
+}.elsewhen(stall || kill_stage){
 //if stall exe insert a bubble
-exe_reg_pc        := exe_reg_pc
+exe_reg_pc        := 0.U
 exe_reg_inst      := BUBBLE
 exe_reg_rd_en     := false.B
 exe_reg_dmem_wen  := false.B
@@ -300,7 +300,7 @@ nxt_pc.io.op2_type := exe_reg_op2_type
 
 
 exe_pc_nxt  := nxt_pc.io.pc_nxt
-exe_pc_jmp  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
+kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 
 
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
