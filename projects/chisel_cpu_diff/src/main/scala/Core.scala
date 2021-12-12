@@ -424,7 +424,7 @@ val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.wdata    := RegNext(wb_reg_wdata)
   dt_ic.io.wdest    := RegNext(wb_reg_wdest)
 
-when(dt_valid){
+when(RegNext(dt_valid)){
   dt_ic.io.pc       := RegNext(wb_reg_pc)
   dt_ic.io.instr    := RegNext(wb_reg_inst)}
 
