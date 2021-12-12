@@ -13,14 +13,7 @@ class Core extends Module {
   })
   
 
-//Initialize
-/*
-  io.dmem.wdata  := DontCare
-  io.dmem.wmask  := "hffffffffffffffff".U
-  io.dmem.addr   := DontCare
-  io.dmem.wen    := DontCare
-  regfile.io.rd_data := DontCare
-*/
+
 
   val stall = Wire(Bool())
   stall    := false.B
@@ -115,22 +108,21 @@ val wb_rd_data = Wire(UInt(64.W))
 
 when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
-val if_reg_nxt_pc = Reg(UInt(32.W))
+
 
 when(!stall && !exe_pc_jmp ){
 
-if_reg_nxt_pc  := if_reg_pc + 4.U
+if_reg_pc  := if_reg_pc + 4.U
 
 }.elsewhen(stall){
 
-if_reg_nxt_pc := if_reg_pc
+if_reg_pc := if_reg_pc
 
 }.elsewhen(exe_pc_jmp){
 
- if_reg_nxt_pc  := exe_pc_nxt
+ if_reg_pc  := exe_pc_nxt
 }
 
-if_reg_pc := if_reg_nxt_pc
 
 io.imem.en   := true.B
 io.imem.addr := if_reg_pc
