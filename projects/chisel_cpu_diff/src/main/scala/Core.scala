@@ -412,14 +412,14 @@ val dt_valid = RegInit(false.B)
 dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
 
 val dt_ic = Module(new DifftestInstrCommit)
-  dt_ic.io.clock    := RegNext(clock)
-  dt_ic.io.coreid   := RegNext(0.U)
-  dt_ic.io.index    := RegNext(0.U)
+  dt_ic.io.clock    := clock
+  dt_ic.io.coreid   := 0.U
+  dt_ic.io.index    := 0.U
   dt_ic.io.valid    := dt_valid
-  dt_ic.io.special  := RegNext(0.U)
+  dt_ic.io.special  := 0.U
   dt_ic.io.skip     := RegNext(false.B)
-  dt_ic.io.isRVC    := RegNext(false.B)
-  dt_ic.io.scFailed := RegNext(false.B)
+  dt_ic.io.isRVC    := false.B
+  dt_ic.io.scFailed := false.B
   dt_ic.io.wen      := RegNext(wb_reg_wen)
   dt_ic.io.wdata    := RegNext(wb_reg_wdata)
   dt_ic.io.wdest    := RegNext(wb_reg_wdest)
@@ -455,7 +455,7 @@ when(dt_valid){
   dt_te.io.coreid   := 0.U
   dt_te.io.valid    := (wb_reg_inst === "h0000006b".U)
   dt_te.io.code     := rf_a0(2, 0)
-  dt_te.io.pc       := if_reg_pc
+  dt_te.io.pc       := wb_reg_pc
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
