@@ -455,7 +455,7 @@ when(dt_valid){
   dt_te.io.coreid   := 0.U
   dt_te.io.valid    := (wb_reg_inst === "h0000006b".U)
   dt_te.io.code     := rf_a0(2, 0)
-  dt_te.io.pc       := wb_reg_pc
+  dt_te.io.pc       := RegNext(wb_reg_pc)
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 

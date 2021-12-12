@@ -1264,6 +1264,7 @@ module Core(
   reg [63:0] _RAND_45;
   reg [63:0] _RAND_46;
   reg [63:0] _RAND_47;
+  reg [31:0] _RAND_48;
 `endif // RANDOMIZE_REG_INIT
   wire  regfile_clock; // @[Core.scala 167:21]
   wire  regfile_reset; // @[Core.scala 167:21]
@@ -1439,6 +1440,7 @@ module Core(
   wire [63:0] _instr_cnt_T_1 = instr_cnt + 64'h1; // @[Core.scala 446:26]
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 448:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
+  reg [31:0] dt_te_io_pc_REG; // @[Core.scala 458:31]
   RegFile regfile ( // @[Core.scala 167:21]
     .clock(regfile_clock),
     .reset(regfile_reset),
@@ -1600,7 +1602,7 @@ module Core(
   assign dt_te_coreid = 8'h0; // @[Core.scala 455:21]
   assign dt_te_valid = wb_reg_inst == 64'h6b; // @[Core.scala 456:37]
   assign dt_te_code = rf_a0_0[2:0]; // @[Core.scala 457:29]
-  assign dt_te_pc = {{32'd0}, wb_reg_pc}; // @[Core.scala 458:21]
+  assign dt_te_pc = {{32'd0}, dt_te_io_pc_REG}; // @[Core.scala 458:21]
   assign dt_te_cycleCnt = cycle_cnt; // @[Core.scala 459:21]
   assign dt_te_instrCnt = instr_cnt; // @[Core.scala 460:21]
   assign dt_cs_clock = clock; // @[Core.scala 463:27]
@@ -1850,6 +1852,7 @@ module Core(
     end else if (dt_ic_valid) begin // @[Core.scala 445:24]
       instr_cnt <= _instr_cnt_T_1; // @[Core.scala 446:13]
     end
+    dt_te_io_pc_REG <= wb_reg_pc; // @[Core.scala 458:31]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -1983,6 +1986,8 @@ initial begin
   cycle_cnt = _RAND_46[63:0];
   _RAND_47 = {2{`RANDOM}};
   instr_cnt = _RAND_47[63:0];
+  _RAND_48 = {1{`RANDOM}};
+  dt_te_io_pc_REG = _RAND_48[31:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
