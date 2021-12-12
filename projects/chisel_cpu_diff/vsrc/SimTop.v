@@ -1634,8 +1634,6 @@ module Core(
       id_reg_pc <= if_reg_pc; // @[Core.scala 145:14]
     end else if (_T_1 & exe_pc_jmp) begin // @[Core.scala 148:33]
       id_reg_pc <= if_reg_pc; // @[Core.scala 149:14]
-    end else if (stall) begin // @[Core.scala 153:17]
-      id_reg_pc <= if_reg_pc; // @[Core.scala 154:14]
     end
     if (reset) begin // @[Core.scala 43:28]
       id_reg_inst <= 64'h0; // @[Core.scala 43:28]
@@ -1648,8 +1646,6 @@ module Core(
       exe_reg_pc <= 32'h0; // @[Core.scala 47:32]
     end else if (_T_3) begin // @[Core.scala 230:28]
       exe_reg_pc <= id_reg_pc; // @[Core.scala 231:19]
-    end else if (stall | exe_pc_jmp) begin // @[Core.scala 256:32]
-      exe_reg_pc <= 32'h0; // @[Core.scala 258:19]
     end
     if (reset) begin // @[Core.scala 48:32]
       exe_reg_inst <= 64'h0; // @[Core.scala 48:32]
