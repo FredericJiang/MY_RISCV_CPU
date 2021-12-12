@@ -1256,13 +1256,12 @@ module Core(
   reg [31:0] _RAND_37;
   reg [31:0] _RAND_38;
   reg [31:0] _RAND_39;
-  reg [31:0] _RAND_40;
-  reg [63:0] _RAND_41;
-  reg [31:0] _RAND_42;
+  reg [63:0] _RAND_40;
+  reg [31:0] _RAND_41;
+  reg [63:0] _RAND_42;
   reg [63:0] _RAND_43;
   reg [63:0] _RAND_44;
   reg [63:0] _RAND_45;
-  reg [63:0] _RAND_46;
 `endif // RANDOMIZE_REG_INIT
   wire  regfile_clock; // @[Core.scala 170:21]
   wire  regfile_reset; // @[Core.scala 170:21]
@@ -1389,7 +1388,6 @@ module Core(
   reg [63:0] wb_reg_wdata; // @[Core.scala 100:32]
   reg [63:0] wb_reg_wdest; // @[Core.scala 101:32]
   reg  wb_reg_wen; // @[Core.scala 102:28]
-  reg [31:0] exe_pc_nxt; // @[Core.scala 108:22]
   wire [4:0] id_rs2_addr = id_reg_inst[24:20]; // @[Core.scala 168:30]
   wire [63:0] _GEN_41 = {{59'd0}, id_rs2_addr}; // @[Core.scala 217:54]
   wire  _T_10 = exe_reg_rd_addr == _GEN_41; // @[Core.scala 217:54]
@@ -1401,6 +1399,7 @@ module Core(
   wire  exe_pc_jmp = nxt_pc_io_pc_jmp; // @[Core.scala 107:23 Core.scala 304:13]
   wire  _T_3 = ~stall & ~exe_pc_jmp; // @[Core.scala 119:13]
   wire [31:0] _if_reg_pc_T_1 = if_reg_pc + 32'h4; // @[Core.scala 121:25]
+  wire [31:0] exe_pc_nxt = nxt_pc_io_pc_nxt; // @[Core.scala 108:23 Core.scala 303:13]
   wire  _id_op1_T = decode_io_op1_type == 3'h2; // @[Core.scala 190:39]
   wire  _id_op1_T_1 = decode_io_op1_type == 3'h3; // @[Core.scala 191:39]
   wire  _id_op1_T_3 = id_rs1_addr != 5'h0; // @[Core.scala 192:70]
@@ -1807,7 +1806,6 @@ module Core(
       wb_reg_wdest <= 64'h0; // @[Core.scala 334:26]
     end
     wb_reg_wen <= mem_reg_dmem_wen; // @[Core.scala 371:21]
-    exe_pc_nxt <= nxt_pc_io_pc_nxt; // @[Core.scala 303:13]
     dt_ic_io_valid_REG <= wb_reg_inst != 64'h33 & wb_reg_pc != 32'h80000000; // @[Core.scala 415:37]
     dt_ic_io_pc_REG <= wb_reg_pc; // @[Core.scala 425:31]
     dt_ic_io_instr_REG <= wb_reg_inst; // @[Core.scala 426:31]
@@ -1938,23 +1936,21 @@ initial begin
   _RAND_37 = {1{`RANDOM}};
   wb_reg_wen = _RAND_37[0:0];
   _RAND_38 = {1{`RANDOM}};
-  exe_pc_nxt = _RAND_38[31:0];
+  dt_ic_io_valid_REG = _RAND_38[0:0];
   _RAND_39 = {1{`RANDOM}};
-  dt_ic_io_valid_REG = _RAND_39[0:0];
-  _RAND_40 = {1{`RANDOM}};
-  dt_ic_io_pc_REG = _RAND_40[31:0];
-  _RAND_41 = {2{`RANDOM}};
-  dt_ic_io_instr_REG = _RAND_41[63:0];
-  _RAND_42 = {1{`RANDOM}};
-  dt_ic_io_wen_REG = _RAND_42[0:0];
+  dt_ic_io_pc_REG = _RAND_39[31:0];
+  _RAND_40 = {2{`RANDOM}};
+  dt_ic_io_instr_REG = _RAND_40[63:0];
+  _RAND_41 = {1{`RANDOM}};
+  dt_ic_io_wen_REG = _RAND_41[0:0];
+  _RAND_42 = {2{`RANDOM}};
+  dt_ic_io_wdata_REG = _RAND_42[63:0];
   _RAND_43 = {2{`RANDOM}};
-  dt_ic_io_wdata_REG = _RAND_43[63:0];
+  dt_ic_io_wdest_REG = _RAND_43[63:0];
   _RAND_44 = {2{`RANDOM}};
-  dt_ic_io_wdest_REG = _RAND_44[63:0];
+  cycle_cnt = _RAND_44[63:0];
   _RAND_45 = {2{`RANDOM}};
-  cycle_cnt = _RAND_45[63:0];
-  _RAND_46 = {2{`RANDOM}};
-  instr_cnt = _RAND_46[63:0];
+  instr_cnt = _RAND_45[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

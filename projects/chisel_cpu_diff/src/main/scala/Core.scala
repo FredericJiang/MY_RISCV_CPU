@@ -105,7 +105,7 @@ val wb_reg_wen       =  Reg(Bool())
 
 
 val exe_pc_jmp  = Wire(Bool())
-val exe_pc_nxt  = Reg(UInt(32.W))
+val exe_pc_nxt  = Wire(UInt(32.W))
 val exe_alu_out = Wire(UInt(64.W))
 val mem_rd_data = Wire(UInt(64.W))
 val wb_rd_data = Wire(UInt(64.W))
