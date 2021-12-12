@@ -418,7 +418,7 @@ dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_pc =/= "h80000000".U)
 
 
   val dt_ic = Module(new DifftestInstrCommit)
-  dt_ic.io.clock    := clock
+  dt_ic.io.clock    := RegNext(clock)
   dt_ic.io.coreid   := RegNext(0.U)
   dt_ic.io.index    := RegNext(0.U)
   dt_ic.io.valid    := RegNext(dt_valid)
