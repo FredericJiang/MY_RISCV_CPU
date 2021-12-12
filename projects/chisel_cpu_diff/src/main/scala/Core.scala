@@ -130,7 +130,7 @@ if_reg_nxt_pc := if_reg_pc
  if_reg_nxt_pc  := exe_pc_nxt
 }
 
-if_reg_pc := Mux(if_reg_pc_valid,if_reg_nxt_pc,"h80000000".U )
+if_reg_pc := if_reg_nxt_pc
 
 io.imem.en   := true.B
 io.imem.addr := if_reg_pc
@@ -484,7 +484,7 @@ dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
   dt_cs.io.medeleg        := 0.U
 
 
-printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
-printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
+//printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
+//printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
 //printf("dt_ic.io.wen =%x, dt_ic.io.wdata =%x, dt_ic.io.wdest =%x \n",dt_ic.io.wen ,dt_ic.io.wdata ,dt_ic.io.wdest)
 }
