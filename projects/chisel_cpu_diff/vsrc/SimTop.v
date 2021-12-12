@@ -1570,7 +1570,7 @@ module Core(
   assign dt_ic_clock = dt_ic_io_clock_REG; // @[Core.scala 421:21]
   assign dt_ic_coreid = 8'h0; // @[Core.scala 422:21]
   assign dt_ic_index = 8'h0; // @[Core.scala 423:21]
-  assign dt_ic_valid = wb_reg_inst != 64'h33; // @[Core.scala 415:26]
+  assign dt_ic_valid = wb_reg_inst != 64'h33 & wb_reg_pc != 32'h80000000; // @[Core.scala 415:37]
   assign dt_ic_pc = {{32'd0}, wb_reg_pc}; // @[Core.scala 425:21]
   assign dt_ic_instr = wb_reg_inst[31:0]; // @[Core.scala 426:21]
   assign dt_ic_special = 8'h0; // @[Core.scala 427:21]
