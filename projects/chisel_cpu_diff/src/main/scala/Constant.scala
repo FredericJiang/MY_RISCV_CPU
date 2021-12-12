@@ -74,7 +74,7 @@ object Constant{
  
 
 
-  val BUBBLE  = "h00000033".U(32.W)
+  val BUBBLE  = "h00000013".U(32.W)
 
 //  nop  =　addi r0, r0, x0
 }
