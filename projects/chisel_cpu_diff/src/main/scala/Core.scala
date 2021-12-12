@@ -250,8 +250,15 @@ exe_reg_rd_en     := (decode.io.wb_type === WB_REG)
 exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (exe_reg_wb_type =/= WB_X)
 exe_reg_dmem_en   := (decode.io.mem_rtype =/= MEM_X) || exe_reg_dmem_wen
 
-}.elsewhen(stall || kill_stage){
+}.elsewhen(stall){
 //if stall exe insert a bubble
+exe_reg_pc        := 0.U
+exe_reg_inst      := BUBBLE
+exe_reg_rd_en     := false.B
+exe_reg_dmem_wen  := false.B
+exe_reg_dmem_en   := false.B
+
+}.elsewhen(kill_stage){
 exe_reg_pc        := 0.U
 exe_reg_inst      := BUBBLE
 exe_reg_rd_en     := false.B
