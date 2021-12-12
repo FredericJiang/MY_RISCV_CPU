@@ -1808,7 +1808,7 @@ module Core(
     end
     wb_reg_wen <= mem_reg_dmem_wen; // @[Core.scala 371:21]
     exe_pc_nxt <= nxt_pc_io_pc_nxt; // @[Core.scala 303:13]
-    dt_ic_io_valid_REG <= wb_reg_inst != 64'h33 & wb_reg_pc != 32'h4c4b400; // @[Core.scala 415:37]
+    dt_ic_io_valid_REG <= wb_reg_inst != 64'h33 & wb_reg_pc != 32'h80000000; // @[Core.scala 415:37]
     dt_ic_io_pc_REG <= wb_reg_pc; // @[Core.scala 425:31]
     dt_ic_io_instr_REG <= wb_reg_inst; // @[Core.scala 426:31]
     dt_ic_io_wen_REG <= wb_reg_wen; // @[Core.scala 431:31]
