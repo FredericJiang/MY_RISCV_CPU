@@ -115,6 +115,11 @@ val wb_rd_data = Wire(UInt(64.W))
 
 when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
+io.imem.en   := true.B
+io.imem.addr := if_reg_pc
+
+val if_inst   = io.imem.rdata
+
 when(!stall && !exe_pc_jmp ){
 
 if_reg_pc  := if_reg_pc + 4.U
@@ -128,10 +133,7 @@ if_reg_pc := if_reg_pc
   if_reg_pc  := exe_pc_nxt
 }
 
-io.imem.en   := true.B
-io.imem.addr := if_reg_pc
 
-val if_inst   = io.imem.rdata
 
 
 
