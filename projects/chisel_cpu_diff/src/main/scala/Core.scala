@@ -115,7 +115,7 @@ val wb_rd_data = Wire(UInt(64.W))
 
 when( if_reg_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 
-when(!stall && !exe_pc_jmp && (if_reg_pc =/= "h80000000".U(32.W))){
+when(!stall && !exe_pc_jmp ){
 
 if_reg_pc  := if_reg_pc + 4.U
 
