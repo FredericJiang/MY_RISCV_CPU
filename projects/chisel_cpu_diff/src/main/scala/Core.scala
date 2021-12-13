@@ -211,7 +211,7 @@ val id_rs2 =  MuxCase( regfile.io.rs2_data , Array(
 
 // load instruciton in exe stage, and address conflict
 //generate a bubble
-when((exe_reg_mem_rtype =/= MEM_X || exe_reg_alu_type === ALU_COPY2 )&&( exe_reg_rd_addr === id_rs2_addr || exe_reg_rd_addr === id_rs1_addr ))
+when((exe_reg_mem_rtype =/= MEM_X || exe_reg_alu_type === ALU_COPY2 ) && ( exe_reg_rd_addr === id_rs2_addr || exe_reg_rd_addr === id_rs1_addr ))
 { stall := true.B }.otherwise{ stall := false.B }
 
 
@@ -257,6 +257,9 @@ exe_reg_inst      := BUBBLE
 exe_reg_rd_en     := false.B
 exe_reg_dmem_wen  := false.B
 exe_reg_dmem_en   := false.B
+exe_reg_rs1_addr  := 0.U
+exe_reg_rs2_addr  := 0.U
+exe_reg_rd_addr   := 0.U
 
 }.elsewhen(kill_stage){
 exe_reg_pc        := 0.U
