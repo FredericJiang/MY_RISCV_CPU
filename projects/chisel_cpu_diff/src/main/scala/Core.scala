@@ -50,6 +50,7 @@ val exe_reg_op2_type  = RegInit(OP_X)
 val exe_reg_op1_data  = Reg(UInt(64.W))
 val exe_reg_op2_data  = Reg(UInt(64.W))
 val exe_reg_rs2_data  = Reg(UInt(64.W))
+val exe_reg_rs1_data  = Reg(UInt(64.W))
 val exe_reg_imm       = Reg(UInt(64.W))
 val exe_reg_rd_en     = Reg(Bool())
 val exe_reg_dmem_en   = Reg(Bool())
@@ -181,6 +182,14 @@ imm_gen.io.inst     := id_reg_inst
 
 
 
+val jarl_type = (decode.io.op2_type === OP_4) && (decode.io.imm_type === IMM_I)
+
+//used only for jalr
+val id_rs1 = MuxCase( regfile.io.rs1_data  , Array(
+                  ((exe_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
+                  ((mem_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
+                  ((wb_reg_rd_addr  === id_rs1_addr) && (id_rs1_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
+                  ))
 
 
 val id_op1  =  MuxCase( regfile.io.rs1_data  , Array(
@@ -236,6 +245,7 @@ exe_reg_rd_addr   := id_reg_inst(11,  7)
 
 exe_reg_imm       := imm_gen.io.imm
 exe_reg_rs2_data  := id_op2   //   only used in store struction, and its op2_type is reg, so there is actually no difference with id_op2
+exe_reg_rs1_data  := id_rs1
 
 exe_reg_op1_data  := id_op1
 exe_reg_op2_data  := id_op2
@@ -302,8 +312,12 @@ nxt_pc.io.imm_type := exe_reg_imm_type
 nxt_pc.io.alu_type := exe_reg_alu_type
 nxt_pc.io.imm      := exe_reg_imm
 nxt_pc.io.alu_out  := exe_alu_out
-nxt_pc.io.rs1_data := exe_op1
+nxt_pc.io.rs1_data := exe_reg_rs1_data
 nxt_pc.io.op2_type := exe_reg_op2_type
+
+
+
+
 
 
 exe_pc_nxt  := nxt_pc.io.pc_nxt
