@@ -1645,6 +1645,8 @@ module Core(
       id_reg_pc <= if_reg_pc; // @[Core.scala 142:14]
     end else if (_T & kill_stage) begin // @[Core.scala 145:33]
       id_reg_pc <= 32'h0; // @[Core.scala 146:14]
+    end else if (stall) begin // @[Core.scala 150:17]
+      id_reg_pc <= if_reg_pc; // @[Core.scala 151:14]
     end
     if (reset) begin // @[Core.scala 36:28]
       id_reg_inst <= 64'h0; // @[Core.scala 36:28]
@@ -1652,6 +1654,8 @@ module Core(
       id_reg_inst <= io_imem_rdata; // @[Core.scala 143:14]
     end else if (_T & kill_stage) begin // @[Core.scala 145:33]
       id_reg_inst <= 64'h13; // @[Core.scala 147:14]
+    end else if (stall) begin // @[Core.scala 150:17]
+      id_reg_inst <= 64'h0; // @[Core.scala 152:14]
     end
     if (reset) begin // @[Core.scala 40:32]
       exe_reg_pc <= 32'h7ffffffc; // @[Core.scala 40:32]
