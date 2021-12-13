@@ -93,7 +93,7 @@ val wb_reg_rd_en     =  Reg(Bool())
 val wb_reg_rd_addr   =  RegInit(0.U(64.W)) 
 val wb_reg_wdata     =  RegInit(0.U(64.W)) 
 val wb_reg_wdest     =  RegInit(0.U(64.W)) 
-val wb_reg_wen       =  Reg(Bool())
+val wb_reg_dmem_wen       =  Reg(Bool())
 
 
 
@@ -384,10 +384,10 @@ lsu.io.mem_rtype  := mem_reg_mem_rtype
 lsu.io.dmem_rdata := mem_dmem_rdata
 
 lsu.io.wb_type    := mem_reg_wb_type
-when((mem_reg_rs2_addr === wb_reg_rd_addr) && mem_reg_dmem_wen ){
+
+when((mem_reg_rs2_addr === wb_reg_rd_addr) && mem_reg_dmem_wen && wb_reg_rd_en ){
 lsu.io.rs2_data  := wb_rd_data
-}.otherwise{
-lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2
+}.otherwise{lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2
 
 
 mem_rd_data   := lsu.io.mem_rdata
@@ -405,7 +405,7 @@ wb_reg_inst        := mem_reg_inst
 wb_reg_pc          := mem_reg_pc
 wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
-wb_reg_wen         := mem_reg_dmem_wen
+wb_reg_dmem_wen    := mem_reg_dmem_wen
 
 
 wb_reg_mem_rtype   := mem_reg_mem_rtype 
@@ -413,6 +413,7 @@ wb_reg_alu_out     := mem_reg_alu_out
 wb_reg_rd_data     := mem_rd_data
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_en       := mem_reg_rd_en
+
 
 //*******************************************************************
 //WriteBack
@@ -462,7 +463,7 @@ val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.skip     := RegNext(false.B)
   dt_ic.io.isRVC    := false.B
   dt_ic.io.scFailed := false.B
-  dt_ic.io.wen      := RegNext(wb_reg_wen)
+  dt_ic.io.wen      := RegNext(wb_reg_dmem_wen)
   dt_ic.io.wdata    := RegNext(wb_reg_wdata)
   dt_ic.io.wdest    := RegNext(wb_reg_wdest)
 
