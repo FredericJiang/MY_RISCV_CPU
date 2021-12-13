@@ -419,8 +419,8 @@ regfile.io.rd_data := wb_rd_data
 
 val dt_valid = RegInit(false.B)
 
-when(wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U )
-{dt_valid := false.B}.otherwise{dt_valid := true.B}
+dt_valid := wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U 
+
 
 val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.clock    := clock
