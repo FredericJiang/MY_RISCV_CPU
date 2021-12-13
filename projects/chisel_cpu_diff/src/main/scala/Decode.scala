@@ -71,7 +71,7 @@ BGEU    -> List( Y ,Y, ALU_BGEU, OP_REG, OP_REG , IMM_B  , MEM_X, WB_X  ),
 JAL     -> List( Y ,Y, ALU_ADD , OP_PC,   OP_4,   IMM_J,  MEM_X,  WB_REG  ), //NXT_PC FROM 
 JALR    -> List( Y ,Y, ALU_ADD , OP_PC,   OP_4,   IMM_I,  MEM_X,  WB_REG  ), //NXT_PC FROM 
 // RV64I only
-ADDIW   -> List( Y, N, ALU_ADDW , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
+ADDIW   -> List( Y, N, ALU_ADDW , OP_REG , OP_IMM   , IMM_I , MEM_X, WB_REG  ),
 ADDW    -> List( Y, N, ALU_ADDW , OP_REG , OP_REG , IMM_X , MEM_X, WB_REG  ),
 SLLIW   -> List( Y, N, ALU_SLLW , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
 SRLIW   -> List( Y, N, ALU_SRLW , OP_REG , OP_X   , IMM_I , MEM_X, WB_REG  ),
