@@ -193,7 +193,7 @@ val id_op1  =  MuxCase( regfile.io.rs1_data  , Array(
 
 
        
-val id_op2 =  MuxCase( regfile.io.rs1_data , Array(
+val id_op2 =  MuxCase( regfile.io.rs2_data , Array(
                   (decode.io.op2_type === OP_IMM ) -> imm_gen.io.imm,
                   (decode.io.op2_type === OP_4)   -> 4.U,
                   ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,

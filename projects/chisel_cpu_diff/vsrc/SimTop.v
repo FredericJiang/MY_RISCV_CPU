@@ -1426,7 +1426,7 @@ module Core(
   wire  _id_op2_T_7 = _T_12 & id_rs2_addr != 5'h0 & exe_reg_rd_en & _id_op1_T_6; // @[Core.scala 199:96]
   wire  _id_op2_T_11 = mem_reg_rd_addr == _GEN_56 & _id_op2_T_3 & mem_reg_rd_en; // @[Core.scala 200:79]
   wire  _id_op2_T_17 = wb_reg_rd_addr == _GEN_56 & _id_op2_T_3 & wb_reg_rd_en; // @[Core.scala 201:79]
-  wire [63:0] _id_op2_T_18 = _id_op2_T_17 ? wb_rd_data : regfile_io_rs1_data; // @[Mux.scala 98:16]
+  wire [63:0] _id_op2_T_18 = _id_op2_T_17 ? wb_rd_data : regfile_io_rs2_data; // @[Mux.scala 98:16]
   wire [63:0] _id_op2_T_19 = _id_op2_T_11 ? _id_op1_T_13 : _id_op2_T_18; // @[Mux.scala 98:16]
   reg  dt_valid; // @[Core.scala 426:23]
   reg  dt_ic_io_wen_REG; // @[Core.scala 440:31]
