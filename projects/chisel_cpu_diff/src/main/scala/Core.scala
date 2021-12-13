@@ -252,7 +252,7 @@ exe_reg_dmem_en   := (decode.io.mem_rtype =/= MEM_X) || exe_reg_dmem_wen
 
 }.elsewhen(stall){
 //if stall exe insert a bubble
-exe_reg_pc        := 0.U
+exe_reg_pc        := id_reg_pc
 exe_reg_inst      := BUBBLE
 exe_reg_rd_en     := false.B
 exe_reg_dmem_wen  := false.B

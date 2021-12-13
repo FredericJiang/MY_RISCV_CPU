@@ -1662,7 +1662,7 @@ module Core(
     end else if (_T_2) begin // @[Core.scala 227:28]
       exe_reg_pc <= id_reg_pc; // @[Core.scala 228:19]
     end else if (stall) begin // @[Core.scala 253:18]
-      exe_reg_pc <= 32'h0; // @[Core.scala 255:19]
+      exe_reg_pc <= id_reg_pc; // @[Core.scala 255:19]
     end else if (kill_stage) begin // @[Core.scala 261:23]
       exe_reg_pc <= 32'h0; // @[Core.scala 262:19]
     end
