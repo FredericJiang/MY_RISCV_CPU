@@ -357,6 +357,7 @@ when(mem_reg_dmem_en){mem_dmem_addr := mem_reg_alu_out}
 .otherwise{mem_dmem_addr := 0.U}
 
 
+
 // Operation with Memory
 io.dmem.en    := mem_reg_dmem_en
 io.dmem.wen   := mem_reg_dmem_wen
@@ -373,10 +374,13 @@ lsu.io.mem_rtype  := mem_reg_mem_rtype
 lsu.io.dmem_rdata := mem_dmem_rdata
 
 lsu.io.wb_type    := mem_reg_wb_type
-lsu.io.rs2_data   := mem_reg_rs2_data  //write memory data is from rs2
+when(mem_reg_rs2_addr === wb_reg_rd_addr && mem_reg_dmem_wen ){
+lsu.io.rs2_data  := wb_rd_data
+}.otherwise{
+lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2
 
 
-mem_rd_data   := lsu.io.rd_data
+mem_rd_data   := lsu.io.mem_rdata
 
 io.dmem.wmask := lsu.io.dmem_wmask
 io.dmem.wdata := lsu.io.dmem_wdata

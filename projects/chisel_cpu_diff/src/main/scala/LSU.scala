@@ -14,7 +14,7 @@ val dmem_rdata   = Input(UInt(64.W))
 val rs2_data     = Input(UInt(64.W))
 
 
-val rd_data    = Output(UInt(64.W))
+val mem_rdata    = Output(UInt(64.W))
 val dmem_wmask = Output(UInt(64.W))
 val dmem_wdata = Output(UInt(64.W))
 
@@ -23,17 +23,17 @@ val dmem_wdata = Output(UInt(64.W))
 val dmem_addr  = io.dmem_addr
 val dmem_rdata = io.dmem_rdata
 val rs2_data   = io.rs2_data
-val rd_data    = Wire(UInt(64.W))
+val mem_rdata    = Wire(UInt(64.W))
 val dmem_wmask = Wire(UInt(64.W))
 val dmem_wdata = Wire(UInt(64.W))
 
 
-io.rd_data    := rd_data
+io.mem_rdata    := mem_rdata
 io.dmem_wmask := dmem_wmask
 io.dmem_wdata := dmem_wdata
 dmem_wdata  := 0.U
 dmem_wmask  := 0.U
-rd_data     := 0.U
+mem_rdata     := 0.U
 
 
 
@@ -45,7 +45,7 @@ switch(io.mem_rtype){
 //lb
 is(MEM_B){
 
-rd_data:= MuxCase(0.U, Array(
+mem_rdata:= MuxCase(0.U, Array(
                   (dmem_addr(2,0)==="b000".U) -> Cat(Fill(56, dmem_rdata(7)) ,  dmem_rdata(7,   0)),
                   (dmem_addr(2,0)==="b001".U) -> Cat(Fill(56, dmem_rdata(15)),  dmem_rdata(15,  8)),
                   (dmem_addr(2,0)==="b010".U) -> Cat(Fill(56, dmem_rdata(23)),  dmem_rdata(23, 16)),
@@ -59,7 +59,7 @@ rd_data:= MuxCase(0.U, Array(
 //lh
 is(MEM_H){
 
-rd_data:= MuxCase(0.U, Array(
+mem_rdata:= MuxCase(0.U, Array(
                   (dmem_addr(2,1)==="b00".U) -> Cat(Fill(48, dmem_rdata(15)),  dmem_rdata(15, 0)),
                   (dmem_addr(2,1)==="b01".U) -> Cat(Fill(48, dmem_rdata(31)),  dmem_rdata(31, 16)),
                   (dmem_addr(2,1)==="b10".U) -> Cat(Fill(48, dmem_rdata(47)),  dmem_rdata(47, 32)),
@@ -71,17 +71,17 @@ rd_data:= MuxCase(0.U, Array(
 //lw
 is(MEM_W) {
 
-rd_data:= MuxCase(0.U, Array(
+mem_rdata:= MuxCase(0.U, Array(
                   (dmem_addr(2)==="b0".U) -> Cat(Fill(32, dmem_rdata(31)), dmem_rdata(31, 0)),
                   (dmem_addr(2)==="b1".U) -> Cat(Fill(32, dmem_rdata(63)), dmem_rdata(63, 32))
                   ))}
 
 //ld
-is(MEM_D) {rd_data := dmem_rdata}
+is(MEM_D) {mem_rdata := dmem_rdata}
 
 //lbu
 is(MEM_BU){
-rd_data:= MuxCase(0.U, Array(
+mem_rdata:= MuxCase(0.U, Array(
                   (dmem_addr(2,0)==="b000".U) -> Cat(Fill(56, 0.U),  dmem_rdata(7,   0)),
                   (dmem_addr(2,0)==="b001".U) -> Cat(Fill(56, 0.U),  dmem_rdata(15,  8)),
                   (dmem_addr(2,0)==="b010".U) -> Cat(Fill(56, 0.U),  dmem_rdata(23, 16)),
@@ -94,7 +94,7 @@ rd_data:= MuxCase(0.U, Array(
 
 //lhu
 is(MEM_HU){
-rd_data:= MuxCase(0.U, Array(
+mem_rdata:= MuxCase(0.U, Array(
                   (dmem_addr(2,1)==="b00".U) -> Cat(Fill(48, 0.U),  dmem_rdata(15,  0)),
                   (dmem_addr(2,1)==="b01".U) -> Cat(Fill(48, 0.U),  dmem_rdata(31, 16)),
                   (dmem_addr(2,1)==="b10".U) -> Cat(Fill(48, 0.U),  dmem_rdata(47, 32)),
@@ -103,7 +103,7 @@ rd_data:= MuxCase(0.U, Array(
 
 //lwu
 is(MEM_WU) {
-rd_data:= MuxCase(0.U, Array(
+mem_rdata:= MuxCase(0.U, Array(
                   (dmem_addr(2)==="b0".U) -> Cat(Fill(32, 0.U), dmem_rdata(31, 0)),
                   (dmem_addr(2)==="b1".U) -> Cat(Fill(32, 0.U), dmem_rdata(63, 32))
                   ))}
