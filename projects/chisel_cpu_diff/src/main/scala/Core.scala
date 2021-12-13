@@ -186,7 +186,7 @@ val jarl_type = (decode.io.op2_type === OP_4) && (decode.io.imm_type === IMM_I)
 
 //used only for jalr
 val id_rs1 = MuxCase( regfile.io.rs1_data  , Array(
-                  (id_rs1_addr === 0.U) -> 0.U ,
+                  (id_rs1_addr === 0.U && decode.io.op1_type === OP_REG ) -> 0.U ,
                   ((exe_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
                   ((mem_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
                   ((wb_reg_rd_addr  === id_rs1_addr) && (id_rs1_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
@@ -205,7 +205,7 @@ val id_op1  =  MuxCase( regfile.io.rs1_data  , Array(
 
        
 val id_op2 =  MuxCase( regfile.io.rs2_data , Array(
-                  (id_rs2_addr === 0.U) -> 0.U ,
+                  (id_rs2_addr === 0.U && decode.io.op2_type === OP_REG) -> 0.U ,
                   (decode.io.op2_type === OP_IMM ) -> imm_gen.io.imm,
                   (decode.io.op2_type === OP_4)   -> 4.U,
                   ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,

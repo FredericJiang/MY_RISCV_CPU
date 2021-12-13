@@ -1396,10 +1396,12 @@ module Core(
   wire [63:0] _GEN_57 = {{59'd0}, id_rs2_addr}; // @[Core.scala 221:20]
   wire  _T_13 = id_rs2_addr != 5'h0; // @[Core.scala 221:51]
   wire  _T_14 = exe_reg_rd_addr == _GEN_57 & id_rs2_addr != 5'h0; // @[Core.scala 221:37]
+  wire  _T_15 = decode_io_op2_type == 3'h1; // @[Core.scala 221:81]
   wire [4:0] id_rs1_addr = id_reg_inst[19:15]; // @[Core.scala 165:30]
   wire [63:0] _GEN_58 = {{59'd0}, id_rs1_addr}; // @[Core.scala 221:113]
   wire  _T_18 = id_rs1_addr != 5'h0; // @[Core.scala 221:143]
   wire  _T_19 = exe_reg_rd_addr == _GEN_58 & id_rs1_addr != 5'h0; // @[Core.scala 221:129]
+  wire  _T_20 = decode_io_op1_type == 3'h1; // @[Core.scala 221:173]
   wire  _T_22 = exe_reg_rd_addr == _GEN_57 & id_rs2_addr != 5'h0 & decode_io_op2_type == 3'h1 | exe_reg_rd_addr ==
     _GEN_58 & id_rs1_addr != 5'h0 & decode_io_op1_type == 3'h1; // @[Core.scala 221:93]
   wire  stall = (exe_reg_mem_rtype != 3'h0 | exe_reg_alu_type == 5'h12) & _T_22; // @[Core.scala 220:71]
@@ -1410,30 +1412,31 @@ module Core(
   wire [31:0] exe_pc_nxt = nxt_pc_io_pc_nxt; // @[Core.scala 102:23 Core.scala 326:13]
   wire  _jarl_type_T = decode_io_op2_type == 3'h4; // @[Core.scala 185:37]
   wire  _id_rs1_T = id_rs1_addr == 5'h0; // @[Core.scala 189:32]
-  wire  _id_rs1_T_5 = exe_reg_mem_rtype == 3'h0; // @[Core.scala 190:117]
-  wire  _id_rs1_T_6 = _T_19 & exe_reg_rd_en & exe_reg_mem_rtype == 3'h0; // @[Core.scala 190:96]
-  wire  _id_rs1_T_10 = mem_reg_rd_addr == _GEN_58 & _T_18 & mem_reg_rd_en; // @[Core.scala 191:79]
+  wire  _id_rs1_T_2 = id_rs1_addr == 5'h0 & _T_20; // @[Core.scala 189:40]
+  wire  _id_rs1_T_7 = exe_reg_mem_rtype == 3'h0; // @[Core.scala 190:117]
+  wire  _id_rs1_T_8 = _T_19 & exe_reg_rd_en & exe_reg_mem_rtype == 3'h0; // @[Core.scala 190:96]
+  wire  _id_rs1_T_12 = mem_reg_rd_addr == _GEN_58 & _T_18 & mem_reg_rd_en; // @[Core.scala 191:79]
   wire [63:0] mem_rd_data = lsu_io_rd_data; // @[Core.scala 104:23 Core.scala 379:15]
-  wire [63:0] _id_rs1_T_12 = mem_reg_mem_rtype != 3'h0 ? mem_rd_data : mem_reg_alu_out; // @[Core.scala 191:103]
-  wire  _id_rs1_T_16 = wb_reg_rd_addr == _GEN_58 & _T_18 & wb_reg_rd_en; // @[Core.scala 192:79]
+  wire [63:0] _id_rs1_T_14 = mem_reg_mem_rtype != 3'h0 ? mem_rd_data : mem_reg_alu_out; // @[Core.scala 191:103]
+  wire  _id_rs1_T_18 = wb_reg_rd_addr == _GEN_58 & _T_18 & wb_reg_rd_en; // @[Core.scala 192:79]
   wire  _wb_rd_data_T = wb_reg_mem_rtype == 3'h0; // @[Core.scala 412:37]
   wire  _wb_rd_data_T_1 = wb_reg_mem_rtype != 3'h0; // @[Core.scala 413:37]
   wire [63:0] _wb_rd_data_T_2 = _wb_rd_data_T_1 ? wb_reg_rd_data : 64'h0; // @[Mux.scala 98:16]
   wire [63:0] wb_rd_data = _wb_rd_data_T ? wb_reg_alu_out : _wb_rd_data_T_2; // @[Mux.scala 98:16]
-  wire [63:0] _id_rs1_T_17 = _id_rs1_T_16 ? wb_rd_data : regfile_io_rs1_data; // @[Mux.scala 98:16]
-  wire [63:0] _id_rs1_T_18 = _id_rs1_T_10 ? _id_rs1_T_12 : _id_rs1_T_17; // @[Mux.scala 98:16]
+  wire [63:0] _id_rs1_T_19 = _id_rs1_T_18 ? wb_rd_data : regfile_io_rs1_data; // @[Mux.scala 98:16]
+  wire [63:0] _id_rs1_T_20 = _id_rs1_T_12 ? _id_rs1_T_14 : _id_rs1_T_19; // @[Mux.scala 98:16]
   wire [63:0] exe_alu_out = alu_io_alu_out; // @[Core.scala 103:23 Core.scala 309:17]
-  wire [63:0] _id_rs1_T_19 = _id_rs1_T_6 ? exe_alu_out : _id_rs1_T_18; // @[Mux.scala 98:16]
+  wire [63:0] _id_rs1_T_21 = _id_rs1_T_8 ? exe_alu_out : _id_rs1_T_20; // @[Mux.scala 98:16]
   wire  _id_op1_T_1 = decode_io_op1_type == 3'h2; // @[Core.scala 198:39]
   wire  _id_op1_T_2 = decode_io_op1_type == 3'h3; // @[Core.scala 199:39]
-  wire  _id_op2_T = id_rs2_addr == 5'h0; // @[Core.scala 208:32]
-  wire  _id_op2_T_1 = decode_io_op2_type == 3'h2; // @[Core.scala 209:39]
-  wire  _id_op2_T_8 = _T_14 & exe_reg_rd_en & _id_rs1_T_5; // @[Core.scala 211:96]
-  wire  _id_op2_T_12 = mem_reg_rd_addr == _GEN_57 & _T_13 & mem_reg_rd_en; // @[Core.scala 212:79]
-  wire  _id_op2_T_18 = wb_reg_rd_addr == _GEN_57 & _T_13 & wb_reg_rd_en; // @[Core.scala 213:79]
-  wire [63:0] _id_op2_T_19 = _id_op2_T_18 ? wb_rd_data : regfile_io_rs2_data; // @[Mux.scala 98:16]
-  wire [63:0] _id_op2_T_20 = _id_op2_T_12 ? _id_rs1_T_12 : _id_op2_T_19; // @[Mux.scala 98:16]
-  wire [63:0] _id_op2_T_21 = _id_op2_T_8 ? exe_alu_out : _id_op2_T_20; // @[Mux.scala 98:16]
+  wire  _id_op2_T_2 = id_rs2_addr == 5'h0 & _T_15; // @[Core.scala 208:40]
+  wire  _id_op2_T_3 = decode_io_op2_type == 3'h2; // @[Core.scala 209:39]
+  wire  _id_op2_T_10 = _T_14 & exe_reg_rd_en & _id_rs1_T_7; // @[Core.scala 211:96]
+  wire  _id_op2_T_14 = mem_reg_rd_addr == _GEN_57 & _T_13 & mem_reg_rd_en; // @[Core.scala 212:79]
+  wire  _id_op2_T_20 = wb_reg_rd_addr == _GEN_57 & _T_13 & wb_reg_rd_en; // @[Core.scala 213:79]
+  wire [63:0] _id_op2_T_21 = _id_op2_T_20 ? wb_rd_data : regfile_io_rs2_data; // @[Mux.scala 98:16]
+  wire [63:0] _id_op2_T_22 = _id_op2_T_14 ? _id_rs1_T_14 : _id_op2_T_21; // @[Mux.scala 98:16]
+  wire [63:0] _id_op2_T_23 = _id_op2_T_10 ? exe_alu_out : _id_op2_T_22; // @[Mux.scala 98:16]
   wire [63:0] _GEN_10 = kill_stage ? 64'hffffffffffffffff : {{32'd0}, exe_reg_pc}; // @[Core.scala 274:23 Core.scala 275:19 Core.scala 40:32]
   wire [63:0] _GEN_20 = stall ? 64'h0 : _GEN_10; // @[Core.scala 261:18 Core.scala 263:19]
   wire [63:0] _GEN_34 = _T_2 ? {{32'd0}, id_reg_pc} : _GEN_20; // @[Core.scala 234:28 Core.scala 235:19]
@@ -1722,7 +1725,7 @@ module Core(
       end else if (_id_op1_T_2) begin // @[Mux.scala 98:16]
         exe_reg_op1_data <= {{32'd0}, id_reg_pc};
       end else begin
-        exe_reg_op1_data <= _id_rs1_T_19;
+        exe_reg_op1_data <= _id_rs1_T_21;
       end
     end else if (stall) begin // @[Core.scala 261:18]
       exe_reg_op1_data <= 64'h0; // @[Core.scala 271:19]
@@ -1730,38 +1733,38 @@ module Core(
       exe_reg_op1_data <= 64'h0; // @[Core.scala 284:19]
     end
     if (_T_2) begin // @[Core.scala 234:28]
-      if (_id_op2_T) begin // @[Mux.scala 98:16]
+      if (_id_op2_T_2) begin // @[Mux.scala 98:16]
         exe_reg_op2_data <= 64'h0;
-      end else if (_id_op2_T_1) begin // @[Mux.scala 98:16]
+      end else if (_id_op2_T_3) begin // @[Mux.scala 98:16]
         exe_reg_op2_data <= imm_gen_io_imm;
       end else if (_jarl_type_T) begin // @[Mux.scala 98:16]
         exe_reg_op2_data <= 64'h4;
       end else begin
-        exe_reg_op2_data <= _id_op2_T_21;
+        exe_reg_op2_data <= _id_op2_T_23;
       end
     end else if (stall) begin // @[Core.scala 261:18]
       exe_reg_op2_data <= 64'h0; // @[Core.scala 272:19]
     end
     if (_T_2) begin // @[Core.scala 234:28]
-      if (_id_op2_T) begin // @[Mux.scala 98:16]
+      if (_id_op2_T_2) begin // @[Mux.scala 98:16]
         exe_reg_rs2_data <= 64'h0;
-      end else if (_id_op2_T_1) begin // @[Mux.scala 98:16]
+      end else if (_id_op2_T_3) begin // @[Mux.scala 98:16]
         exe_reg_rs2_data <= imm_gen_io_imm;
       end else if (_jarl_type_T) begin // @[Mux.scala 98:16]
         exe_reg_rs2_data <= 64'h4;
       end else begin
-        exe_reg_rs2_data <= _id_op2_T_21;
+        exe_reg_rs2_data <= _id_op2_T_23;
       end
     end
     if (_T_2) begin // @[Core.scala 234:28]
-      if (_id_rs1_T) begin // @[Mux.scala 98:16]
+      if (_id_rs1_T_2) begin // @[Mux.scala 98:16]
         exe_reg_rs1_data <= 64'h0;
-      end else if (_id_rs1_T_6) begin // @[Mux.scala 98:16]
+      end else if (_id_rs1_T_8) begin // @[Mux.scala 98:16]
         exe_reg_rs1_data <= exe_alu_out;
-      end else if (_id_rs1_T_10) begin // @[Mux.scala 98:16]
-        exe_reg_rs1_data <= _id_rs1_T_12;
+      end else if (_id_rs1_T_12) begin // @[Mux.scala 98:16]
+        exe_reg_rs1_data <= _id_rs1_T_14;
       end else begin
-        exe_reg_rs1_data <= _id_rs1_T_17;
+        exe_reg_rs1_data <= _id_rs1_T_19;
       end
     end
     if (_T_2) begin // @[Core.scala 234:28]
