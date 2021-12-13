@@ -201,12 +201,6 @@ val id_op2 =  MuxCase( regfile.io.rs2_data , Array(
                   ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
                   ))
 
-val id_rs2 =  MuxCase( regfile.io.rs2_data , Array(
-                  ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
-                  ((mem_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
-                  ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
-                  ))
-
 
 
 // load instruciton in exe stage, and address conflict
@@ -241,7 +235,7 @@ exe_reg_rs2_addr  := id_reg_inst(24, 20)
 exe_reg_rd_addr   := id_reg_inst(11,  7)
 
 exe_reg_imm       := imm_gen.io.imm
-exe_reg_rs2_data  := id_rs2   //   only used in store struction, and its op2_type is reg, so there is actually no difference with id_op2
+exe_reg_rs2_data  := id_op2   //   only used in store struction, and its op2_type is reg, so there is actually no difference with id_op2
 
 exe_reg_op1_data  := id_op1
 exe_reg_op2_data  := id_op2
