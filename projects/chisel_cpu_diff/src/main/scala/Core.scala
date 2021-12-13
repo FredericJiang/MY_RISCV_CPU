@@ -346,9 +346,9 @@ mem_reg_mem_rtype  := exe_reg_mem_rtype
 mem_reg_wb_type    := exe_reg_wb_type
 mem_reg_alu_out    := exe_alu_out
 mem_reg_rs2_data   := exe_reg_rs2_data
-
-mem_reg_rs1_addr   := exe_reg_rs1_addr
 mem_reg_rs2_addr   := exe_reg_rs2_addr
+mem_reg_rs1_addr   := exe_reg_rs1_addr
+
 mem_reg_rd_addr    := exe_reg_rd_addr
 
 mem_reg_rd_en      := exe_reg_rd_en 
@@ -384,7 +384,7 @@ lsu.io.mem_rtype  := mem_reg_mem_rtype
 lsu.io.dmem_rdata := mem_dmem_rdata
 
 lsu.io.wb_type    := mem_reg_wb_type
-when(mem_reg_rs2_addr === wb_reg_rd_addr && mem_reg_dmem_wen ){
+when((mem_reg_rs2_addr === wb_reg_rd_addr) && mem_reg_dmem_wen ){
 lsu.io.rs2_data  := wb_rd_data
 }.otherwise{
 lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2

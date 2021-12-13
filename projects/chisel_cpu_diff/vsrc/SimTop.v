@@ -1596,7 +1596,7 @@ module Core(
   assign lsu_io_wb_type = mem_reg_wb_type; // @[Core.scala 386:19]
   assign lsu_io_dmem_addr = mem_reg_dmem_en ? mem_reg_alu_out : 64'h0; // @[Core.scala 366:22 Core.scala 366:37 Core.scala 367:26]
   assign lsu_io_dmem_rdata = io_dmem_rdata; // @[Core.scala 384:19]
-  assign lsu_io_rs2_data = mem_reg_rs2_addr == wb_reg_rd_addr & mem_reg_dmem_wen ? wb_rd_data : mem_reg_rs2_data; // @[Core.scala 387:63 Core.scala 388:18 Core.scala 390:19]
+  assign lsu_io_rs2_data = mem_reg_rs2_addr == wb_reg_rd_addr & mem_reg_dmem_wen ? wb_rd_data : mem_reg_rs2_data; // @[Core.scala 387:65 Core.scala 388:18 Core.scala 390:19]
   assign dt_ic_clock = clock; // @[Core.scala 457:21]
   assign dt_ic_coreid = 8'h0; // @[Core.scala 458:21]
   assign dt_ic_index = 8'h0; // @[Core.scala 459:21]
@@ -1847,7 +1847,7 @@ module Core(
     if (reset) begin // @[Core.scala 81:33]
       mem_reg_rs2_addr <= 64'h0; // @[Core.scala 81:33]
     end else begin
-      mem_reg_rs2_addr <= exe_reg_rs2_addr; // @[Core.scala 351:20]
+      mem_reg_rs2_addr <= exe_reg_rs2_addr; // @[Core.scala 349:20]
     end
     if (reset) begin // @[Core.scala 82:33]
       mem_reg_rd_addr <= 64'h0; // @[Core.scala 82:33]
