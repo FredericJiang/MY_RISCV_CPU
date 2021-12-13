@@ -1440,6 +1440,7 @@ module Core(
   wire [63:0] _id_op2_T_21 = _id_op2_T_20 ? wb_rd_data : regfile_io_rs2_data; // @[Mux.scala 98:16]
   wire [63:0] _id_op2_T_22 = _id_op2_T_14 ? _id_rs1_T_14 : _id_op2_T_21; // @[Mux.scala 98:16]
   wire [63:0] _id_op2_T_23 = _id_op2_T_10 ? exe_alu_out : _id_op2_T_22; // @[Mux.scala 98:16]
+  wire  _exe_reg_dmem_wen_T_2 = decode_io_wb_type != 3'h1 & decode_io_wb_type != 3'h0; // @[Core.scala 258:53]
   wire [63:0] _GEN_10 = kill_stage ? 64'hffffffffffffffff : {{32'd0}, exe_reg_pc}; // @[Core.scala 274:23 Core.scala 275:19 Core.scala 40:32]
   wire [63:0] _GEN_20 = stall ? 64'h0 : _GEN_10; // @[Core.scala 261:18 Core.scala 263:19]
   wire [63:0] _GEN_34 = _T_2 ? {{32'd0}, id_reg_pc} : _GEN_20; // @[Core.scala 234:28 Core.scala 235:19]
@@ -1785,7 +1786,7 @@ module Core(
       exe_reg_rd_en <= 1'h0; // @[Core.scala 277:19]
     end
     if (_T_2) begin // @[Core.scala 234:28]
-      exe_reg_dmem_en <= decode_io_mem_rtype != 3'h0 | exe_reg_dmem_wen; // @[Core.scala 259:19]
+      exe_reg_dmem_en <= decode_io_mem_rtype != 3'h0 | _exe_reg_dmem_wen_T_2; // @[Core.scala 259:19]
     end else if (stall) begin // @[Core.scala 261:18]
       exe_reg_dmem_en <= 1'h0; // @[Core.scala 267:19]
     end else if (kill_stage) begin // @[Core.scala 274:23]
