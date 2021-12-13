@@ -739,7 +739,7 @@ module Decode(
   wire [2:0] _ctrl_T_289 = _ctrl_T_3 ? 3'h1 : _ctrl_T_288; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_294 = _ctrl_T_89 ? 3'h0 : _ctrl_T_245; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_295 = _ctrl_T_87 ? 3'h0 : _ctrl_T_294; // @[Lookup.scala 33:37]
-  wire [2:0] _ctrl_T_296 = _ctrl_T_85 ? 3'h0 : _ctrl_T_295; // @[Lookup.scala 33:37]
+  wire [2:0] _ctrl_T_296 = _ctrl_T_85 ? 3'h2 : _ctrl_T_295; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_297 = _ctrl_T_83 ? 3'h1 : _ctrl_T_296; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_298 = _ctrl_T_81 ? 3'h2 : _ctrl_T_297; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_299 = _ctrl_T_79 ? 3'h4 : _ctrl_T_298; // @[Lookup.scala 33:37]
