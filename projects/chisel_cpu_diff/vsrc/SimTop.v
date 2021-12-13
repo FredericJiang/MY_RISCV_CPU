@@ -1414,6 +1414,8 @@ module Core(
   wire  _T_2 = ~stall & ~kill_stage; // @[Core.scala 114:13]
   wire [31:0] _if_reg_pc_T_1 = if_reg_pc + 32'h4; // @[Core.scala 116:25]
   wire [31:0] exe_pc_nxt = nxt_pc_io_pc_nxt; // @[Core.scala 102:23 Core.scala 331:13]
+  wire [63:0] _GEN_5 = _T & kill_stage ? 64'hffffffffffffffff : {{32'd0}, id_reg_pc}; // @[Core.scala 146:33 Core.scala 147:14]
+  wire [63:0] _GEN_7 = _T_2 ? {{32'd0}, if_reg_pc} : _GEN_5; // @[Core.scala 142:28 Core.scala 143:14]
   wire  _jarl_type_T = decode_io_op2_type == 3'h4; // @[Core.scala 185:37]
   wire  _id_rs1_T_2 = id_rs1_addr == 5'h0 & _T_20; // @[Core.scala 189:40]
   wire  _id_rs1_T_7 = exe_reg_mem_rtype == 3'h0; // @[Core.scala 190:117]
@@ -1658,10 +1660,8 @@ module Core(
     end
     if (reset) begin // @[Core.scala 35:28]
       id_reg_pc <= 32'h7ffffffc; // @[Core.scala 35:28]
-    end else if (_T_2) begin // @[Core.scala 142:28]
-      id_reg_pc <= if_reg_pc; // @[Core.scala 143:14]
-    end else if (_T & kill_stage) begin // @[Core.scala 146:33]
-      id_reg_pc <= 32'h0; // @[Core.scala 147:14]
+    end else begin
+      id_reg_pc <= _GEN_7[31:0];
     end
     if (reset) begin // @[Core.scala 36:28]
       id_reg_inst <= 64'h0; // @[Core.scala 36:28]
