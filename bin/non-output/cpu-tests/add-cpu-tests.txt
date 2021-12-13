@@ -169,8 +169,8 @@ Disassembly of section .text:
     8000024c:	ebdff0ef          	jal	ra,80000108 <_assert>
     80000250:	00100513          	li	a0,1
     80000254:	eb5ff0ef          	jal	ra,80000108 <_assert>
-    80000258:	2504b503          	ld	a0,592(s1)
-    8000025c:	24048a13          	addi	s4,s1,576
+    80000258:	2504b503          	ld	a0,592(1)
+    8000025c:	24048a13          	addi	s4,ss1,576
     80000260:	04053513          	sltiu	a0,a0,64
     80000264:	00154513          	xori	a0,a0,1
     80000268:	00157513          	andi	a0,a0,1
