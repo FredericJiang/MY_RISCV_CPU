@@ -1652,7 +1652,7 @@ module Core(
     end else if (_T_2) begin // @[Core.scala 141:28]
       id_reg_inst <= io_imem_rdata; // @[Core.scala 143:14]
     end else if (_T & kill_stage) begin // @[Core.scala 145:33]
-      id_reg_inst <= 64'h13; // @[Core.scala 147:14]
+      id_reg_inst <= 64'h0; // @[Core.scala 147:14]
     end
     if (reset) begin // @[Core.scala 40:32]
       exe_reg_pc <= 32'h7ffffffc; // @[Core.scala 40:32]
@@ -1668,9 +1668,9 @@ module Core(
     end else if (_T_2) begin // @[Core.scala 228:28]
       exe_reg_inst <= id_reg_inst; // @[Core.scala 230:19]
     end else if (stall) begin // @[Core.scala 254:18]
-      exe_reg_inst <= 64'h13; // @[Core.scala 257:19]
+      exe_reg_inst <= 64'h0; // @[Core.scala 257:19]
     end else if (kill_stage) begin // @[Core.scala 267:23]
-      exe_reg_inst <= 64'h13; // @[Core.scala 269:19]
+      exe_reg_inst <= 64'h0; // @[Core.scala 269:19]
     end
     if (reset) begin // @[Core.scala 43:32]
       exe_reg_alu_type <= 5'h0; // @[Core.scala 43:32]
@@ -1864,7 +1864,7 @@ module Core(
     if (reset) begin // @[Core.scala 426:23]
       dt_valid <= 1'h0; // @[Core.scala 426:23]
     end else begin
-      dt_valid <= wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0; // @[Core.scala 428:10]
+      dt_valid <= wb_reg_inst != 64'h0 & wb_reg_inst != 64'h0; // @[Core.scala 428:10]
     end
     dt_ic_io_wen_REG <= wb_reg_wen; // @[Core.scala 440:31]
     dt_ic_io_wdata_REG <= wb_reg_wdata; // @[Core.scala 441:31]
