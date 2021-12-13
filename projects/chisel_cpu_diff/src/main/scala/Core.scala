@@ -255,7 +255,7 @@ exe_reg_op2_data  := id_op2
 
 
 exe_reg_rd_en     := (decode.io.wb_type === WB_REG)
-exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (exe_reg_wb_type =/= WB_X)
+exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB_X)
 exe_reg_dmem_en   := (decode.io.mem_rtype =/= MEM_X) || exe_reg_dmem_wen
 
 }.elsewhen(stall){

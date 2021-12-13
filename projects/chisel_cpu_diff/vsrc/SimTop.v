@@ -1792,7 +1792,7 @@ module Core(
       exe_reg_dmem_en <= 1'h0; // @[Core.scala 279:19]
     end
     if (_T_2) begin // @[Core.scala 234:28]
-      exe_reg_dmem_wen <= decode_io_wb_type != 3'h1 & exe_reg_wb_type != 3'h0; // @[Core.scala 258:19]
+      exe_reg_dmem_wen <= decode_io_wb_type != 3'h1 & decode_io_wb_type != 3'h0; // @[Core.scala 258:19]
     end else if (stall) begin // @[Core.scala 261:18]
       exe_reg_dmem_wen <= 1'h0; // @[Core.scala 266:19]
     end else if (kill_stage) begin // @[Core.scala 274:23]
