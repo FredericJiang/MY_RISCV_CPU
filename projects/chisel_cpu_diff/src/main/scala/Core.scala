@@ -259,7 +259,7 @@ exe_reg_op1_data  := 0.U
 exe_reg_op2_data  := 0.U
 
 }.elsewhen(kill_stage){
-exe_reg_pc        := 0.U
+exe_reg_pc        := "hffffffffffffffff".U
 exe_reg_inst      := BUBBLE
 exe_reg_rd_en     := false.B
 exe_reg_dmem_wen  := false.B
