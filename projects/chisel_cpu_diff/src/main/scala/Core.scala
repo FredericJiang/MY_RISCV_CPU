@@ -11,16 +11,11 @@ class Core extends Module {
     val imem = new RomIO
     val dmem = new RamIO
   })
-  
 
-
-
-  val stall = Wire(Bool())
+val stall = Wire(Bool())
   stall    := false.B
 //*******************************************************************
-
 // Pipline State Registers
-
 //*******************************************************************
 
 // Instruction Fetch State 
@@ -30,7 +25,6 @@ class Core extends Module {
   val if_reg_inst      = RegInit(0.U(64.W))
 
 // Instruction Decode State 
-
 
 val id_reg_pc     = RegInit("h7ffffffc".U(32.W))
 val id_reg_inst   = RegInit(0.U(64.W))
@@ -95,9 +89,6 @@ val wb_reg_wdata     =  RegInit(0.U(64.W))
 val wb_reg_wdest     =  RegInit(0.U(64.W)) 
 val wb_reg_dmem_wen       =  Reg(Bool())
 
-
-
-
 val kill_stage  = Wire(Bool())
 val exe_pc_nxt  = Wire(UInt(32.W))
 val exe_alu_out = Wire(UInt(64.W))
@@ -109,7 +100,6 @@ val wb_rd_data = Wire(UInt(64.W))
 
 val if_inst = io.imem.rdata
 
-//when( if_inst =/= 0.U ){ if_reg_pc_valid := true.B }
 if_reg_pc_valid := true.B
 when(!stall && !kill_stage && if_reg_pc_valid){
 
@@ -124,20 +114,11 @@ if_reg_pc := if_reg_pc
  if_reg_pc  := exe_pc_nxt
 }
 
-
 io.imem.en   := true.B
 io.imem.addr := if_reg_pc
 
-
-
-
-
-
-
-
 // Instruction Fetch >>>>>>>> Instruction Decode
 //*******************************************************************
-
 
 when(!stall && !kill_stage){
 id_reg_pc    := if_reg_pc
@@ -154,11 +135,6 @@ id_reg_inst  := id_reg_inst
 
 }
 
-
-
-
-
-
 //*******************************************************************
 //Decode Instruction Stage
 
@@ -169,18 +145,12 @@ val regfile = Module(new RegFile)
 regfile.io.rs1_addr := id_rs1_addr
 regfile.io.rs2_addr := id_rs2_addr
 
-
-
 val decode = Module(new Decode)
 decode.io.inst      := id_reg_inst
-
-
 
 val imm_gen = Module(new ImmGen)
 imm_gen.io.imm_type := decode.io.imm_type
 imm_gen.io.inst     := id_reg_inst
-
-
 
 val jarl_type = (decode.io.op2_type === OP_4) && (decode.io.imm_type === IMM_I)
 
@@ -191,7 +161,6 @@ val id_rs1 = MuxCase( regfile.io.rs1_data  , Array(
                   ((mem_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
                   ((wb_reg_rd_addr  === id_rs1_addr) && (id_rs1_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
                   ))
-
 
 val id_op1  =  MuxCase( regfile.io.rs1_data  , Array(
                   (id_rs1_addr === 0.U && decode.io.op1_type === OP_REG) -> 0.U ,
@@ -208,7 +177,6 @@ val id_rs2 = MuxCase( regfile.io.rs2_data  , Array(
                   ((mem_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
                   ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
                   ))
-
        
 val id_op2 =  MuxCase( regfile.io.rs2_data , Array(
                   (id_rs2_addr === 0.U && decode.io.op2_type === OP_REG) -> 0.U ,
@@ -219,8 +187,6 @@ val id_op2 =  MuxCase( regfile.io.rs2_data , Array(
                   ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
                   ))
 
-
-
 // load instruciton in exe stage, and address conflict
 //generate a bubble
 when((exe_reg_mem_rtype =/= MEM_X || exe_reg_alu_type === ALU_COPY2 ) && 
@@ -229,13 +195,8 @@ when((exe_reg_mem_rtype =/= MEM_X || exe_reg_alu_type === ALU_COPY2 ) &&
 
 
 
-
-
-
-
 //Instruction Decode  >>>>>>>>>>>>>>>>>>>   Execute
 //*******************************************************************
-
 
 when(!stall && !kill_stage){
 exe_reg_pc        := id_reg_pc
@@ -258,7 +219,6 @@ exe_reg_rs1_data  := id_rs1
 
 exe_reg_op1_data  := id_op1
 exe_reg_op2_data  := id_op2
-
 
 exe_reg_rd_en     := (decode.io.wb_type === WB_REG)
 exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB_X)
@@ -292,20 +252,13 @@ exe_reg_rs2_addr  := 0.U
 exe_reg_rd_addr   := 0.U
 exe_reg_op1_data  := 0.U
 exe_reg_op2_data  := 0.U
-
 }
-
-
-
-
 
 //*******************************************************************
 // Execute Stage
 
 val exe_op1     = Wire(UInt(64.W))
 val exe_op2     = Wire(UInt(64.W))
-
-
 
 exe_op1 := exe_reg_op1_data 
 exe_op2 := exe_reg_op2_data 
@@ -317,8 +270,6 @@ alu.io.in1      := exe_op1
 alu.io.in2      := exe_op2
 
 exe_alu_out     := alu.io.alu_out
-
-
 
 val nxt_pc = Module(new Nxt_PC)
 nxt_pc.io.pc       := exe_reg_pc
@@ -335,12 +286,8 @@ when(exe_reg_rs1_addr === mem_reg_rd_addr){
 nxt_pc.io.rs1_data := mem_rd_data
 }.otherwise(nxt_pc.io.rs1_data := exe_reg_rs1_data)
 
-
-
-
 exe_pc_nxt  := nxt_pc.io.pc_nxt
 kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
-
 
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
 //*******************************************************************
@@ -365,22 +312,16 @@ mem_reg_dmem_en    := exe_reg_dmem_en
 
 val mem_dmem_addr = Wire(UInt(64.W))
 
-
-
 // read & write memory address is from ALU
 when(mem_reg_dmem_en){mem_dmem_addr := mem_reg_alu_out}    
 .otherwise{mem_dmem_addr := 0.U}
-
-
 
 // Operation with Memory
 io.dmem.en    := mem_reg_dmem_en
 io.dmem.wen   := mem_reg_dmem_wen
 io.dmem.addr  := mem_dmem_addr
 
-
 val mem_dmem_rdata = io.dmem.rdata
-
 
 val lsu = Module(new LSU)
 lsu.io.dmem_addr  := mem_dmem_addr
@@ -394,17 +335,13 @@ when((mem_reg_rs2_addr === wb_reg_rd_addr) && mem_reg_dmem_wen && wb_reg_rd_en )
 lsu.io.rs2_data  := wb_rd_data
 }.otherwise{lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2
 
-
 mem_rd_data   := lsu.io.mem_rdata
 
 io.dmem.wmask := lsu.io.dmem_wmask
 io.dmem.wdata := lsu.io.dmem_wdata
 
-
-
 // Memmory >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Write Back
 //*******************************************************************
-
 // signals for difftest
 wb_reg_inst        := mem_reg_inst
 wb_reg_pc          := mem_reg_pc
@@ -412,27 +349,22 @@ wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
 wb_reg_dmem_wen    := mem_reg_dmem_wen
 
-
 wb_reg_mem_rtype   := mem_reg_mem_rtype 
 wb_reg_alu_out     := mem_reg_alu_out
 wb_reg_rd_data     := mem_rd_data
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_en       := mem_reg_rd_en
 
-
 //*******************************************************************
 //WriteBack
-
 //write back to reg enalbe
 regfile.io.rd_en   := wb_reg_rd_en
 regfile.io.rd_addr := wb_reg_rd_addr
-
 
 wb_rd_data  := MuxCase(0.U, Array(
                   (wb_reg_mem_rtype === MEM_X) -> wb_reg_alu_out,
                   (wb_reg_mem_rtype =/= MEM_X) -> wb_reg_rd_data
                   ))
-
 
 regfile.io.rd_data := wb_rd_data
 
