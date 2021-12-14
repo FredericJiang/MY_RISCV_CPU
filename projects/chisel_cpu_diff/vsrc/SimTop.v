@@ -1423,6 +1423,7 @@ module Core(
   wire  _id_rs1_T_12 = mem_reg_rd_addr == _GEN_59 & _T_18 & mem_reg_rd_en; // @[Core.scala 191:79]
   wire [63:0] mem_rd_data = lsu_io_mem_rdata; // @[Core.scala 104:23 Core.scala 393:15]
   wire [63:0] _id_rs1_T_14 = mem_reg_mem_rtype != 3'h0 ? mem_rd_data : mem_reg_alu_out; // @[Core.scala 191:103]
+  wire  _id_rs1_T_15 = wb_reg_rd_addr == _GEN_59; // @[Core.scala 192:37]
   wire  _id_rs1_T_18 = wb_reg_rd_addr == _GEN_59 & _T_18 & wb_reg_rd_en; // @[Core.scala 192:79]
   wire  _wb_rd_data_T = wb_reg_mem_rtype == 3'h0; // @[Core.scala 427:37]
   wire  _wb_rd_data_T_1 = wb_reg_mem_rtype != 3'h0; // @[Core.scala 428:37]
@@ -1432,9 +1433,10 @@ module Core(
   wire [63:0] exe_alu_out = alu_io_alu_out; // @[Core.scala 103:23 Core.scala 319:17]
   wire  _id_op1_T_3 = decode_io_op1_type == 3'h2; // @[Core.scala 198:39]
   wire  _id_op1_T_4 = decode_io_op1_type == 3'h3; // @[Core.scala 199:39]
-  wire [63:0] _id_op1_T_21 = _id_rs1_T_8 ? exe_alu_out : regfile_io_rs1_data; // @[Mux.scala 98:16]
-  wire [63:0] _id_op1_T_22 = _id_rs1_T_12 ? _id_rs1_T_14 : _id_op1_T_21; // @[Mux.scala 98:16]
-  wire [63:0] _id_op1_T_23 = _id_rs1_T_18 ? wb_rd_data : _id_op1_T_22; // @[Mux.scala 98:16]
+  wire  _id_op1_T_10 = _id_rs1_T_15 & _T_20 & _T_18 & wb_reg_rd_en; // @[Core.scala 200:114]
+  wire [63:0] _id_op1_T_23 = _id_rs1_T_8 ? exe_alu_out : regfile_io_rs1_data; // @[Mux.scala 98:16]
+  wire [63:0] _id_op1_T_24 = _id_rs1_T_12 ? _id_rs1_T_14 : _id_op1_T_23; // @[Mux.scala 98:16]
+  wire [63:0] _id_op1_T_25 = _id_op1_T_10 ? wb_rd_data : _id_op1_T_24; // @[Mux.scala 98:16]
   wire  _id_rs2_T_8 = _T_14 & exe_reg_rd_en & _id_rs1_T_7; // @[Core.scala 207:96]
   wire  _id_rs2_T_12 = mem_reg_rd_addr == _GEN_58 & _T_13 & mem_reg_rd_en; // @[Core.scala 208:79]
   wire  _id_rs2_T_18 = wb_reg_rd_addr == _GEN_58 & _T_13 & wb_reg_rd_en; // @[Core.scala 209:79]
@@ -1725,7 +1727,7 @@ module Core(
       end else if (_id_op1_T_4) begin // @[Mux.scala 98:16]
         exe_reg_op1_data <= {{32'd0}, id_reg_pc};
       end else begin
-        exe_reg_op1_data <= _id_op1_T_23;
+        exe_reg_op1_data <= _id_op1_T_25;
       end
     end else if (kill_stage) begin // @[Core.scala 267:23]
       exe_reg_op1_data <= 64'h0; // @[Core.scala 281:19]
