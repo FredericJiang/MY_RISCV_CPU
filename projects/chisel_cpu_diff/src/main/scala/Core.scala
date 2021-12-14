@@ -319,16 +319,19 @@ alu.io.in2      := exe_op2
 exe_alu_out     := alu.io.alu_out
 
 
+
 val nxt_pc = Module(new Nxt_PC)
 nxt_pc.io.pc       := exe_reg_pc
 nxt_pc.io.imm_type := exe_reg_imm_type
 nxt_pc.io.alu_type := exe_reg_alu_type
 nxt_pc.io.imm      := exe_reg_imm
 nxt_pc.io.alu_out  := exe_alu_out
-nxt_pc.io.rs1_data := exe_reg_rs1_data
+nxt_pc.io.alu_out  := exe_alu_out
 nxt_pc.io.op2_type := exe_reg_op2_type
 
-
+when(exe_reg_rs1_addr === mem_reg_rd_addr){
+nxt_pc.io.rs1_data := mem_rd_data
+}.otherwise(nxt_pc.io.rs1_data := exe_reg_rs1_data)
 
 
 
