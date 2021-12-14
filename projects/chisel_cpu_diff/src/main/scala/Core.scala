@@ -329,6 +329,8 @@ nxt_pc.io.alu_out  := exe_alu_out
 nxt_pc.io.alu_out  := exe_alu_out
 nxt_pc.io.op2_type := exe_reg_op2_type
 
+// a ld instruction before jalr 
+//only in mem stage can gain the jmp address
 when(exe_reg_rs1_addr === mem_reg_rd_addr){
 nxt_pc.io.rs1_data := mem_rd_data
 }.otherwise(nxt_pc.io.rs1_data := exe_reg_rs1_data)
