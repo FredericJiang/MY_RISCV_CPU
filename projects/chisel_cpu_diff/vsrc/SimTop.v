@@ -1775,31 +1775,34 @@ module Core(
   reg [31:0] _RAND_30;
   reg [31:0] _RAND_31;
   reg [31:0] _RAND_32;
-  reg [63:0] _RAND_33;
+  reg [31:0] _RAND_33;
   reg [63:0] _RAND_34;
   reg [63:0] _RAND_35;
   reg [63:0] _RAND_36;
-  reg [31:0] _RAND_37;
-  reg [63:0] _RAND_38;
-  reg [31:0] _RAND_39;
-  reg [63:0] _RAND_40;
-  reg [63:0] _RAND_41;
-  reg [31:0] _RAND_42;
+  reg [63:0] _RAND_37;
+  reg [31:0] _RAND_38;
+  reg [63:0] _RAND_39;
+  reg [31:0] _RAND_40;
+  reg [31:0] _RAND_41;
+  reg [63:0] _RAND_42;
   reg [63:0] _RAND_43;
-  reg [63:0] _RAND_44;
+  reg [31:0] _RAND_44;
   reg [63:0] _RAND_45;
-  reg [31:0] _RAND_46;
-  reg [31:0] _RAND_47;
-  reg [63:0] _RAND_48;
+  reg [63:0] _RAND_46;
+  reg [63:0] _RAND_47;
+  reg [31:0] _RAND_48;
   reg [31:0] _RAND_49;
-  reg [31:0] _RAND_50;
+  reg [63:0] _RAND_50;
   reg [31:0] _RAND_51;
-  reg [63:0] _RAND_52;
-  reg [63:0] _RAND_53;
+  reg [31:0] _RAND_52;
+  reg [31:0] _RAND_53;
   reg [31:0] _RAND_54;
   reg [63:0] _RAND_55;
   reg [63:0] _RAND_56;
-  reg [63:0] _RAND_57;
+  reg [31:0] _RAND_57;
+  reg [63:0] _RAND_58;
+  reg [63:0] _RAND_59;
+  reg [63:0] _RAND_60;
 `endif // RANDOMIZE_REG_INIT
   wire  regfile_clock; // @[Core.scala 66:21]
   wire  regfile_reset; // @[Core.scala 66:21]
@@ -1916,6 +1919,7 @@ module Core(
   reg  mem_reg_csr_rd_wen; // @[PipelineReg.scala 58:30]
   reg [63:0] mem_reg_csr_rd_data; // @[PipelineReg.scala 59:34]
   reg  mem_reg_clint_en; // @[PipelineReg.scala 60:30]
+  reg [4:0] mem_reg_alu_type; // @[PipelineReg.scala 62:33]
   reg [2:0] mem_reg_wb_type; // @[PipelineReg.scala 63:33]
   reg [2:0] mem_reg_mem_rtype; // @[PipelineReg.scala 64:33]
   reg [63:0] mem_reg_alu_out; // @[PipelineReg.scala 67:33]
@@ -1925,6 +1929,7 @@ module Core(
   reg [31:0] wb_reg_pc; // @[PipelineReg.scala 78:32]
   reg [63:0] wb_reg_inst; // @[PipelineReg.scala 79:32]
   reg [2:0] wb_reg_mem_rtype; // @[PipelineReg.scala 81:32]
+  reg [4:0] wb_reg_alu_type; // @[PipelineReg.scala 82:32]
   reg [63:0] wb_reg_alu_out; // @[PipelineReg.scala 84:28]
   reg [63:0] wb_reg_rd_data; // @[PipelineReg.scala 85:28]
   reg  wb_reg_rd_en; // @[PipelineReg.scala 86:28]
@@ -1999,6 +2004,7 @@ module Core(
   reg  dt_valid; // @[Core.scala 357:23]
   wire  _dt_valid_T_2 = wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0; // @[Core.scala 359:37]
   wire  _dt_valid_T_4 = _dt_valid_T_2 & ~wb_reg_clint_en; // @[Core.scala 360:2]
+  reg  dt_ic_io_skip_REG; // @[Core.scala 371:31]
   reg  dt_ic_io_wen_REG; // @[Core.scala 374:31]
   reg [63:0] dt_ic_io_wdata_REG; // @[Core.scala 375:31]
   reg [63:0] dt_ic_io_wdest_REG; // @[Core.scala 376:31]
@@ -2168,7 +2174,7 @@ module Core(
   assign dt_ic_pc = {{32'd0}, _GEN_58}; // @[Core.scala 378:15 Core.scala 379:21 Core.scala 383:21]
   assign dt_ic_instr = _GEN_59[31:0];
   assign dt_ic_special = 8'h0; // @[Core.scala 370:21]
-  assign dt_ic_skip = 1'h0; // @[Core.scala 371:21]
+  assign dt_ic_skip = dt_ic_io_skip_REG; // @[Core.scala 371:21]
   assign dt_ic_isRVC = 1'h0; // @[Core.scala 372:21]
   assign dt_ic_scFailed = 1'h0; // @[Core.scala 373:21]
   assign dt_ic_wen = dt_ic_io_wen_REG; // @[Core.scala 374:21]
@@ -2383,6 +2389,11 @@ module Core(
       mem_reg_csr_rd_data <= csr_io_out; // @[Core.scala 254:21]
     end
     mem_reg_clint_en <= exe_reg_dmem_en & (exe_alu_out == 64'h200bff8 | exe_alu_out == 64'h2004000); // @[Core.scala 203:22]
+    if (reset) begin // @[PipelineReg.scala 62:33]
+      mem_reg_alu_type <= 5'h0; // @[PipelineReg.scala 62:33]
+    end else begin
+      mem_reg_alu_type <= exe_reg_alu_type; // @[Core.scala 256:20]
+    end
     if (reset) begin // @[PipelineReg.scala 63:33]
       mem_reg_wb_type <= 3'h0; // @[PipelineReg.scala 63:33]
     end else begin
@@ -2428,6 +2439,11 @@ module Core(
     end else begin
       wb_reg_mem_rtype <= mem_reg_mem_rtype; // @[Core.scala 315:20]
     end
+    if (reset) begin // @[PipelineReg.scala 82:32]
+      wb_reg_alu_type <= 5'h0; // @[PipelineReg.scala 82:32]
+    end else begin
+      wb_reg_alu_type <= mem_reg_alu_type; // @[Core.scala 314:20]
+    end
     wb_reg_alu_out <= mem_reg_alu_out; // @[Core.scala 316:20]
     wb_reg_rd_data <= lsu_io_mem_rdata; // @[PipelineReg.scala 99:23 Core.scala 300:15]
     wb_reg_rd_en <= mem_reg_rd_en; // @[Core.scala 319:20]
@@ -2461,6 +2477,7 @@ module Core(
     end else begin
       dt_valid <= _dt_valid_T_4; // @[Core.scala 359:10]
     end
+    dt_ic_io_skip_REG <= wb_reg_alu_type != 5'h14; // @[Core.scala 362:29]
     dt_ic_io_wen_REG <= wb_reg_dmem_wen; // @[Core.scala 374:31]
     dt_ic_io_wdata_REG <= wb_reg_wdata; // @[Core.scala 375:31]
     dt_ic_io_wdest_REG <= wb_reg_wdest; // @[Core.scala 376:31]
@@ -2587,59 +2604,65 @@ initial begin
   _RAND_30 = {1{`RANDOM}};
   mem_reg_clint_en = _RAND_30[0:0];
   _RAND_31 = {1{`RANDOM}};
-  mem_reg_wb_type = _RAND_31[2:0];
+  mem_reg_alu_type = _RAND_31[4:0];
   _RAND_32 = {1{`RANDOM}};
-  mem_reg_mem_rtype = _RAND_32[2:0];
-  _RAND_33 = {2{`RANDOM}};
-  mem_reg_alu_out = _RAND_33[63:0];
+  mem_reg_wb_type = _RAND_32[2:0];
+  _RAND_33 = {1{`RANDOM}};
+  mem_reg_mem_rtype = _RAND_33[2:0];
   _RAND_34 = {2{`RANDOM}};
-  mem_reg_rs2_data = _RAND_34[63:0];
+  mem_reg_alu_out = _RAND_34[63:0];
   _RAND_35 = {2{`RANDOM}};
-  mem_reg_rs2_addr = _RAND_35[63:0];
+  mem_reg_rs2_data = _RAND_35[63:0];
   _RAND_36 = {2{`RANDOM}};
-  mem_reg_rd_addr = _RAND_36[63:0];
-  _RAND_37 = {1{`RANDOM}};
-  wb_reg_pc = _RAND_37[31:0];
-  _RAND_38 = {2{`RANDOM}};
-  wb_reg_inst = _RAND_38[63:0];
-  _RAND_39 = {1{`RANDOM}};
-  wb_reg_mem_rtype = _RAND_39[2:0];
-  _RAND_40 = {2{`RANDOM}};
-  wb_reg_alu_out = _RAND_40[63:0];
-  _RAND_41 = {2{`RANDOM}};
-  wb_reg_rd_data = _RAND_41[63:0];
-  _RAND_42 = {1{`RANDOM}};
-  wb_reg_rd_en = _RAND_42[0:0];
+  mem_reg_rs2_addr = _RAND_36[63:0];
+  _RAND_37 = {2{`RANDOM}};
+  mem_reg_rd_addr = _RAND_37[63:0];
+  _RAND_38 = {1{`RANDOM}};
+  wb_reg_pc = _RAND_38[31:0];
+  _RAND_39 = {2{`RANDOM}};
+  wb_reg_inst = _RAND_39[63:0];
+  _RAND_40 = {1{`RANDOM}};
+  wb_reg_mem_rtype = _RAND_40[2:0];
+  _RAND_41 = {1{`RANDOM}};
+  wb_reg_alu_type = _RAND_41[4:0];
+  _RAND_42 = {2{`RANDOM}};
+  wb_reg_alu_out = _RAND_42[63:0];
   _RAND_43 = {2{`RANDOM}};
-  wb_reg_rd_addr = _RAND_43[63:0];
-  _RAND_44 = {2{`RANDOM}};
-  wb_reg_wdata = _RAND_44[63:0];
+  wb_reg_rd_data = _RAND_43[63:0];
+  _RAND_44 = {1{`RANDOM}};
+  wb_reg_rd_en = _RAND_44[0:0];
   _RAND_45 = {2{`RANDOM}};
-  wb_reg_wdest = _RAND_45[63:0];
-  _RAND_46 = {1{`RANDOM}};
-  wb_reg_dmem_wen = _RAND_46[0:0];
-  _RAND_47 = {1{`RANDOM}};
-  wb_reg_csr_rd_wen = _RAND_47[0:0];
-  _RAND_48 = {2{`RANDOM}};
-  wb_reg_csr_rd_data = _RAND_48[63:0];
+  wb_reg_rd_addr = _RAND_45[63:0];
+  _RAND_46 = {2{`RANDOM}};
+  wb_reg_wdata = _RAND_46[63:0];
+  _RAND_47 = {2{`RANDOM}};
+  wb_reg_wdest = _RAND_47[63:0];
+  _RAND_48 = {1{`RANDOM}};
+  wb_reg_dmem_wen = _RAND_48[0:0];
   _RAND_49 = {1{`RANDOM}};
-  wb_reg_clint_en = _RAND_49[0:0];
-  _RAND_50 = {1{`RANDOM}};
-  dt_valid = _RAND_50[0:0];
+  wb_reg_csr_rd_wen = _RAND_49[0:0];
+  _RAND_50 = {2{`RANDOM}};
+  wb_reg_csr_rd_data = _RAND_50[63:0];
   _RAND_51 = {1{`RANDOM}};
-  dt_ic_io_wen_REG = _RAND_51[0:0];
-  _RAND_52 = {2{`RANDOM}};
-  dt_ic_io_wdata_REG = _RAND_52[63:0];
-  _RAND_53 = {2{`RANDOM}};
-  dt_ic_io_wdest_REG = _RAND_53[63:0];
+  wb_reg_clint_en = _RAND_51[0:0];
+  _RAND_52 = {1{`RANDOM}};
+  dt_valid = _RAND_52[0:0];
+  _RAND_53 = {1{`RANDOM}};
+  dt_ic_io_skip_REG = _RAND_53[0:0];
   _RAND_54 = {1{`RANDOM}};
-  dt_ic_io_pc_REG = _RAND_54[31:0];
+  dt_ic_io_wen_REG = _RAND_54[0:0];
   _RAND_55 = {2{`RANDOM}};
-  dt_ic_io_instr_REG = _RAND_55[63:0];
+  dt_ic_io_wdata_REG = _RAND_55[63:0];
   _RAND_56 = {2{`RANDOM}};
-  cycle_cnt = _RAND_56[63:0];
-  _RAND_57 = {2{`RANDOM}};
-  instr_cnt = _RAND_57[63:0];
+  dt_ic_io_wdest_REG = _RAND_56[63:0];
+  _RAND_57 = {1{`RANDOM}};
+  dt_ic_io_pc_REG = _RAND_57[31:0];
+  _RAND_58 = {2{`RANDOM}};
+  dt_ic_io_instr_REG = _RAND_58[63:0];
+  _RAND_59 = {2{`RANDOM}};
+  cycle_cnt = _RAND_59[63:0];
+  _RAND_60 = {2{`RANDOM}};
+  instr_cnt = _RAND_60[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
