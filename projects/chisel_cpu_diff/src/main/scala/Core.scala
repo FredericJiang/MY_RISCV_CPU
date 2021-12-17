@@ -236,7 +236,7 @@ nxt_pc.io.csr_jmp     := csr.io.jmp
 nxt_pc.io.csr_jmp_pc  := csr.io.jmp_pc
 // a ld instruction before jalr 
 //only in mem stage can gain the jmp address
-when(exe_reg_rs1_addr === mem_reg_rd_addr){
+when(exe_reg_rs1_addr === mem_reg_rd_addr && mem_reg_mem_rtype =/= MEM_X){
 nxt_pc.io.rs1_data := mem_rd_data
 }.otherwise(nxt_pc.io.rs1_data := exe_reg_rs1_data)
 
