@@ -1246,8 +1246,11 @@ module CSR(
   wire [63:0] _GEN_1 = io_csr_type == 3'h1 ? 64'hb : mcause; // @[CSR.scala 55:36 CSR.scala 57:12 CSR.scala 45:26]
   wire [63:0] _GEN_2 = io_csr_type == 3'h1 ? _mstatus_T : mstatus; // @[CSR.scala 55:36 CSR.scala 58:13 CSR.scala 40:26]
   wire [31:0] _GEN_4 = io_csr_type == 3'h1 ? _csr_jmp_pc_T : 32'h0; // @[CSR.scala 55:36 CSR.scala 60:16]
-  wire  mstatus_lo_hi = mstatus[7]; // @[CSR.scala 65:63]
-  wire [63:0] _mstatus_T_1 = {mstatus_hi_hi_hi,1'h1,mstatus_hi_lo,mstatus_lo_hi,mstatus_lo_lo}; // @[Cat.scala 30:58]
+  wire [50:0] mstatus_hi_hi_hi_1 = mstatus[63:13]; // @[CSR.scala 65:27]
+  wire [2:0] mstatus_hi_lo_lo = mstatus[10:8]; // @[CSR.scala 65:51]
+  wire  mstatus_lo_lo_hi = mstatus[7]; // @[CSR.scala 65:87]
+  wire [63:0] _mstatus_T_1 = {mstatus_hi_hi_hi_1,1'h1,1'h1,mstatus_hi_lo_lo,1'h1,mstatus_hi_lo,mstatus_lo_lo_hi,
+    mstatus_lo_lo}; // @[Cat.scala 30:58]
   wire [63:0] _GEN_5 = io_csr_type == 3'h2 ? _mstatus_T_1 : _GEN_2; // @[CSR.scala 64:35 CSR.scala 65:13]
   reg  intrpt; // @[CSR.scala 74:23]
   reg [63:0] intrpt_no; // @[CSR.scala 76:26]
