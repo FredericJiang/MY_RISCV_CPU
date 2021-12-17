@@ -148,12 +148,13 @@ exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB
 exe_reg_dmem_en   := (decode.io.mem_rtype =/= MEM_X) || ((decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB_X))
 
 }.elsewhen(kill_stage){
-exe_reg_pc        := 0.U
+exe_reg_pc        := "hffffffffffffffff".U
 exe_reg_inst      := BUBBLE
 exe_reg_rd_en     := false.B
 exe_reg_dmem_wen  := false.B
 exe_reg_dmem_en   := false.B
 exe_reg_imm_type  := 0.U
+exe_reg_csr_type  := 0.U
 exe_reg_alu_type  := 0.U
 exe_reg_imm       := 0.U
 exe_reg_op2_type  := 0.U
@@ -170,6 +171,7 @@ exe_reg_inst      := BUBBLE
 exe_reg_rd_en     := false.B
 exe_reg_dmem_wen  := false.B
 exe_reg_dmem_en   := false.B
+exe_reg_csr_type  := 0.U
 exe_reg_rs1_addr  := 0.U
 exe_reg_rs2_addr  := 0.U
 exe_reg_rd_addr   := 0.U
