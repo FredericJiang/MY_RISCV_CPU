@@ -245,6 +245,17 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
 //*******************************************************************
+mem_reg_mie      := csr.io.mie
+mem_reg_mstatus  := csr.io.mstatus
+mem_reg_mepc     := csr.io.mepc
+mem_reg_mcause   := csr.io.mcause
+mem_reg_mtvec    := csr.io.mtvec
+mem_reg_mscratch := csr.io.mscratch
+mem_reg_intrpt   := csr.io.intrpt
+mem_reg_intrpt_no:= csr.io.intrpt_no
+
+
+
 mem_reg_pc         := exe_reg_pc
 mem_reg_inst       := exe_reg_inst
 
@@ -323,6 +334,15 @@ wb_reg_csr_type    := mem_reg_csr_type
 wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
 wb_reg_csr_rd_data := mem_reg_csr_rd_data
 wb_reg_clint_en    := mem_reg_clint_en
+
+wb_reg_mie      :=  mem_reg_mie
+wb_reg_mstatus  :=  mem_reg_mstatus
+wb_reg_mepc     :=  mem_reg_mepc
+wb_reg_mcause   :=  mem_reg_mcause
+wb_reg_mtvec    :=  mem_reg_mtvec
+wb_reg_mscratch :=  mem_reg_mscratch
+wb_reg_intrpt   :=  mem_reg_intrpt
+wb_reg_intrpt_no :=  mem_reg_intrpt_no
 
 //*******************************************************************
 //WriteBack
@@ -420,29 +440,29 @@ when((wb_reg_csr_type =/= CSR_X)){
   val dt_ae = Module(new DifftestArchEvent)
     dt_ae.io.clock        := clock
     dt_ae.io.coreid       := 0.U
-    dt_ae.io.intrNO       := Mux(csr.io.intrpt, csr.io.intrpt_no, 0.U)
+    dt_ae.io.intrNO       := Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U)
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := Mux(csr.io.intrpt, csr.io.mepc, 0.U)
+    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)
 
 
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
     dt_cs.io.coreid         := 0.U
     dt_cs.io.priviledgeMode := 3.U  // Machine mode
-    dt_cs.io.mstatus        := csr.io.mstatus
+    dt_cs.io.mstatus        := wb_reg_mstatus
     dt_cs.io.sstatus        := 0.U
-    dt_cs.io.mepc           := csr.io.mepc
+    dt_cs.io.mepc           := wb_reg_mepc
     dt_cs.io.sepc           := 0.U
     dt_cs.io.mtval          := 0.U
     dt_cs.io.stval          := 0.U
-    dt_cs.io.mtvec          := csr.io.mtvec
+    dt_cs.io.mtvec          := wb_reg_mtvec
     dt_cs.io.stvec          := 0.U
-    dt_cs.io.mcause         := csr.io.mcause
+    dt_cs.io.mcause         := wb_reg_mcause
     dt_cs.io.scause         := 0.U
     dt_cs.io.satp           := 0.U
     dt_cs.io.mip            := 0.U
-    dt_cs.io.mie            := csr.io.mie
-    dt_cs.io.mscratch       := csr.io.mscratch
+    dt_cs.io.mie            := wb_reg_mie
+    dt_cs.io.mscratch       := wb_reg_mscratch
     dt_cs.io.sscratch       := 0.U
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
