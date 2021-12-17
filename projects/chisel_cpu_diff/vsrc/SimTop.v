@@ -1249,7 +1249,7 @@ module CSR(
   wire [50:0] mstatus_hi_hi_hi_1 = mstatus[63:13]; // @[CSR.scala 65:27]
   wire [2:0] mstatus_hi_lo_lo = mstatus[10:8]; // @[CSR.scala 65:51]
   wire  mstatus_lo_lo_hi = mstatus[7]; // @[CSR.scala 65:87]
-  wire [63:0] _mstatus_T_1 = {mstatus_hi_hi_hi_1,1'h1,1'h1,mstatus_hi_lo_lo,1'h1,mstatus_hi_lo,mstatus_lo_lo_hi,
+  wire [63:0] _mstatus_T_1 = {mstatus_hi_hi_hi_1,1'h0,1'h0,mstatus_hi_lo_lo,1'h1,mstatus_hi_lo,mstatus_lo_lo_hi,
     mstatus_lo_lo}; // @[Cat.scala 30:58]
   wire [63:0] _GEN_5 = io_csr_type == 3'h2 ? _mstatus_T_1 : _GEN_2; // @[CSR.scala 64:35 CSR.scala 65:13]
   reg  intrpt; // @[CSR.scala 74:23]
