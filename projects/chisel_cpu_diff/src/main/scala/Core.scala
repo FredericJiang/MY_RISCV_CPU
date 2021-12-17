@@ -340,7 +340,8 @@ regfile.io.rd_data := wb_rd_data
 
 
 when(wb_reg_alu_out === ALU_MY_INST)
-{ printf("%c", 0.U) }
+{ val a = 0.U
+printf("%c", a) }
 
 
 
