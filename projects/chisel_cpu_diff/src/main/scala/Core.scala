@@ -359,7 +359,7 @@ val dt_valid = RegInit(false.B)
 dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U 
 && wb_reg_alu_type =/= ALU_MY_INST && !wb_reg_clint_en ) 
 
-
+when(dt_valid){
 val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.clock    := clock
   dt_ic.io.coreid   := 0.U
@@ -403,7 +403,7 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
-
+}
 
 //printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
 //printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
