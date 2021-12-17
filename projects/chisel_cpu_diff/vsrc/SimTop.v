@@ -649,9 +649,10 @@ module Decode(
   wire  _ctrl_T_107 = 32'h6073 == _ctrl_T_20; // @[Lookup.scala 31:38]
   wire  _ctrl_T_109 = 32'h7073 == _ctrl_T_20; // @[Lookup.scala 31:38]
   wire  _ctrl_T_111 = 32'h73 == io_inst; // @[Lookup.scala 31:38]
+  wire  _ctrl_T_113 = 32'h30200073 == io_inst; // @[Lookup.scala 31:38]
   wire  _ctrl_T_115 = 32'h7b == io_inst; // @[Lookup.scala 31:38]
   wire [4:0] _ctrl_T_230 = _ctrl_T_115 ? 5'h14 : 5'h0; // @[Lookup.scala 33:37]
-  wire [4:0] _ctrl_T_231 = _ctrl_T_111 ? 5'h0 : _ctrl_T_230; // @[Lookup.scala 33:37]
+  wire [4:0] _ctrl_T_231 = _ctrl_T_113 ? 5'h0 : _ctrl_T_230; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_232 = _ctrl_T_111 ? 5'h0 : _ctrl_T_231; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_233 = _ctrl_T_109 ? 5'h12 : _ctrl_T_232; // @[Lookup.scala 33:37]
   wire [4:0] _ctrl_T_234 = _ctrl_T_107 ? 5'h12 : _ctrl_T_233; // @[Lookup.scala 33:37]
@@ -942,7 +943,7 @@ module Decode(
   wire [2:0] _ctrl_T_569 = _ctrl_T_7 ? 3'h1 : _ctrl_T_568; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_570 = _ctrl_T_5 ? 3'h1 : _ctrl_T_569; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_571 = _ctrl_T_3 ? 3'h1 : _ctrl_T_570; // @[Lookup.scala 33:37]
-  wire [2:0] _ctrl_T_573 = _ctrl_T_111 ? 3'h2 : 3'h0; // @[Lookup.scala 33:37]
+  wire [2:0] _ctrl_T_573 = _ctrl_T_113 ? 3'h2 : 3'h0; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_574 = _ctrl_T_111 ? 3'h1 : _ctrl_T_573; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_575 = _ctrl_T_109 ? 3'h5 : _ctrl_T_574; // @[Lookup.scala 33:37]
   wire [2:0] _ctrl_T_576 = _ctrl_T_107 ? 3'h4 : _ctrl_T_575; // @[Lookup.scala 33:37]
@@ -1216,6 +1217,7 @@ module CSR(
   reg [63:0] _RAND_6;
   reg [31:0] _RAND_7;
   reg [63:0] _RAND_8;
+  reg [63:0] _RAND_9;
 `endif // RANDOMIZE_REG_INIT
   wire  dt_ae_clock; // @[CSR.scala 152:21]
   wire [7:0] dt_ae_coreid; // @[CSR.scala 152:21]
@@ -1295,6 +1297,7 @@ module CSR(
   wire [62:0] mstatus_lo_3 = wdata[62:0]; // @[CSR.scala 129:79]
   wire [63:0] _mstatus_T_9 = {mstatus_hi_3,mstatus_lo_3}; // @[Cat.scala 30:58]
   wire [63:0] _dt_ae_io_intrNO_T = intrpt ? intrpt_no : 64'h0; // @[CSR.scala 155:33]
+  reg [63:0] dt_cs_io_mtvec_REG; // @[CSR.scala 170:39]
   DifftestArchEvent dt_ae ( // @[CSR.scala 152:21]
     .clock(dt_ae_clock),
     .coreid(dt_ae_coreid),
@@ -1346,7 +1349,7 @@ module CSR(
   assign dt_cs_sepc = 64'h0; // @[CSR.scala 167:29]
   assign dt_cs_mtval = 64'h0; // @[CSR.scala 168:29]
   assign dt_cs_stval = 64'h0; // @[CSR.scala 169:29]
-  assign dt_cs_mtvec = mtvec; // @[CSR.scala 170:29]
+  assign dt_cs_mtvec = dt_cs_io_mtvec_REG; // @[CSR.scala 170:29]
   assign dt_cs_stvec = 64'h0; // @[CSR.scala 171:29]
   assign dt_cs_mcause = mcause; // @[CSR.scala 172:29]
   assign dt_cs_scause = 64'h0; // @[CSR.scala 173:29]
@@ -1457,6 +1460,7 @@ module CSR(
     end else if (io_time_intrpt) begin // @[CSR.scala 73:23]
       intrpt_no <= 64'h7; // @[CSR.scala 78:19]
     end
+    dt_cs_io_mtvec_REG <= mtvec; // @[CSR.scala 170:39]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -1512,6 +1516,8 @@ initial begin
   intrpt = _RAND_7[0:0];
   _RAND_8 = {2{`RANDOM}};
   intrpt_no = _RAND_8[63:0];
+  _RAND_9 = {2{`RANDOM}};
+  dt_cs_io_mtvec_REG = _RAND_9[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

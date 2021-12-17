@@ -90,7 +90,7 @@ CSRRWI  ->  List(Y, N, ALU_COPY1,  OP_IMM , OP_X , IMM_CSR , MEM_X , WB_REG , CS
 CSRRSI  ->  List(Y, N, ALU_COPY1,  OP_IMM , OP_X , IMM_CSR , MEM_X , WB_REG , CSR_RS   ),
 CSRRCI  ->  List(Y, N, ALU_COPY1,  OP_IMM , OP_X , IMM_CSR , MEM_X , WB_REG , CSR_RC   ),
 ECALL   ->  List(Y, N, ALU_X,      OP_X   , OP_X , IMM_X   , MEM_X , WB_X   , CSR_ECALL),
-ECALL   ->  List(Y, N, ALU_X,      OP_X   , OP_X , IMM_X   , MEM_X , WB_X   , CSR_MRET ),
+MRET    ->  List(Y, N, ALU_X,      OP_X   , OP_X , IMM_X   , MEM_X , WB_X   , CSR_MRET ),
 
 MY_INST ->  List(Y, N, ALU_MY_INST, OP_X  , OP_X , IMM_X   , MEM_X , WB_X   , CSR_X    )
 
