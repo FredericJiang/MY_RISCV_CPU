@@ -452,7 +452,7 @@ when((wb_reg_csr_type =/= CSR_X)){
     dt_cs.io.coreid         := 0.U
     dt_cs.io.priviledgeMode := 3.U  // Machine mode
     dt_cs.io.mstatus        := wb_reg_mstatus
-    dt_cs.io.sstatus        := 0.U
+    dt_cs.io.sstatus        := wb_reg_mstatus & "h80000003000de122".U
     dt_cs.io.mepc           := wb_reg_mepc
     dt_cs.io.sepc           := 0.U
     dt_cs.io.mtval          := 0.U
