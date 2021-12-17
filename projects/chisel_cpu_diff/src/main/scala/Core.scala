@@ -412,7 +412,8 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
-val dt_csr_valid = (wb_reg_csr_type =/= CSR_X)
+val dt_csr_valid = RegInit(false.B)
+dt_csr_valid := (wb_reg_csr_type =/= CSR_X)
 
 when(dt_csr_valid){
 
