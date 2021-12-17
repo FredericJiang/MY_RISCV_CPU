@@ -3,6 +3,7 @@ import chisel3.util._
 import chisel3.util.experimental._
 import difftest._
 import Constant._
+import PipelineReg._
 
 
 
@@ -14,86 +15,7 @@ class Core extends Module {
 
 val stall = Wire(Bool())
   stall    := false.B
-//*******************************************************************
-// Pipline State Registers
-//*******************************************************************
 
-// Instruction Fetch State 
-
-  val if_reg_pc        = RegInit("h80000000".U(32.W))
-  val if_reg_pc_valid  = RegInit(false.B)
-  val if_reg_inst      = RegInit(0.U(64.W))
-
-// Instruction Decode State 
-
-val id_reg_pc     = RegInit("h7ffffffc".U(32.W))
-val id_reg_inst   = RegInit(0.U(64.W))
-
-// Execute State
-
-val exe_reg_pc        = RegInit("h7ffffffc".U(32.W))
-val exe_reg_inst      = RegInit(0.U(64.W))
-
-val exe_reg_alu_type  = RegInit(ALU_X) 
-val exe_reg_wb_type   = RegInit(WB_X)  
-val exe_reg_mem_rtype = RegInit(MEM_X) 
-val exe_reg_imm_type  = RegInit(IMM_X)
-val exe_reg_op1_type  = RegInit(OP_X)
-val exe_reg_op2_type  = RegInit(OP_X)
-
-val exe_reg_op1_data  = Reg(UInt(64.W))
-val exe_reg_op2_data  = Reg(UInt(64.W))
-val exe_reg_rs2_data  = Reg(UInt(64.W))
-val exe_reg_rs1_data  = Reg(UInt(64.W))
-val exe_reg_imm       = Reg(UInt(64.W))
-val exe_reg_rd_en     = Reg(Bool())
-val exe_reg_dmem_en   = Reg(Bool())
-val exe_reg_dmem_wen  = Reg(Bool())
-
-val exe_reg_rs1_addr  =  RegInit(0.U(64.W)) 
-val exe_reg_rs2_addr  =  RegInit(0.U(64.W)) 
-val exe_reg_rd_addr   =  RegInit(0.U(64.W)) 
-
-// Memory State
-
-val mem_reg_dmem_en   = Reg(Bool())
-val mem_reg_dmem_wen  = Reg(Bool())
-val mem_reg_rd_en     = Reg(Bool())
-val mem_reg_pc        = RegInit("h7ffffffc".U(32.W))
-val mem_reg_inst      = RegInit(0.U(64.W))  
-
-val mem_reg_alu_type  =  RegInit(ALU_X) 
-val mem_reg_wb_type   =  RegInit(WB_X)  
-val mem_reg_mem_rtype =  RegInit(MEM_X) 
-
-val mem_reg_alu_out   =  RegInit(0.U(64.W))     
-val mem_reg_imm       =  RegInit(0.U(64.W))   
-val mem_reg_rs2_data  =  RegInit(0.U(64.W))  
-
-
-val mem_reg_rs1_addr  =  RegInit(0.U(64.W)) 
-val mem_reg_rs2_addr  =  RegInit(0.U(64.W)) 
-val mem_reg_rd_addr   =  RegInit(0.U(64.W)) 
-
-// Writeback State
-
-val wb_reg_pc        =  RegInit("h7ffffffc".U(32.W))
-val wb_reg_inst      =  RegInit(0.U(64.W))   
-val wb_reg_wb_type   =  RegInit(WB_X)  
-val wb_reg_mem_rtype =  RegInit(MEM_X) 
-val wb_reg_alu_out   =  Reg(UInt(64.W))     
-val wb_reg_rd_data   =  Reg(UInt(64.W))   
-val wb_reg_rd_en     =  Reg(Bool())
-val wb_reg_rd_addr   =  RegInit(0.U(64.W)) 
-val wb_reg_wdata     =  RegInit(0.U(64.W)) 
-val wb_reg_wdest     =  RegInit(0.U(64.W)) 
-val wb_reg_dmem_wen       =  Reg(Bool())
-
-val kill_stage  = Wire(Bool())
-val exe_pc_nxt  = Wire(UInt(32.W))
-val exe_alu_out = Wire(UInt(64.W))
-val mem_rd_data = Wire(UInt(64.W))
-val wb_rd_data = Wire(UInt(64.W))
 
 //********************************************************
 //Instruction Fetch Stage
@@ -181,7 +103,7 @@ val id_rs2 = MuxCase( regfile.io.rs2_data  , Array(
 val id_op2 =  MuxCase( regfile.io.rs2_data , Array(
                   (id_rs2_addr === 0.U && decode.io.op2_type === OP_REG) -> 0.U ,
                   (decode.io.op2_type === OP_IMM ) -> imm_gen.io.imm,
-                  (decode.io.op2_type === OP_4)   -> 4.U,
+                  (decode.io.op2_type === OP_4)    -> 4.U,
                   ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
                   ((mem_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
                   ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
@@ -205,6 +127,7 @@ exe_reg_inst      := id_reg_inst
 exe_reg_op1_type  := decode.io.op1_type
 exe_reg_op2_type  := decode.io.op2_type
 exe_reg_alu_type  := decode.io.alu_type
+exe_reg_csr_type  := decode.io.csr_type
 exe_reg_mem_rtype := decode.io.mem_rtype
 exe_reg_imm_type  := decode.io.imm_type
 exe_reg_wb_type   := decode.io.wb_type
@@ -257,6 +180,10 @@ exe_reg_op2_data  := 0.U
 //*******************************************************************
 // Execute Stage
 
+
+
+
+
 val exe_op1     = Wire(UInt(64.W))
 val exe_op2     = Wire(UInt(64.W))
 
@@ -271,15 +198,42 @@ alu.io.in2      := exe_op2
 
 exe_alu_out     := alu.io.alu_out
 
-val nxt_pc = Module(new Nxt_PC)
-nxt_pc.io.pc       := exe_reg_pc
-nxt_pc.io.imm_type := exe_reg_imm_type
-nxt_pc.io.alu_type := exe_reg_alu_type
-nxt_pc.io.imm      := exe_reg_imm
-nxt_pc.io.alu_out  := exe_alu_out
-nxt_pc.io.alu_out  := exe_alu_out
-nxt_pc.io.op2_type := exe_reg_op2_type
+val clint_en  = Wire(Bool())
 
+when(exe_reg_dmem_en && (exe_alu_out === CLINT_MTIME || exe_alu_out === CLINT_MTIMECMP))
+{clint_en := true.B}.otherwise
+{clint_en := false.B}
+
+
+
+val clint = Module(new Clint)
+clint.io.cmp_ren    :=  (exe_reg_mem_rtype =/= MEM_X) && clint_en
+clint.io.cmp_wen    :=  exe_reg_dmem_wen && clint_en
+clint.io.cmp_addr   :=  exe_alu_out
+clint.io.cmp_wdata  :=  exe_reg_rs2_data
+//clint.io.mie        :=  csr.io.mie
+//clint.io.mstatus    :=  csr.io.mstatus
+
+val csr  = Module(new CSR)
+csr.io.pc          := exe_reg_pc
+csr.io.inst        := exe_reg_inst
+csr.io.in_data     := exe_alu_out
+csr.io.csr_type    := exe_reg_csr_type
+csr.io.time_intrpt := false.B
+csr.io.time_intrpt := clint.io.time_intrpt
+
+
+
+val nxt_pc = Module(new Nxt_PC)
+nxt_pc.io.pc          := exe_reg_pc
+nxt_pc.io.imm_type    := exe_reg_imm_type
+nxt_pc.io.alu_type    := exe_reg_alu_type
+nxt_pc.io.imm         := exe_reg_imm
+nxt_pc.io.alu_out     := exe_alu_out
+nxt_pc.io.alu_out     := exe_alu_out
+nxt_pc.io.op2_type    := exe_reg_op2_type
+nxt_pc.io.csr_jmp     := csr.io.jmp
+nxt_pc.io.csr_jmp_pc  := csr.io.jmp_pc
 // a ld instruction before jalr 
 //only in mem stage can gain the jmp address
 when(exe_reg_rs1_addr === mem_reg_rd_addr){
@@ -294,6 +248,12 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 mem_reg_pc         := exe_reg_pc
 mem_reg_inst       := exe_reg_inst
 
+mem_reg_clint_en   := clint_en
+
+mem_reg_csr_rd_wen  := csr.io.rd_wen
+mem_reg_csr_rd_data := csr.io.out
+
+mem_reg_alu_type   := exe_reg_alu_type
 mem_reg_mem_rtype  := exe_reg_mem_rtype
 mem_reg_wb_type    := exe_reg_wb_type
 mem_reg_alu_out    := exe_alu_out
@@ -304,8 +264,8 @@ mem_reg_rs1_addr   := exe_reg_rs1_addr
 mem_reg_rd_addr    := exe_reg_rd_addr
 
 mem_reg_rd_en      := exe_reg_rd_en 
-mem_reg_dmem_wen   := exe_reg_dmem_wen
-mem_reg_dmem_en    := exe_reg_dmem_en
+mem_reg_dmem_wen   := exe_reg_dmem_wen && !clint_en
+mem_reg_dmem_en    := exe_reg_dmem_en  && !clint_en
 
 //*******************************************************************
 //MEMORY Stage
@@ -313,7 +273,8 @@ mem_reg_dmem_en    := exe_reg_dmem_en
 val mem_dmem_addr = Wire(UInt(64.W))
 
 // read & write memory address is from ALU
-when(mem_reg_dmem_en){mem_dmem_addr := mem_reg_alu_out}    
+when(mem_reg_dmem_en)
+{mem_dmem_addr := mem_reg_alu_out}    
 .otherwise{mem_dmem_addr := 0.U}
 
 // Operation with Memory
@@ -331,7 +292,8 @@ lsu.io.dmem_rdata := mem_dmem_rdata
 
 lsu.io.wb_type    := mem_reg_wb_type
 
-when((mem_reg_rs2_addr === wb_reg_rd_addr) && mem_reg_dmem_wen && wb_reg_rd_en ){
+when((mem_reg_rs2_addr === wb_reg_rd_addr) 
+&& mem_reg_dmem_wen && wb_reg_rd_en ){
 lsu.io.rs2_data  := wb_rd_data
 }.otherwise{lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2
 
@@ -349,30 +311,36 @@ wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
 wb_reg_dmem_wen    := mem_reg_dmem_wen
 
+wb_reg_alu_type    := mem_reg_alu_type
 wb_reg_mem_rtype   := mem_reg_mem_rtype 
 wb_reg_alu_out     := mem_reg_alu_out
 wb_reg_rd_data     := mem_rd_data
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_en       := mem_reg_rd_en
 
+wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
+wb_reg_csr_rd_data := mem_reg_csr_rd_data
+wb_reg_clint_en   := mem_reg_clint_en
+
 //*******************************************************************
 //WriteBack
 //write back to reg enalbe
-regfile.io.rd_en   := wb_reg_rd_en
+regfile.io.rd_en   := wb_reg_rd_en || wb_reg_csr_rd_wen
 regfile.io.rd_addr := wb_reg_rd_addr
 
 wb_rd_data  := MuxCase(0.U, Array(
+                  
                   (wb_reg_mem_rtype === MEM_X) -> wb_reg_alu_out,
-                  (wb_reg_mem_rtype =/= MEM_X) -> wb_reg_rd_data
+                  (wb_reg_mem_rtype =/= MEM_X && !wb_reg_csr_rd_wen) -> wb_reg_rd_data,
+                  (wb_reg_csr_rd_wen) -> wb_reg_csr_rd_data
                   ))
 
 regfile.io.rd_data := wb_rd_data
 
 
 
-
-
-
+when(wb_reg_alu_out === ALU_MY_INST)
+{ printf("%c", 0.U) }
 
 
 
@@ -388,7 +356,8 @@ regfile.io.rd_data := wb_rd_data
 
 val dt_valid = RegInit(false.B)
 
-dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U) 
+dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U 
+&& wb_reg_alu_type =/= ALU_MY_INST && !wb_reg_clint_en ) 
 
 
 val dt_ic = Module(new DifftestInstrCommit)
@@ -413,12 +382,7 @@ when(dt_valid){
   dt_ic.io.instr    := 0.U
 }
 
-  val dt_ae = Module(new DifftestArchEvent)
-  dt_ae.io.clock        := clock
-  dt_ae.io.coreid       := 0.U
-  dt_ae.io.intrNO       := 0.U
-  dt_ae.io.cause        := 0.U
-  dt_ae.io.exceptionPC  := 0.U
+  
 
   val cycle_cnt = RegInit(0.U(64.W))
   val instr_cnt = RegInit(0.U(64.W))
@@ -439,27 +403,6 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
-  val dt_cs = Module(new DifftestCSRState)
-  dt_cs.io.clock          := clock
-  dt_cs.io.coreid         := 0.U
-  dt_cs.io.priviledgeMode := 0.U  // Machine mode
-  dt_cs.io.mstatus        := 0.U
-  dt_cs.io.sstatus        := 0.U
-  dt_cs.io.mepc           := 0.U
-  dt_cs.io.sepc           := 0.U
-  dt_cs.io.mtval          := 0.U
-  dt_cs.io.stval          := 0.U
-  dt_cs.io.mtvec          := 0.U
-  dt_cs.io.stvec          := 0.U
-  dt_cs.io.mcause         := 0.U
-  dt_cs.io.scause         := 0.U
-  dt_cs.io.satp           := 0.U
-  dt_cs.io.mip            := 0.U
-  dt_cs.io.mie            := 0.U
-  dt_cs.io.mscratch       := 0.U
-  dt_cs.io.sscratch       := 0.U
-  dt_cs.io.mideleg        := 0.U
-  dt_cs.io.medeleg        := 0.U
 
 
 //printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)

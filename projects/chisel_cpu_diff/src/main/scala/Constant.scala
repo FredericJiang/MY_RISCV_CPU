@@ -52,7 +52,9 @@ object Constant{
   val ALU_SRLW  = 15.asUInt(5.W)
   val ALU_SRAW  = 16.asUInt(5.W)
   val ALU_SUBW  = 17.asUInt(5.W)
-  val ALU_COPY2 = 18.asUInt(5.W)
+  val ALU_COPY1 = 18.asUInt(5.W)
+  val ALU_COPY2 = 19.asUInt(5.W)
+  val ALU_MY_INST = 20.asUInt(5.W)
 
 
   val MEM_X    = 0.asUInt(3.W)
@@ -71,15 +73,35 @@ object Constant{
   val WB_MEM_H    = 3.asUInt(3.W)
   val WB_MEM_W    = 4.asUInt(3.W)
   val WB_MEM_D    = 5.asUInt(3.W)
- 
 
+  val CSR_X       = 0.asUInt(3.W)
+  val CSR_ECALL   = 1.asUInt(3.W)
+  val CSR_MRET    = 2.asUInt(3.W)
+  val CSR_RW      = 3.asUInt(3.W)
+  val CSR_RS      = 4.asUInt(3.W)
+  val CSR_RC      = 5.asUInt(3.W)
 
-  val BUBBLE  = "h00000000".U(32.W)
+  val BUBBLE         = "h00000013".U(32.W)
+  val CLINT_MTIMECMP = "h0000000002004000".U(64.W)
+  val CLINT_MTIME    = "h000000000200bff8".U(64.W)
+
 
 //  nop  =　addi r0, r0, x0
 }
 
 
+object csr_addr {
+  val mhartid  = "hf14".U
+  val mstatus  = "h300".U
+  val mie      = "h304".U
+  val mtvec    = "h305".U
+  val mscratch = "h340".U
+  val mepc     = "h341".U
+  val mcause   = "h342".U
+  val mip      = "h344".U
+  val mcycle   = "hb00".U
+  val minstret = "hb02".U
+}
 
 
 

@@ -43,7 +43,9 @@ is(ALU_SRA)  { alu_out:= (in1.asSInt >> shamt).asUInt()} //arithmetic right shif
 is(ALU_SRAW) { val x = (in1(31,0).asSInt >> shamt(4,0)).asUInt(); alu_out:= Cat(Fill(33,x(31)), x(30,0))}
 is(ALU_BGE)  { alu_out:= (in1.asSInt >= in2.asSInt).asUInt()}
 is(ALU_BGEU) { alu_out:= (in1 >= in2).asUInt()}
+is(ALU_COPY1){ alu_out:= in1}
 is(ALU_COPY2){ alu_out:= in2}
+is{ALU_X}    { alu_out:= 0.U}
 
 }
 

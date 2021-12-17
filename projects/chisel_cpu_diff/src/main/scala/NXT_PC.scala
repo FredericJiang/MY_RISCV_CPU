@@ -8,11 +8,11 @@ val io = IO(new Bundle{
  val imm      = Input(UInt(64.W))
  val rs1_data = Input(UInt(64.W))
  val alu_out  = Input(UInt(64.W))
-
+ val csr_jmp  = Input(Bool())
  val op2_type = Input(UInt(3.W))
  val imm_type = Input(UInt(3.W))
  val alu_type = Input(UInt(5.W))
- 
+ val csr_jmp_pc = Input(UInt(64.W))
 
  val pc_nxt = Output(UInt(32.W))
  val pc_jmp = Output(Bool())
@@ -38,7 +38,10 @@ when(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out === 0.U){
 //JALR
   val x = io.rs1_data + io.imm
   io.pc_nxt := Cat(x(63,1).asUInt,0.U )
-}.otherwise{
+}.elsewhen(io.csr_jmp){
+  io.pc_nxt := io.csr_jmp_pc
+}
+.otherwise{
 // other types of instruction
 io.pc_jmp := false.B
 io.pc_nxt := 0.U
