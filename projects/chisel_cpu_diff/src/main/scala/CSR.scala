@@ -22,8 +22,14 @@ class CSR extends Module {
     val intrpt    = Output(Bool())
     val intrpt_pc = Output(UInt(32.W))
     val rd_wen    = Output(Bool())
-
-
+    
+    val mie       = Output(UInt(64.W))
+    val mstatus   = Output(UInt(64.W))
+    val mepc      = Output(UInt(64.W))
+    val mtvec     = Output(UInt(64.W))
+    val mcause    = Output(UInt(64.W))
+    val mscratch  = Output(UInt(64.W))
+    val intrpt_no = Output(UInt(64.W))
   })
 
   val csr_rw = (io.csr_type === CSR_RW) || (io.csr_type === CSR_RS) || (io.csr_type === CSR_RC)
@@ -147,37 +153,17 @@ class CSR extends Module {
   io.jmp_pc    := csr_jmp_pc
   io.intrpt    := intrpt
   io.intrpt_pc := intrpt_pc
+  io.intrpt_no := intrpt_no
+
+  io.mie       := mie
+  io.mstatus   := mstatus
+  io.mepc      := mepc
+  io.mtvec     := mtvec
+  io.mcause    := mcause
+  io.mscratch  := mscratch
 
 
-  val dt_ae = Module(new DifftestArchEvent)
-    dt_ae.io.clock        := clock
-    dt_ae.io.coreid       := 0.U
-    dt_ae.io.intrNO       := Mux(intrpt, intrpt_no, 0.U)
-    dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := Mux(intrpt, mepc, 0.U)
 
-
-  val dt_cs = Module(new DifftestCSRState)
-    dt_cs.io.clock          := clock
-    dt_cs.io.coreid         := 0.U
-    dt_cs.io.priviledgeMode := 3.U  // Machine mode
-    dt_cs.io.mstatus        := mstatus
-    dt_cs.io.sstatus        := 0.U
-    dt_cs.io.mepc           := mepc
-    dt_cs.io.sepc           := 0.U
-    dt_cs.io.mtval          := 0.U
-    dt_cs.io.stval          := 0.U
-    dt_cs.io.mtvec          := mtvec
-    dt_cs.io.stvec          := 0.U
-    dt_cs.io.mcause         := mcause
-    dt_cs.io.scause         := 0.U
-    dt_cs.io.satp           := 0.U
-    dt_cs.io.mip            := 0.U
-    dt_cs.io.mie            := mie
-    dt_cs.io.mscratch       := mscratch
-    dt_cs.io.sscratch       := 0.U
-    dt_cs.io.mideleg        := 0.U
-    dt_cs.io.medeleg        := 0.U
 
 
 }

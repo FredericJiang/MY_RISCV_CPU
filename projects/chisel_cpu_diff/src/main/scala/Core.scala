@@ -412,6 +412,41 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
+val dt_csr_valid = (wb_reg_csr_type =/= CSR_X)
+
+when(dt_csr_valid){
+
+  val dt_ae = Module(new DifftestArchEvent)
+    dt_ae.io.clock        := clock
+    dt_ae.io.coreid       := 0.U
+    dt_ae.io.intrNO       := Mux(csr.io.intrpt, csr.io.intrpt_no, 0.U)
+    dt_ae.io.cause        := 0.U
+    dt_ae.io.exceptionPC  := Mux(csr.io.intrpt, csr.io.mepc, 0.U)
+
+
+  val dt_cs = Module(new DifftestCSRState)
+    dt_cs.io.clock          := clock
+    dt_cs.io.coreid         := 0.U
+    dt_cs.io.priviledgeMode := 3.U  // Machine mode
+    dt_cs.io.mstatus        := csr.io.mstatus
+    dt_cs.io.sstatus        := 0.U
+    dt_cs.io.mepc           := csr.io.mepc
+    dt_cs.io.sepc           := 0.U
+    dt_cs.io.mtval          := 0.U
+    dt_cs.io.stval          := 0.U
+    dt_cs.io.mtvec          := csr.io.mtvec
+    dt_cs.io.stvec          := 0.U
+    dt_cs.io.mcause         := csr.io.mcause
+    dt_cs.io.scause         := 0.U
+    dt_cs.io.satp           := 0.U
+    dt_cs.io.mip            := 0.U
+    dt_cs.io.mie            := csr.io.mie
+    dt_cs.io.mscratch       := csr.io.mscratch
+    dt_cs.io.sscratch       := 0.U
+    dt_cs.io.mideleg        := 0.U
+    dt_cs.io.medeleg        := 0.U
+  }
+
 }
 
 //printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
