@@ -253,6 +253,7 @@ mem_reg_clint_en   := clint_en
 mem_reg_csr_rd_wen  := csr.io.rd_wen
 mem_reg_csr_rd_data := csr.io.out
 
+mem_reg_csr_type   := exe_reg_csr_type
 mem_reg_alu_type   := exe_reg_alu_type
 mem_reg_mem_rtype  := exe_reg_mem_rtype
 mem_reg_wb_type    := exe_reg_wb_type
@@ -318,9 +319,10 @@ wb_reg_rd_data     := mem_rd_data
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_en       := mem_reg_rd_en
 
+wb_reg_csr_type    := mem_reg_csr_type
 wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
 wb_reg_csr_rd_data := mem_reg_csr_rd_data
-wb_reg_clint_en   := mem_reg_clint_en
+wb_reg_clint_en    := mem_reg_clint_en
 
 //*******************************************************************
 //WriteBack
@@ -360,7 +362,10 @@ val dt_valid = RegInit(false.B)
 dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U 
  && !wb_reg_clint_en ) 
 
-val skip = (wb_reg_alu_type === ALU_MY_INST) || wb_reg_clint_en
+val skip = (wb_reg_alu_type === ALU_MY_INST) || 
+(wb_reg_clint_en) || 
+(wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle)
+
 
 
 when(dt_valid){
