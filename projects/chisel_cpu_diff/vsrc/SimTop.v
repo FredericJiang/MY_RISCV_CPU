@@ -1997,9 +1997,6 @@ module Core(
   wire  _id_op2_T_2 = id_rs2_addr == 5'h0 & _T_15; // @[Core.scala 104:40]
   wire  _id_op2_T_3 = decode_io_op2_type == 3'h2; // @[Core.scala 105:39]
   wire  _exe_reg_dmem_wen_T_2 = decode_io_wb_type != 3'h1 & decode_io_wb_type != 3'h0; // @[Core.scala 147:53]
-  wire [31:0] _GEN_10 = stall ? 32'h0 : exe_reg_pc; // @[Core.scala 166:18 Core.scala 168:19 PipelineReg.scala 25:32]
-  wire [63:0] _GEN_20 = kill_stage ? 64'hffffffffffffffff : {{32'd0}, _GEN_10}; // @[Core.scala 150:23 Core.scala 151:19]
-  wire [63:0] _GEN_34 = _T_2 ? {{32'd0}, id_reg_pc} : _GEN_20; // @[Core.scala 123:28 Core.scala 124:19]
   wire  clint_en = exe_reg_dmem_en & (exe_alu_out == 64'h200bff8 | exe_alu_out == 64'h2004000); // @[Core.scala 203:22]
   wire  _mem_reg_dmem_wen_T = ~clint_en; // @[Core.scala 279:43]
   wire  _T_34 = mem_reg_rs2_addr == wb_reg_rd_addr; // @[Core.scala 307:24]
@@ -2286,8 +2283,12 @@ module Core(
     end
     if (reset) begin // @[PipelineReg.scala 25:32]
       exe_reg_pc <= 32'h7ffffffc; // @[PipelineReg.scala 25:32]
-    end else begin
-      exe_reg_pc <= _GEN_34[31:0];
+    end else if (_T_2) begin // @[Core.scala 123:28]
+      exe_reg_pc <= id_reg_pc; // @[Core.scala 124:19]
+    end else if (kill_stage) begin // @[Core.scala 150:23]
+      exe_reg_pc <= 32'h0; // @[Core.scala 151:19]
+    end else if (stall) begin // @[Core.scala 166:18]
+      exe_reg_pc <= 32'h0; // @[Core.scala 168:19]
     end
     if (reset) begin // @[PipelineReg.scala 26:32]
       exe_reg_inst <= 64'h0; // @[PipelineReg.scala 26:32]
