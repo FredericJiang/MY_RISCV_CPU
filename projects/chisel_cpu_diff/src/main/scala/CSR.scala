@@ -167,7 +167,7 @@ class CSR extends Module {
     dt_cs.io.sepc           := 0.U
     dt_cs.io.mtval          := 0.U
     dt_cs.io.stval          := 0.U
-    dt_cs.io.mtvec          := RegNext(mtvec)
+    dt_cs.io.mtvec          := mtvec
     dt_cs.io.stvec          := 0.U
     dt_cs.io.mcause         := mcause
     dt_cs.io.scause         := 0.U

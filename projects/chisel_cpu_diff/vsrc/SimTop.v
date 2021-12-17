@@ -1216,7 +1216,6 @@ module CSR(
   reg [63:0] _RAND_6;
   reg [31:0] _RAND_7;
   reg [63:0] _RAND_8;
-  reg [63:0] _RAND_9;
 `endif // RANDOMIZE_REG_INIT
   wire  dt_ae_clock; // @[CSR.scala 152:21]
   wire [7:0] dt_ae_coreid; // @[CSR.scala 152:21]
@@ -1296,7 +1295,6 @@ module CSR(
   wire [62:0] mstatus_lo_3 = wdata[62:0]; // @[CSR.scala 129:79]
   wire [63:0] _mstatus_T_9 = {mstatus_hi_3,mstatus_lo_3}; // @[Cat.scala 30:58]
   wire [63:0] _dt_ae_io_intrNO_T = intrpt ? intrpt_no : 64'h0; // @[CSR.scala 155:33]
-  reg [63:0] dt_cs_io_mtvec_REG; // @[CSR.scala 170:39]
   DifftestArchEvent dt_ae ( // @[CSR.scala 152:21]
     .clock(dt_ae_clock),
     .coreid(dt_ae_coreid),
@@ -1348,7 +1346,7 @@ module CSR(
   assign dt_cs_sepc = 64'h0; // @[CSR.scala 167:29]
   assign dt_cs_mtval = 64'h0; // @[CSR.scala 168:29]
   assign dt_cs_stval = 64'h0; // @[CSR.scala 169:29]
-  assign dt_cs_mtvec = dt_cs_io_mtvec_REG; // @[CSR.scala 170:29]
+  assign dt_cs_mtvec = mtvec; // @[CSR.scala 170:29]
   assign dt_cs_stvec = 64'h0; // @[CSR.scala 171:29]
   assign dt_cs_mcause = mcause; // @[CSR.scala 172:29]
   assign dt_cs_scause = 64'h0; // @[CSR.scala 173:29]
@@ -1459,7 +1457,6 @@ module CSR(
     end else if (io_time_intrpt) begin // @[CSR.scala 73:23]
       intrpt_no <= 64'h7; // @[CSR.scala 78:19]
     end
-    dt_cs_io_mtvec_REG <= mtvec; // @[CSR.scala 170:39]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -1515,8 +1512,6 @@ initial begin
   intrpt = _RAND_7[0:0];
   _RAND_8 = {2{`RANDOM}};
   intrpt_no = _RAND_8[63:0];
-  _RAND_9 = {2{`RANDOM}};
-  dt_cs_io_mtvec_REG = _RAND_9[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
