@@ -55,7 +55,7 @@ class CSR extends Module {
   when (io.csr_type === CSR_ECALL) {
     mepc := io.pc
     mcause := 11.U  // Env call from M-mode
-    mstatus := Cat(mstatus(63, 13),~mstatus(12),~mstatus(11),mstatus(10, 8), mstatus(3), mstatus(6, 4), 0.U, mstatus(2, 0))
+    mstatus := Cat(mstatus(63, 13),mstatus(12),mstatus(11),mstatus(10, 8), mstatus(3), mstatus(6, 4), 0.U, mstatus(2, 0))
     csr_jmp := true.B
     csr_jmp_pc := Cat(mtvec(31, 2), Fill(2, 0.U))
   }
