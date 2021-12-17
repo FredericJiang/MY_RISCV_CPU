@@ -353,10 +353,10 @@ regfile.io.rd_en   := wb_reg_rd_en || wb_reg_csr_rd_wen
 regfile.io.rd_addr := wb_reg_rd_addr
 
 wb_rd_data  := MuxCase(0.U, Array(
+                  (wb_reg_csr_rd_wen) -> wb_reg_csr_rd_data,
+                  (wb_reg_mem_rtype === MEM_X && !wb_reg_csr_rd_wen) -> wb_reg_alu_out,
+                  (wb_reg_mem_rtype =/= MEM_X && !wb_reg_csr_rd_wen) -> wb_reg_rd_data
                   
-                  (wb_reg_mem_rtype === MEM_X) -> wb_reg_alu_out,
-                  (wb_reg_mem_rtype =/= MEM_X && !wb_reg_csr_rd_wen) -> wb_reg_rd_data,
-                  (wb_reg_csr_rd_wen) -> wb_reg_csr_rd_data
                   ))
 
 regfile.io.rd_data := wb_rd_data
