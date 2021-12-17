@@ -1341,7 +1341,7 @@ module CSR(
   assign dt_cs_coreid = 8'h0; // @[CSR.scala 162:29]
   assign dt_cs_priviledgeMode = 2'h3; // @[CSR.scala 163:29]
   assign dt_cs_mstatus = mstatus; // @[CSR.scala 164:29]
-  assign dt_cs_sstatus = mstatus & 64'h80000003000de122; // @[CSR.scala 165:40]
+  assign dt_cs_sstatus = 64'h0; // @[CSR.scala 165:29]
   assign dt_cs_mepc = mepc; // @[CSR.scala 166:29]
   assign dt_cs_sepc = 64'h0; // @[CSR.scala 167:29]
   assign dt_cs_mtval = 64'h0; // @[CSR.scala 168:29]
