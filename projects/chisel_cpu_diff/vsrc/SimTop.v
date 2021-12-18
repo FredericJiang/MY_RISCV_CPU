@@ -2038,6 +2038,7 @@ module Core(
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 453:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
   reg [63:0] dt_ae_io_intrNO_REG; // @[Core.scala 473:37]
+  wire [63:0] _dt_ae_io_exceptionPC_T_1 = wb_reg_mepc + 64'h4; // @[Core.scala 475:69]
   reg [63:0] dt_ae_io_exceptionPC_REG; // @[Core.scala 475:37]
   RegFile regfile ( // @[Core.scala 66:21]
     .clock(regfile_clock),
@@ -2700,7 +2701,7 @@ module Core(
       dt_ae_io_intrNO_REG <= 64'h0;
     end
     if (wb_reg_intrpt) begin // @[Core.scala 475:41]
-      dt_ae_io_exceptionPC_REG <= wb_reg_mepc;
+      dt_ae_io_exceptionPC_REG <= _dt_ae_io_exceptionPC_T_1;
     end else begin
       dt_ae_io_exceptionPC_REG <= 64'h0;
     end
