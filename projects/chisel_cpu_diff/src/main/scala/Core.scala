@@ -60,7 +60,7 @@ id_reg_inst  := id_reg_inst
 //*******************************************************************
 //Decode Instruction Stage
 
-val id_rs1_addr = id_reg_inst(19, 15)
+val id_rs1_addr = Mux((id_reg_inst ==="h0000007b".U ),"h0000b".U,id_reg_inst(19, 15))
 val id_rs2_addr = id_reg_inst(24, 20)
 
 val regfile = Module(new RegFile)
@@ -277,6 +277,7 @@ mem_reg_mem_rtype  := exe_reg_mem_rtype
 mem_reg_wb_type    := exe_reg_wb_type
 mem_reg_alu_out    := exe_alu_out
 mem_reg_rs2_data   := exe_reg_rs2_data
+mem_reg_rs1_data   := exe_reg_rs1_data
 mem_reg_rs2_addr   := exe_reg_rs2_addr
 mem_reg_rs1_addr   := exe_reg_rs1_addr
 
@@ -350,7 +351,7 @@ wb_reg_pc          := mem_reg_pc
 wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
 wb_reg_dmem_wen    := mem_reg_dmem_wen
-
+wb_reg_rs1_data    := mem_reg_rs1_data
 wb_reg_alu_type    := mem_reg_alu_type
 wb_reg_mem_rtype   := mem_reg_mem_rtype 
 wb_reg_alu_out     := mem_reg_alu_out
@@ -391,11 +392,8 @@ regfile.io.rd_data := wb_rd_data
 val my_inst = RegInit(0.U(1.W))
 
 when(wb_reg_alu_type === ALU_MY_INST)
-{ my_inst := 1.U
-val a = 0.U
-printf("%x", a) }.otherwise{
-  my_inst := 0.U
-}
+{ val a = wb_reg_rs1_data
+printf("%c", a) }
 
 
 
