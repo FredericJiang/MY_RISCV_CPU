@@ -213,8 +213,7 @@ clint.io.cmp_ren    :=  (exe_reg_mem_rtype =/= MEM_X) && clint_en
 clint.io.cmp_wen    :=  exe_reg_dmem_wen && clint_en
 clint.io.cmp_addr   :=  exe_alu_out
 clint.io.cmp_wdata  :=  exe_reg_rs2_data
-//clint.io.mie        :=  csr.io.mie
-//clint.io.mstatus    :=  csr.io.mstatus
+
 
 val csr  = Module(new CSR)
 csr.io.pc          := exe_reg_pc
@@ -223,7 +222,7 @@ csr.io.in_data     := exe_alu_out
 csr.io.csr_type    := exe_reg_csr_type
 csr.io.time_intrpt := false.B
 csr.io.time_intrpt := clint.io.time_intrpt
-
+csr.io.time_intrpt_pc := mem_reg_pc  //time intrpt will delay one stage to be enable
 
 
 val nxt_pc = Module(new Nxt_PC)
@@ -238,6 +237,7 @@ nxt_pc.io.csr_jmp     := csr.io.jmp
 nxt_pc.io.csr_jmp_pc  := csr.io.jmp_pc
 // a ld instruction before jalr 
 //only in mem stage can gain the jmp address
+
 when(exe_reg_rs1_addr === mem_reg_rd_addr && mem_reg_mem_rtype =/= MEM_X){
 nxt_pc.io.rs1_data := mem_rd_data
 }.otherwise(nxt_pc.io.rs1_data := exe_reg_rs1_data)
@@ -444,7 +444,7 @@ when((wb_reg_csr_type =/= CSR_X)){
     dt_ae.io.coreid       := 0.U
     dt_ae.io.intrNO       := Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U)
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)
+    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, wb_reg_mepc, 0.U) //
 
 
   val dt_cs = Module(new DifftestCSRState)

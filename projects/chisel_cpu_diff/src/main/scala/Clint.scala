@@ -33,7 +33,7 @@ class Clint extends Module {
   when (cmp_wen) {
     mtimecmp := cmp_wdata
   }
-  
+
   val mie = WireInit(UInt(64.W), 0.U)
   BoringUtils.addSink(mie, "csr_mie")
   val mstatus  = WireInit(UInt(64.W), 0.U)
