@@ -173,7 +173,7 @@ io.intrpt_pc := 0.U
     dt_ae.io.intrNO       := Mux(io.intrpt, io.intrpt_no, 0.U)
     dt_ae.io.cause        := 0.U
     dt_ae.io.exceptionPC  := Mux(io.intrpt, io.mepc, 0.U)
-*/
+
 
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
@@ -196,7 +196,7 @@ io.intrpt_pc := 0.U
     dt_cs.io.sscratch       := 0.U
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
-
+*/
 
 
 }

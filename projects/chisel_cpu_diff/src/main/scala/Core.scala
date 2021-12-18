@@ -472,9 +472,9 @@ when((wb_reg_csr_type =/= CSR_X)){
     dt_ae.io.coreid       := 0.U
     dt_ae.io.intrNO       := RegNext(Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U))
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)) }//
+    dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)) //
 
-/*
+
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
     dt_cs.io.coreid         := 0.U
@@ -496,10 +496,10 @@ when((wb_reg_csr_type =/= CSR_X)){
     dt_cs.io.sscratch       := 0.U
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
-  }
-*/
-}
+  
 
+}
+}
 
 
 //printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
