@@ -1599,7 +1599,7 @@ Disassembly of section .text:
     80001784:	00050a63          	beqz	a0,80001798 <iset+0x14>
     80001788:	300467f3          	csrrsi	a5,mstatus,8
     8000178c:	08000793          	li	a5,128
-    80001790:	3047a7f3          	csrrs	a5,mie,a5
+    80001790:	3047a7f3          	csrrs	a5,mie,a5 // open timer interrupt
     80001794:	00008067          	ret  //jalr pc = ra
     80001798:	300477f3          	csrrci	a5,mstatus,8
     8000179c:	08000793          	li	a5,128

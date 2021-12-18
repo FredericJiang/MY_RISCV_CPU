@@ -71,11 +71,12 @@ class CSR extends Module {
 // Interrupt
 
 
-  val intrpt = RegInit(Bool(), false.B)
-  val intrpt_pc = RegInit(UInt(32.W), 0.U)
-  val intrpt_no = RegInit(UInt(64.W), 0.U)
-
-
+  val intrpt = Wire(Bool())
+  val intrpt_pc = Wire(UInt(32.W))
+  val intrpt_no = Wire(UInt(64.W))
+intrpt := false.B
+intrpt_pc := 0.U
+intrpt_no := 0.U
   when(io.time_intrpt){
         mepc := io.pc
         mcause := "h8000000000000007".U  //Machine Timer Interrupt, Only one interrupt is realized
