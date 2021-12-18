@@ -223,7 +223,8 @@ csr.io.csr_type    := exe_reg_csr_type
 csr.io.time_intrpt := false.B
 csr.io.time_intrpt := clint.io.time_intrpt
 csr.io.time_intrpt_pc := mem_reg_pc  //time intrpt will delay one stage to be enable
-
+csr.io.intrpt_mstatus := mem_reg_mstatus
+csr.io.intrpt_mtvec := mem_reg_mtvec
 
 val nxt_pc = Module(new Nxt_PC)
 nxt_pc.io.pc          := exe_reg_pc
@@ -235,6 +236,10 @@ nxt_pc.io.alu_out     := exe_alu_out
 nxt_pc.io.op2_type    := exe_reg_op2_type
 nxt_pc.io.csr_jmp     := csr.io.jmp 
 nxt_pc.io.csr_jmp_pc  := csr.io.jmp_pc
+
+nxt_pc.io.intrpt_jmp     := csr.io.intrpt
+nxt_pc.io.intrpt_jmp_pc  := csr.io.intrpt_pc
+
 // a ld instruction before jalr 
 //only in mem stage can gain the jmp address
 

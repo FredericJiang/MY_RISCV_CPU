@@ -9,10 +9,12 @@ val io = IO(new Bundle{
  val rs1_data = Input(UInt(64.W))
  val alu_out  = Input(UInt(64.W))
  val csr_jmp  = Input(Bool())
+ val intrpt_jmp  = Input(Bool())
  val op2_type = Input(UInt(3.W))
  val imm_type = Input(UInt(3.W))
  val alu_type = Input(UInt(5.W))
  val csr_jmp_pc = Input(UInt(64.W))
+ val intrpt_jmp_pc = Input(UInt(64.W))
 
  val pc_nxt = Output(UInt(32.W))
  val pc_jmp = Output(Bool())
@@ -20,8 +22,9 @@ val io = IO(new Bundle{
 
 io.pc_jmp := true.B
 
-
-when(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out === 0.U){
+when(io.intrpt_jmp){
+  io.pc_nxt := io.intrpt_jmp_pc
+}.elsewhen(io.imm_type === IMM_B && io.alu_type === ALU_SUB && io.alu_out === 0.U){
 // BEQ alu_out is zero, pc + offset
   io.pc_nxt := io.pc + io.imm
 }.elsewhen(io.imm_type === IMM_B && (io.alu_type === ALU_BGE || io.alu_type === ALU_BGEU )  && io.alu_out =/= 0.U){

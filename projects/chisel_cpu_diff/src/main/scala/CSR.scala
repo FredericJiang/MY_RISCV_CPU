@@ -15,6 +15,8 @@ class CSR extends Module {
     val in_data     = Input(UInt(64.W))
     val time_intrpt = Input(Bool())
     val time_intrpt_pc = Input(UInt(64.W))
+    val intrpt_mstatus = Input(UInt(64.W))
+    val intrpt_mtvec = Input(UInt(64.W))
 
 
     val out       = Output(UInt(64.W))
@@ -22,6 +24,8 @@ class CSR extends Module {
     val jmp_pc    = Output(UInt(32.W))
     val intrpt    = Output(Bool())
     val intrpt_pc = Output(UInt(32.W))
+    val intrpt_no = Output(UInt(64.W))
+    
     val rd_wen    = Output(Bool())
     
     val mie       = Output(UInt(64.W))
@@ -30,7 +34,7 @@ class CSR extends Module {
     val mtvec     = Output(UInt(64.W))
     val mcause    = Output(UInt(64.W))
     val mscratch  = Output(UInt(64.W))
-    val intrpt_no = Output(UInt(64.W))
+    
   })
 
   val csr_rw = (io.csr_type === CSR_RW) || (io.csr_type === CSR_RS) || (io.csr_type === CSR_RC)
@@ -72,19 +76,19 @@ class CSR extends Module {
 // Interrupt
 
 
-  val intrpt = RegInit(Bool(), false.B)
-  val intrpt_pc = RegInit(UInt(32.W), 0.U)
-  val intrpt_no = RegInit(UInt(64.W), 0.U)
+io.intrpt := false.B
+io.intrpt_no := 0.U
+io.intrpt_pc := 0.U
 
 
   when(io.time_intrpt){
         
         mepc := io.time_intrpt_pc
         mcause := "h8000000000000007".U  //Machine Timer Interrupt, Only one interrupt is realized
-        mstatus := Cat(mstatus(63,13), Fill(2, 1.U), mstatus(10,8), mstatus(3), mstatus(6, 4), 0.U, mstatus(2, 0))
-        intrpt := true.B
-        intrpt_no := 7.U
-        intrpt_pc := Cat(mtvec(31, 2), Fill(2, 0.U))
+        mstatus := Cat(io.intrpt_mstatus(63,13), Fill(2, 1.U), io.intrpt_mstatus(10,8), io.intrpt_mstatus(3), io.intrpt_mstatus(6, 4), 0.U, io.intrpt_mstatus(2, 0))
+        io.intrpt := true.B
+        io.intrpt_no := 7.U
+        io.intrpt_pc := Cat(io.intrpt_mtvec(31, 2), Fill(2, 0.U))
   
   }
     
@@ -153,9 +157,7 @@ class CSR extends Module {
   io.rd_wen    := csr_rw
   io.jmp       := csr_jmp
   io.jmp_pc    := csr_jmp_pc
-  io.intrpt    := intrpt
-  io.intrpt_pc := intrpt_pc
-  io.intrpt_no := intrpt_no
+  
 
   io.mie       := mie
   io.mstatus   := mstatus
