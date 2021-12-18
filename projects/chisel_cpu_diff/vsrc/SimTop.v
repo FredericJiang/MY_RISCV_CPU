@@ -2043,7 +2043,8 @@ module Core(
   wire [63:0] rf_a0_0 = regfile_rf_10;
   reg [63:0] dt_ae_io_intrNO_REG; // @[Core.scala 481:37]
   reg [31:0] dt_ae_io_exceptionPC_REG; // @[Core.scala 483:56]
-  wire [31:0] _dt_ae_io_exceptionPC_T = wb_reg_intrpt ? dt_ae_io_exceptionPC_REG : 32'h0; // @[Core.scala 483:33]
+  wire [31:0] _dt_ae_io_exceptionPC_T_1 = dt_ae_io_exceptionPC_REG + 32'h4; // @[Core.scala 483:67]
+  wire [31:0] _dt_ae_io_exceptionPC_T_2 = wb_reg_intrpt ? _dt_ae_io_exceptionPC_T_1 : 32'h0; // @[Core.scala 483:33]
   RegFile regfile ( // @[Core.scala 66:21]
     .clock(regfile_clock),
     .reset(regfile_reset),
@@ -2267,7 +2268,7 @@ module Core(
   assign dt_ae_coreid = 8'h0; // @[Core.scala 480:27]
   assign dt_ae_intrNO = dt_ae_io_intrNO_REG[31:0]; // @[Core.scala 481:27]
   assign dt_ae_cause = 32'h0; // @[Core.scala 482:27]
-  assign dt_ae_exceptionPC = {{32'd0}, _dt_ae_io_exceptionPC_T}; // @[Core.scala 483:33]
+  assign dt_ae_exceptionPC = {{32'd0}, _dt_ae_io_exceptionPC_T_2}; // @[Core.scala 483:33]
   assign dt_ae_exceptionInst = 32'h0;
   assign dt_cs_clock = clock; // @[Core.scala 487:29]
   assign dt_cs_coreid = 8'h0; // @[Core.scala 488:29]
@@ -2685,7 +2686,7 @@ module Core(
     if (reset) begin // @[Core.scala 421:23]
       dt_valid <= 1'h0; // @[Core.scala 421:23]
     end else begin
-      dt_valid <= wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0 & ~wb_reg_clint_en & ~wb_reg_intrpt; // @[Core.scala 423:10]
+      dt_valid <= wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0 & ~wb_reg_clint_en & wb_reg_intrpt; // @[Core.scala 423:10]
     end
     dt_ic_io_skip_REG <= _skip_T_1 | _skip_T_5; // @[Core.scala 426:19]
     dt_ic_io_wen_REG <= wb_reg_dmem_wen; // @[Core.scala 441:31]

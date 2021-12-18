@@ -420,7 +420,7 @@ printf("%c", a) }
 
 val dt_valid = RegInit(false.B)
 
-dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U && !wb_reg_clint_en && !wb_reg_intrpt) 
+dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U && !wb_reg_clint_en && wb_reg_intrpt) 
 
 val skip = (wb_reg_alu_type === ALU_MY_INST) || 
 (wb_reg_clint_en) || 
@@ -480,7 +480,7 @@ when(dt_valid){
     dt_ae.io.coreid       := 0.U
     dt_ae.io.intrNO       := RegNext(Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U))
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, RegNext(wb_reg_pc), 0.U)
+    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, RegNext(wb_reg_pc)+4.U, 0.U)
 
 
   val dt_cs = Module(new DifftestCSRState)
