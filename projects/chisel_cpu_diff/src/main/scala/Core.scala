@@ -261,15 +261,16 @@ mem_reg_mtvec    := csr.io.mtvec
 mem_reg_mscratch := csr.io.mscratch
 mem_reg_intrpt   := csr.io.intrpt
 mem_reg_intrpt_no:= csr.io.intrpt_no
+
+
+
+when(!csr.io.intrpt) 
+{
 mem_reg_pc         := exe_reg_pc
 mem_reg_inst       := exe_reg_inst
 mem_reg_clint_en   := clint_en
 mem_reg_csr_rd_wen  := csr.io.rd_wen
 mem_reg_csr_rd_data := csr.io.out
-
-
-when(!csr.io.intrpt) 
-{
 mem_reg_csr_type   := exe_reg_csr_type
 mem_reg_alu_type   := exe_reg_alu_type
 mem_reg_mem_rtype  := exe_reg_mem_rtype
