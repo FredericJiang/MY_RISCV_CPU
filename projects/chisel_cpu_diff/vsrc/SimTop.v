@@ -1204,7 +1204,6 @@ module CSR(
   output        io_jmp,
   output [31:0] io_jmp_pc,
   output        io_intrpt,
-  output [31:0] io_intrpt_pc,
   output        io_rd_wen,
   output [63:0] io_mie,
   output [63:0] io_mstatus,
@@ -1225,8 +1224,7 @@ module CSR(
   reg [63:0] _RAND_5;
   reg [63:0] _RAND_6;
   reg [31:0] _RAND_7;
-  reg [31:0] _RAND_8;
-  reg [63:0] _RAND_9;
+  reg [63:0] _RAND_8;
 `endif // RANDOMIZE_REG_INIT
   wire  csr_rw = io_csr_type == 3'h3 | io_csr_type == 3'h4 | io_csr_type == 3'h5; // @[CSR.scala 35:69]
   reg [63:0] mstatus; // @[CSR.scala 40:26]
@@ -1255,7 +1253,6 @@ module CSR(
     mstatus_lo_lo}; // @[Cat.scala 30:58]
   wire [63:0] _GEN_5 = io_csr_type == 3'h2 ? _mstatus_T_1 : _GEN_2; // @[CSR.scala 64:35 CSR.scala 65:13]
   reg  intrpt; // @[CSR.scala 74:23]
-  reg [31:0] intrpt_pc; // @[CSR.scala 75:26]
   reg [63:0] intrpt_no; // @[CSR.scala 76:26]
   wire [63:0] _GEN_8 = io_time_intrpt ? {{32'd0}, io_pc} : _GEN_0; // @[CSR.scala 79:23 CSR.scala 80:14]
   wire [63:0] _GEN_9 = io_time_intrpt ? 64'h8000000000000007 : _GEN_1; // @[CSR.scala 79:23 CSR.scala 81:16]
@@ -1286,7 +1283,6 @@ module CSR(
   assign io_jmp = io_csr_type == 3'h2 | _T; // @[CSR.scala 64:35 CSR.scala 66:13]
   assign io_jmp_pc = io_csr_type == 3'h2 ? mepc[31:0] : _GEN_4; // @[CSR.scala 64:35 CSR.scala 67:16]
   assign io_intrpt = intrpt; // @[CSR.scala 154:16]
-  assign io_intrpt_pc = intrpt_pc; // @[CSR.scala 155:16]
   assign io_rd_wen = io_csr_type == 3'h3 | io_csr_type == 3'h4 | io_csr_type == 3'h5; // @[CSR.scala 35:69]
   assign io_mie = mie; // @[CSR.scala 158:16]
   assign io_mstatus = mstatus; // @[CSR.scala 159:16]
@@ -1392,11 +1388,6 @@ module CSR(
     end else begin
       intrpt <= _GEN_11;
     end
-    if (reset) begin // @[CSR.scala 75:26]
-      intrpt_pc <= 32'h0; // @[CSR.scala 75:26]
-    end else if (io_time_intrpt) begin // @[CSR.scala 79:23]
-      intrpt_pc <= _csr_jmp_pc_T; // @[CSR.scala 85:19]
-    end
     if (reset) begin // @[CSR.scala 76:26]
       intrpt_no <= 64'h0; // @[CSR.scala 76:26]
     end else if (io_time_intrpt) begin // @[CSR.scala 79:23]
@@ -1455,10 +1446,8 @@ initial begin
   mcycle = _RAND_6[63:0];
   _RAND_7 = {1{`RANDOM}};
   intrpt = _RAND_7[0:0];
-  _RAND_8 = {1{`RANDOM}};
-  intrpt_pc = _RAND_8[31:0];
-  _RAND_9 = {2{`RANDOM}};
-  intrpt_no = _RAND_9[63:0];
+  _RAND_8 = {2{`RANDOM}};
+  intrpt_no = _RAND_8[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
@@ -1812,7 +1801,6 @@ module Core(
   wire  csr_io_jmp; // @[Core.scala 219:18]
   wire [31:0] csr_io_jmp_pc; // @[Core.scala 219:18]
   wire  csr_io_intrpt; // @[Core.scala 219:18]
-  wire [31:0] csr_io_intrpt_pc; // @[Core.scala 219:18]
   wire  csr_io_rd_wen; // @[Core.scala 219:18]
   wire [63:0] csr_io_mie; // @[Core.scala 219:18]
   wire [63:0] csr_io_mstatus; // @[Core.scala 219:18]
@@ -2017,7 +2005,6 @@ module Core(
   wire [63:0] _GEN_21 = kill_stage ? 64'hffffffffffffffff : {{32'd0}, _GEN_10}; // @[Core.scala 150:23 Core.scala 151:19]
   wire [63:0] _GEN_36 = _T_2 ? {{32'd0}, id_reg_pc} : _GEN_21; // @[Core.scala 123:28 Core.scala 124:19]
   wire  clint_en = exe_reg_dmem_en & (exe_alu_out == 64'h200bff8 | exe_alu_out == 64'h2004000); // @[Core.scala 205:22]
-  wire [31:0] _nxt_pc_io_csr_jmp_pc_T = csr_io_jmp ? csr_io_jmp_pc : csr_io_intrpt_pc; // @[Core.scala 238:29]
   wire  _mem_reg_dmem_wen_T = ~clint_en; // @[Core.scala 281:43]
   wire  _T_34 = mem_reg_rs2_addr == wb_reg_rd_addr; // @[Core.scala 309:24]
   wire  _T_37 = wb_reg_alu_out == 64'h14; // @[Core.scala 366:21]
@@ -2094,7 +2081,6 @@ module Core(
     .io_jmp(csr_io_jmp),
     .io_jmp_pc(csr_io_jmp_pc),
     .io_intrpt(csr_io_intrpt),
-    .io_intrpt_pc(csr_io_intrpt_pc),
     .io_rd_wen(csr_io_rd_wen),
     .io_mie(csr_io_mie),
     .io_mstatus(csr_io_mstatus),
@@ -2219,11 +2205,11 @@ module Core(
   assign nxt_pc_io_imm = exe_reg_imm; // @[Core.scala 233:23]
   assign nxt_pc_io_rs1_data = exe_reg_rs1_addr == mem_reg_rd_addr & _id_rs1_T_13 ? mem_rd_data : exe_reg_rs1_data; // @[Core.scala 241:74 Core.scala 242:20 Core.scala 243:32]
   assign nxt_pc_io_alu_out = alu_io_alu_out; // @[PipelineReg.scala 117:23 Core.scala 201:17]
-  assign nxt_pc_io_csr_jmp = csr_io_jmp | csr_io_intrpt; // @[Core.scala 237:37]
+  assign nxt_pc_io_csr_jmp = csr_io_jmp; // @[Core.scala 237:23]
   assign nxt_pc_io_op2_type = exe_reg_op2_type; // @[Core.scala 236:23]
   assign nxt_pc_io_imm_type = exe_reg_imm_type; // @[Core.scala 231:23]
   assign nxt_pc_io_alu_type = exe_reg_alu_type; // @[Core.scala 232:23]
-  assign nxt_pc_io_csr_jmp_pc = {{32'd0}, _nxt_pc_io_csr_jmp_pc_T}; // @[Core.scala 238:29]
+  assign nxt_pc_io_csr_jmp_pc = {{32'd0}, csr_io_jmp_pc}; // @[Core.scala 238:23]
   assign lsu_io_mem_rtype = mem_reg_mem_rtype; // @[Core.scala 304:19]
   assign lsu_io_wb_type = mem_reg_wb_type; // @[Core.scala 307:19]
   assign lsu_io_dmem_addr = mem_reg_dmem_en ? mem_reg_alu_out : 64'h0; // @[Core.scala 291:1 Core.scala 291:16 Core.scala 292:26]

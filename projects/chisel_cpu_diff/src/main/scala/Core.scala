@@ -234,8 +234,8 @@ nxt_pc.io.imm         := exe_reg_imm
 nxt_pc.io.alu_out     := exe_alu_out
 nxt_pc.io.alu_out     := exe_alu_out
 nxt_pc.io.op2_type    := exe_reg_op2_type
-nxt_pc.io.csr_jmp     := csr.io.jmp || csr.io.intrpt
-nxt_pc.io.csr_jmp_pc  := Mux(csr.io.jmp, csr.io.jmp_pc, csr.io.intrpt_pc) 
+nxt_pc.io.csr_jmp     := csr.io.jmp 
+nxt_pc.io.csr_jmp_pc  := csr.io.jmp_pc
 // a ld instruction before jalr 
 //only in mem stage can gain the jmp address
 when(exe_reg_rs1_addr === mem_reg_rd_addr && mem_reg_mem_rtype =/= MEM_X){
