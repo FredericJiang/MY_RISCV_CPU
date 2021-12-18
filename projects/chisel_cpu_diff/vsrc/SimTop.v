@@ -2028,6 +2028,7 @@ module Core(
   reg  dt_valid; // @[Core.scala 421:23]
   wire  _skip_T_1 = _T_38 | wb_reg_clint_en; // @[Core.scala 425:46]
   wire  _skip_T_5 = wb_reg_csr_type != 3'h0 & wb_reg_inst[31:20] == 12'hb00; // @[Core.scala 427:28]
+  wire  _T_41 = ~wb_reg_intrpt; // @[Core.scala 431:18]
   reg  dt_ic_io_skip_REG; // @[Core.scala 438:31]
   reg  dt_ic_io_wen_REG; // @[Core.scala 441:31]
   reg [63:0] dt_ic_io_wdata_REG; // @[Core.scala 442:31]
@@ -2246,7 +2247,7 @@ module Core(
   assign dt_ic_clock = clock; // @[Core.scala 433:21]
   assign dt_ic_coreid = 8'h0; // @[Core.scala 434:21]
   assign dt_ic_index = 8'h0; // @[Core.scala 435:21]
-  assign dt_ic_valid = dt_valid; // @[Core.scala 436:21]
+  assign dt_ic_valid = dt_valid & _T_41; // @[Core.scala 436:33]
   assign dt_ic_pc = {{32'd0}, _GEN_78}; // @[Core.scala 445:15 Core.scala 446:21 Core.scala 450:21]
   assign dt_ic_instr = _GEN_79[31:0];
   assign dt_ic_special = 8'h0; // @[Core.scala 437:21]
