@@ -420,7 +420,7 @@ printf("%c", a) }
 
 val dt_valid = RegInit(false.B)
 
-dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U && !wb_reg_clint_en && !wb_reg_intrpt) 
+dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U && !wb_reg_clint_en ) 
 
 val skip = (wb_reg_alu_type === ALU_MY_INST) || 
 (wb_reg_clint_en) || 
@@ -428,7 +428,7 @@ val skip = (wb_reg_alu_type === ALU_MY_INST) ||
 
 
 
-when(dt_valid){
+when(dt_valid && !wb_reg_intrpt){
 val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.clock    := clock
   dt_ic.io.coreid   := 0.U
