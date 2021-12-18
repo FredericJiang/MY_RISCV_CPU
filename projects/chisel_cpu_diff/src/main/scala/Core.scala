@@ -493,7 +493,7 @@ when((wb_reg_csr_type =/= CSR_X)){
   }
 
 }
-val my_inst = WireInit(0.U(1.W))
+val my_inst = RegInit(0.U(1.W))
 
 when(wb_reg_alu_type === ALU_MY_INST)
 { my_inst := 1.U
@@ -503,7 +503,7 @@ printf("%c", a) }.otherwise{
 }
 
 
-printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
+//printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
 //printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
 //printf("dt_ic.io.wen =%x, dt_ic.io.wdata =%x, dt_ic.io.wdest =%x \n",dt_ic.io.wen ,dt_ic.io.wdata ,dt_ic.io.wdest)
 }
