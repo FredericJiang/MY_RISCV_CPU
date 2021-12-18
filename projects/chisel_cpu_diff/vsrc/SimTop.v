@@ -2695,7 +2695,7 @@ module Core(
       if (`PRINTF_COND) begin
     `endif
         if (_skip_T & ~reset) begin
-          $fwrite(32'h80000002,"%c",1'h0); // @[Core.scala 501:7]
+          $fwrite(32'h80000002,"%c",1'h0); // @[Core.scala 502:7]
         end
     `ifdef PRINTF_COND
       end

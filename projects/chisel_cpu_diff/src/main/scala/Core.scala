@@ -493,6 +493,7 @@ when((wb_reg_csr_type =/= CSR_X)){
   }
 
 }
+
 val my_inst = RegInit(0.U(1.W))
 
 when(wb_reg_alu_type === ALU_MY_INST)
