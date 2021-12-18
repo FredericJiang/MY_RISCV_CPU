@@ -388,10 +388,13 @@ wb_rd_data  := MuxCase(0.U, Array(
 regfile.io.rd_data := wb_rd_data
 
 
-
+val my_inst = RegInit(0.U(1.W))
 when(wb_reg_alu_type === ALU_MY_INST)
-{ val a = 0.U
-printf("%c", a) }
+{ my_inst := 1.U
+val a = 0.U
+printf("%c", a) }.otherwise{
+  my_inst := 0.U
+}
 
 
 
