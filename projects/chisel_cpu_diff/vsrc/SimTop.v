@@ -1757,8 +1757,6 @@ module Core(
   reg [63:0] _RAND_76;
   reg [63:0] _RAND_77;
   reg [63:0] _RAND_78;
-  reg [63:0] _RAND_79;
-  reg [63:0] _RAND_80;
 `endif // RANDOMIZE_REG_INIT
   wire  regfile_clock; // @[Core.scala 66:21]
   wire  regfile_reset; // @[Core.scala 66:21]
@@ -1858,32 +1856,32 @@ module Core(
   wire [63:0] dt_te_pc; // @[Core.scala 458:21]
   wire [63:0] dt_te_cycleCnt; // @[Core.scala 458:21]
   wire [63:0] dt_te_instrCnt; // @[Core.scala 458:21]
-  wire  dt_ae_clock; // @[Core.scala 472:21]
-  wire [7:0] dt_ae_coreid; // @[Core.scala 472:21]
-  wire [31:0] dt_ae_intrNO; // @[Core.scala 472:21]
-  wire [31:0] dt_ae_cause; // @[Core.scala 472:21]
-  wire [63:0] dt_ae_exceptionPC; // @[Core.scala 472:21]
-  wire [31:0] dt_ae_exceptionInst; // @[Core.scala 472:21]
-  wire  dt_cs_clock; // @[Core.scala 480:21]
-  wire [7:0] dt_cs_coreid; // @[Core.scala 480:21]
-  wire [1:0] dt_cs_priviledgeMode; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mstatus; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_sstatus; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mepc; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_sepc; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mtval; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_stval; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mtvec; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_stvec; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mcause; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_scause; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_satp; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mip; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mie; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mscratch; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_sscratch; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_mideleg; // @[Core.scala 480:21]
-  wire [63:0] dt_cs_medeleg; // @[Core.scala 480:21]
+  wire  dt_ae_clock; // @[Core.scala 470:21]
+  wire [7:0] dt_ae_coreid; // @[Core.scala 470:21]
+  wire [31:0] dt_ae_intrNO; // @[Core.scala 470:21]
+  wire [31:0] dt_ae_cause; // @[Core.scala 470:21]
+  wire [63:0] dt_ae_exceptionPC; // @[Core.scala 470:21]
+  wire [31:0] dt_ae_exceptionInst; // @[Core.scala 470:21]
+  wire  dt_cs_clock; // @[Core.scala 478:21]
+  wire [7:0] dt_cs_coreid; // @[Core.scala 478:21]
+  wire [1:0] dt_cs_priviledgeMode; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mstatus; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_sstatus; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mepc; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_sepc; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mtval; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_stval; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mtvec; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_stvec; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mcause; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_scause; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_satp; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mip; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mie; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mscratch; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_sscratch; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_mideleg; // @[Core.scala 478:21]
+  wire [63:0] dt_cs_medeleg; // @[Core.scala 478:21]
   reg [31:0] if_reg_pc; // @[PipelineReg.scala 14:33]
   reg  if_reg_pc_valid; // @[PipelineReg.scala 15:33]
   reg [31:0] id_reg_pc; // @[PipelineReg.scala 20:28]
@@ -2036,8 +2034,7 @@ module Core(
   wire [63:0] _instr_cnt_T_1 = instr_cnt + 64'h1; // @[Core.scala 451:26]
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 453:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
-  reg [63:0] dt_ae_io_intrNO_REG; // @[Core.scala 475:37]
-  reg [63:0] dt_ae_io_exceptionPC_REG; // @[Core.scala 477:37]
+  wire [63:0] _dt_ae_io_intrNO_T = wb_reg_intrpt ? wb_reg_intrpt_no : 64'h0; // @[Core.scala 473:33]
   RegFile regfile ( // @[Core.scala 66:21]
     .clock(regfile_clock),
     .reset(regfile_reset),
@@ -2156,7 +2153,7 @@ module Core(
     .cycleCnt(dt_te_cycleCnt),
     .instrCnt(dt_te_instrCnt)
   );
-  DifftestArchEvent dt_ae ( // @[Core.scala 472:21]
+  DifftestArchEvent dt_ae ( // @[Core.scala 470:21]
     .clock(dt_ae_clock),
     .coreid(dt_ae_coreid),
     .intrNO(dt_ae_intrNO),
@@ -2164,7 +2161,7 @@ module Core(
     .exceptionPC(dt_ae_exceptionPC),
     .exceptionInst(dt_ae_exceptionInst)
   );
-  DifftestCSRState dt_cs ( // @[Core.scala 480:21]
+  DifftestCSRState dt_cs ( // @[Core.scala 478:21]
     .clock(dt_cs_clock),
     .coreid(dt_cs_coreid),
     .priviledgeMode(dt_cs_priviledgeMode),
@@ -2257,32 +2254,32 @@ module Core(
   assign dt_te_pc = {{32'd0}, wb_reg_pc}; // @[Core.scala 463:21]
   assign dt_te_cycleCnt = cycle_cnt; // @[Core.scala 464:21]
   assign dt_te_instrCnt = instr_cnt; // @[Core.scala 465:21]
-  assign dt_ae_clock = clock; // @[Core.scala 473:27]
-  assign dt_ae_coreid = 8'h0; // @[Core.scala 474:27]
-  assign dt_ae_intrNO = dt_ae_io_intrNO_REG[31:0]; // @[Core.scala 475:27]
-  assign dt_ae_cause = 32'h0; // @[Core.scala 476:27]
-  assign dt_ae_exceptionPC = dt_ae_io_exceptionPC_REG; // @[Core.scala 477:27]
+  assign dt_ae_clock = clock; // @[Core.scala 471:27]
+  assign dt_ae_coreid = 8'h0; // @[Core.scala 472:27]
+  assign dt_ae_intrNO = _dt_ae_io_intrNO_T[31:0]; // @[Core.scala 473:27]
+  assign dt_ae_cause = 32'h0; // @[Core.scala 474:27]
+  assign dt_ae_exceptionPC = wb_reg_intrpt ? wb_reg_mepc : 64'h0; // @[Core.scala 475:33]
   assign dt_ae_exceptionInst = 32'h0;
-  assign dt_cs_clock = clock; // @[Core.scala 481:29]
-  assign dt_cs_coreid = 8'h0; // @[Core.scala 482:29]
-  assign dt_cs_priviledgeMode = 2'h3; // @[Core.scala 483:29]
-  assign dt_cs_mstatus = wb_reg_mstatus; // @[Core.scala 484:29]
-  assign dt_cs_sstatus = 64'h0; // @[Core.scala 485:29]
-  assign dt_cs_mepc = wb_reg_mepc; // @[Core.scala 486:29]
-  assign dt_cs_sepc = 64'h0; // @[Core.scala 487:29]
-  assign dt_cs_mtval = 64'h0; // @[Core.scala 488:29]
-  assign dt_cs_stval = 64'h0; // @[Core.scala 489:29]
-  assign dt_cs_mtvec = wb_reg_mtvec; // @[Core.scala 490:29]
-  assign dt_cs_stvec = 64'h0; // @[Core.scala 491:29]
-  assign dt_cs_mcause = wb_reg_mcause; // @[Core.scala 492:29]
-  assign dt_cs_scause = 64'h0; // @[Core.scala 493:29]
-  assign dt_cs_satp = 64'h0; // @[Core.scala 494:29]
-  assign dt_cs_mip = 64'h0; // @[Core.scala 495:29]
-  assign dt_cs_mie = wb_reg_mie; // @[Core.scala 496:29]
-  assign dt_cs_mscratch = wb_reg_mscratch; // @[Core.scala 497:29]
-  assign dt_cs_sscratch = 64'h0; // @[Core.scala 498:29]
-  assign dt_cs_mideleg = 64'h0; // @[Core.scala 499:29]
-  assign dt_cs_medeleg = 64'h0; // @[Core.scala 500:29]
+  assign dt_cs_clock = clock; // @[Core.scala 479:29]
+  assign dt_cs_coreid = 8'h0; // @[Core.scala 480:29]
+  assign dt_cs_priviledgeMode = 2'h3; // @[Core.scala 481:29]
+  assign dt_cs_mstatus = wb_reg_mstatus; // @[Core.scala 482:29]
+  assign dt_cs_sstatus = 64'h0; // @[Core.scala 483:29]
+  assign dt_cs_mepc = wb_reg_mepc; // @[Core.scala 484:29]
+  assign dt_cs_sepc = 64'h0; // @[Core.scala 485:29]
+  assign dt_cs_mtval = 64'h0; // @[Core.scala 486:29]
+  assign dt_cs_stval = 64'h0; // @[Core.scala 487:29]
+  assign dt_cs_mtvec = wb_reg_mtvec; // @[Core.scala 488:29]
+  assign dt_cs_stvec = 64'h0; // @[Core.scala 489:29]
+  assign dt_cs_mcause = wb_reg_mcause; // @[Core.scala 490:29]
+  assign dt_cs_scause = 64'h0; // @[Core.scala 491:29]
+  assign dt_cs_satp = 64'h0; // @[Core.scala 492:29]
+  assign dt_cs_mip = 64'h0; // @[Core.scala 493:29]
+  assign dt_cs_mie = wb_reg_mie; // @[Core.scala 494:29]
+  assign dt_cs_mscratch = wb_reg_mscratch; // @[Core.scala 495:29]
+  assign dt_cs_sscratch = 64'h0; // @[Core.scala 496:29]
+  assign dt_cs_mideleg = 64'h0; // @[Core.scala 497:29]
+  assign dt_cs_medeleg = 64'h0; // @[Core.scala 498:29]
   always @(posedge clock) begin
     if (reset) begin // @[PipelineReg.scala 14:33]
       if_reg_pc <= 32'h80000000; // @[PipelineReg.scala 14:33]
@@ -2693,16 +2690,6 @@ module Core(
     end else if (dt_ic_valid) begin // @[Core.scala 450:24]
       instr_cnt <= _instr_cnt_T_1; // @[Core.scala 451:13]
     end
-    if (wb_reg_intrpt) begin // @[Core.scala 475:41]
-      dt_ae_io_intrNO_REG <= wb_reg_intrpt_no;
-    end else begin
-      dt_ae_io_intrNO_REG <= 64'h0;
-    end
-    if (wb_reg_intrpt) begin // @[Core.scala 477:41]
-      dt_ae_io_exceptionPC_REG <= wb_reg_mepc;
-    end else begin
-      dt_ae_io_exceptionPC_REG <= 64'h0;
-    end
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
@@ -2909,10 +2896,6 @@ initial begin
   cycle_cnt = _RAND_77[63:0];
   _RAND_78 = {2{`RANDOM}};
   instr_cnt = _RAND_78[63:0];
-  _RAND_79 = {2{`RANDOM}};
-  dt_ae_io_intrNO_REG = _RAND_79[63:0];
-  _RAND_80 = {2{`RANDOM}};
-  dt_ae_io_exceptionPC_REG = _RAND_80[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
