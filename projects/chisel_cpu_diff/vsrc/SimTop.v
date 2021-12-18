@@ -2013,6 +2013,7 @@ module Core(
   wire  clint_en = exe_reg_dmem_en & (exe_alu_out == 64'h200bff8 | exe_alu_out == 64'h2004000); // @[Core.scala 205:22]
   wire  _T_34 = ~csr_io_intrpt; // @[Core.scala 256:6]
   wire  _mem_reg_dmem_wen_T = ~clint_en; // @[Core.scala 284:43]
+  wire [63:0] _GEN_66 = _T_34 ? {{32'd0}, exe_reg_pc} : 64'hffffffffffffffff; // @[Core.scala 257:1 Core.scala 266:20 Core.scala 288:19]
   wire  _T_35 = mem_reg_rs2_addr == wb_reg_rd_addr; // @[Core.scala 325:24]
   wire  _T_38 = wb_reg_alu_out == 64'h14; // @[Core.scala 382:21]
   reg  dt_valid; // @[Core.scala 398:23]
@@ -2470,10 +2471,8 @@ module Core(
     mem_reg_rd_en <= _T_34 & exe_reg_rd_en; // @[Core.scala 257:1 Core.scala 283:20 Core.scala 290:19]
     if (reset) begin // @[PipelineReg.scala 55:32]
       mem_reg_pc <= 32'h7ffffffc; // @[PipelineReg.scala 55:32]
-    end else if (_T_34) begin // @[Core.scala 257:1]
-      mem_reg_pc <= exe_reg_pc; // @[Core.scala 266:20]
     end else begin
-      mem_reg_pc <= 32'h0; // @[Core.scala 288:19]
+      mem_reg_pc <= _GEN_66[31:0];
     end
     if (reset) begin // @[PipelineReg.scala 56:32]
       mem_reg_inst <= 64'h0; // @[PipelineReg.scala 56:32]

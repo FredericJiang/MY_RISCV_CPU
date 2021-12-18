@@ -285,7 +285,7 @@ mem_reg_dmem_wen   := exe_reg_dmem_wen && !clint_en
 mem_reg_dmem_en    := exe_reg_dmem_en  && !clint_en
 }.otherwise
 {
-mem_reg_pc        := 0.U
+mem_reg_pc        := "hffffffffffffffff".U
 mem_reg_inst      := BUBBLE
 mem_reg_rd_en     := false.B
 mem_reg_dmem_wen  := false.B
