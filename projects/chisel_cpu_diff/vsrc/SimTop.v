@@ -2714,7 +2714,7 @@ module Core(
       if (`PRINTF_COND) begin
     `endif
         if (_T_38 & ~reset) begin
-          $fwrite(32'h80000002,"%x",wb_reg_rs1_data); // @[Core.scala 396:7]
+          $fwrite(32'h80000002,"%d",wb_reg_rs1_data); // @[Core.scala 396:7]
         end
     `ifdef PRINTF_COND
       end
