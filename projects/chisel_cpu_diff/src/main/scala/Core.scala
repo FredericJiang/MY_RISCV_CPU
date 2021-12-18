@@ -419,7 +419,7 @@ val skip = (wb_reg_alu_type === ALU_MY_INST) ||
 
 
 
-when(dt_valid){
+when(RegNext(dt_valid)){
 val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.clock    := clock
   dt_ic.io.coreid   := 0.U
