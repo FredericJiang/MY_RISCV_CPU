@@ -80,9 +80,9 @@ class CSR extends Module {
         mepc := io.pc
         mcause := "h8000000000000007".U  //Machine Timer Interrupt, Only one interrupt is realized
         mstatus := Cat(mstatus(63,13), Fill(2, 1.U), mstatus(10,8), mstatus(3), mstatus(6, 4), 0.U, mstatus(2, 0))
-        intrpt := true.B
+        csr_jmp := true.B
         intrpt_no := 7.U
-        intrpt_pc := Cat(mtvec(31, 2), Fill(2, 0.U))
+        csr_jmp_pc := Cat(mtvec(31, 2), Fill(2, 0.U))
   
   }
     
