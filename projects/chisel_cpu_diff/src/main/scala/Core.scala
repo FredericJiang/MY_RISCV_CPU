@@ -252,6 +252,9 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
 //*******************************************************************
+
+when(!csr.io.intrpt)
+{
 mem_reg_mie      := csr.io.mie
 mem_reg_mstatus  := csr.io.mstatus
 mem_reg_mepc     := csr.io.mepc
@@ -260,14 +263,9 @@ mem_reg_mtvec    := csr.io.mtvec
 mem_reg_mscratch := csr.io.mscratch
 mem_reg_intrpt   := csr.io.intrpt
 mem_reg_intrpt_no:= csr.io.intrpt_no
-
-
-
 mem_reg_pc         := exe_reg_pc
 mem_reg_inst       := exe_reg_inst
-
 mem_reg_clint_en   := clint_en
-
 mem_reg_csr_rd_wen  := csr.io.rd_wen
 mem_reg_csr_rd_data := csr.io.out
 
@@ -285,7 +283,20 @@ mem_reg_rd_addr    := exe_reg_rd_addr
 mem_reg_rd_en      := exe_reg_rd_en 
 mem_reg_dmem_wen   := exe_reg_dmem_wen && !clint_en
 mem_reg_dmem_en    := exe_reg_dmem_en  && !clint_en
+}.otherwise
+{
+mem_reg_pc        := 0.U
+mem_reg_inst      := BUBBLE
+mem_reg_rd_en     := false.B
+mem_reg_dmem_wen  := false.B
+mem_reg_dmem_en   := false.B
+mem_reg_csr_type  := 0.U
+mem_reg_rs1_addr  := 0.U
+mem_reg_rs2_addr  := 0.U
+mem_reg_rd_addr   := 0.U
 
+
+}
 //*******************************************************************
 //MEMORY Stage
 
