@@ -464,7 +464,7 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
-/*
+
 when((wb_reg_csr_type =/= CSR_X)){
 
   val dt_ae = Module(new DifftestArchEvent)
@@ -472,9 +472,9 @@ when((wb_reg_csr_type =/= CSR_X)){
     dt_ae.io.coreid       := 0.U
     dt_ae.io.intrNO       := RegNext(Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U))
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)) //
+    dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)) }//
 
-
+/*
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
     dt_cs.io.coreid         := 0.U
