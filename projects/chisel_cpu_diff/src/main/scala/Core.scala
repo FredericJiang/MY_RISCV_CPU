@@ -466,14 +466,14 @@ when(dt_valid){
 
 
 
-
+/*
   val dt_ae = Module(new DifftestArchEvent)
     dt_ae.io.clock        := clock
     dt_ae.io.coreid       := 0.U
     dt_ae.io.intrNO       := RegNext(Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U))
     dt_ae.io.cause        := 0.U
     dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_mepc +4.U, 0.U)) //
-
+*/
 
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
