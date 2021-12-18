@@ -1227,15 +1227,7 @@ module CSR(
   reg [63:0] _RAND_4;
   reg [63:0] _RAND_5;
   reg [63:0] _RAND_6;
-  reg [63:0] _RAND_7;
-  reg [63:0] _RAND_8;
 `endif // RANDOMIZE_REG_INIT
-  wire  dt_ae_clock; // @[CSR.scala 170:23]
-  wire [7:0] dt_ae_coreid; // @[CSR.scala 170:23]
-  wire [31:0] dt_ae_intrNO; // @[CSR.scala 170:23]
-  wire [31:0] dt_ae_cause; // @[CSR.scala 170:23]
-  wire [63:0] dt_ae_exceptionPC; // @[CSR.scala 170:23]
-  wire [31:0] dt_ae_exceptionInst; // @[CSR.scala 170:23]
   wire  csr_rw = io_csr_type == 3'h3 | io_csr_type == 3'h4 | io_csr_type == 3'h5; // @[CSR.scala 40:69]
   reg [63:0] mstatus; // @[CSR.scala 45:26]
   reg [63:0] mie; // @[CSR.scala 46:26]
@@ -1296,16 +1288,6 @@ module CSR(
   wire  mstatus_hi_3 = wdata[16] & wdata[15] | wdata[14] & wdata[13]; // @[CSR.scala 141:46]
   wire [62:0] mstatus_lo_3 = wdata[62:0]; // @[CSR.scala 141:79]
   wire [63:0] _mstatus_T_9 = {mstatus_hi_3,mstatus_lo_3}; // @[Cat.scala 30:58]
-  reg [63:0] dt_ae_io_intrNO_REG; // @[CSR.scala 173:37]
-  reg [63:0] dt_ae_io_exceptionPC_REG; // @[CSR.scala 175:37]
-  DifftestArchEvent dt_ae ( // @[CSR.scala 170:23]
-    .clock(dt_ae_clock),
-    .coreid(dt_ae_coreid),
-    .intrNO(dt_ae_intrNO),
-    .cause(dt_ae_cause),
-    .exceptionPC(dt_ae_exceptionPC),
-    .exceptionInst(dt_ae_exceptionInst)
-  );
   assign io_out = 12'hb02 == addr ? 64'h0 : _rdata_T_15; // @[Mux.scala 80:57]
   assign io_jmp = io_csr_type == 3'h2 | _T; // @[CSR.scala 69:35 CSR.scala 71:13]
   assign io_jmp_pc = io_csr_type == 3'h2 ? mepc[31:0] : _GEN_4; // @[CSR.scala 69:35 CSR.scala 72:16]
@@ -1321,12 +1303,6 @@ module CSR(
   assign io_mscratch = mscratch; // @[CSR.scala 167:16]
   assign mie_0 = mie;
   assign mstatus_0 = mstatus;
-  assign dt_ae_clock = clock; // @[CSR.scala 171:27]
-  assign dt_ae_coreid = 8'h0; // @[CSR.scala 172:27]
-  assign dt_ae_intrNO = dt_ae_io_intrNO_REG[31:0]; // @[CSR.scala 173:27]
-  assign dt_ae_cause = 32'h0; // @[CSR.scala 174:27]
-  assign dt_ae_exceptionPC = dt_ae_io_exceptionPC_REG; // @[CSR.scala 175:27]
-  assign dt_ae_exceptionInst = 32'h0;
   always @(posedge clock) begin
     if (reset) begin // @[CSR.scala 45:26]
       mstatus <= 64'h1800; // @[CSR.scala 45:26]
@@ -1417,16 +1393,6 @@ module CSR(
     end else begin
       mcycle <= _mcycle_T_1; // @[CSR.scala 96:10]
     end
-    if (io_intrpt) begin // @[CSR.scala 173:41]
-      dt_ae_io_intrNO_REG <= io_intrpt_no;
-    end else begin
-      dt_ae_io_intrNO_REG <= 64'h0;
-    end
-    if (io_intrpt) begin // @[CSR.scala 175:41]
-      dt_ae_io_exceptionPC_REG <= io_mepc;
-    end else begin
-      dt_ae_io_exceptionPC_REG <= 64'h0;
-    end
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -1478,10 +1444,6 @@ initial begin
   mcause = _RAND_5[63:0];
   _RAND_6 = {2{`RANDOM}};
   mcycle = _RAND_6[63:0];
-  _RAND_7 = {2{`RANDOM}};
-  dt_ae_io_intrNO_REG = _RAND_7[63:0];
-  _RAND_8 = {2{`RANDOM}};
-  dt_ae_io_exceptionPC_REG = _RAND_8[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
