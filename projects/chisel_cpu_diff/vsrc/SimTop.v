@@ -2018,7 +2018,7 @@ module Core(
   wire  _T_38 = wb_reg_alu_type == 5'h14; // @[Core.scala 393:22]
   reg  dt_valid; // @[Core.scala 412:23]
   wire  _dt_valid_T_2 = wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0; // @[Core.scala 414:37]
-  wire  _dt_valid_T_4 = _dt_valid_T_2 & ~wb_reg_clint_en; // @[Core.scala 415:2]
+  wire  _dt_valid_T_6 = _dt_valid_T_2 & ~wb_reg_clint_en & wb_reg_pc != 32'h0; // @[Core.scala 415:22]
   wire  _skip_T_1 = _T_38 | wb_reg_clint_en; // @[Core.scala 417:46]
   wire  _skip_T_5 = wb_reg_csr_type != 3'h0 & wb_reg_inst[31:20] == 12'hb00; // @[Core.scala 419:28]
   reg  dt_ic_io_skip_REG; // @[Core.scala 430:31]
@@ -2672,7 +2672,7 @@ module Core(
     if (reset) begin // @[Core.scala 412:23]
       dt_valid <= 1'h0; // @[Core.scala 412:23]
     end else begin
-      dt_valid <= _dt_valid_T_4; // @[Core.scala 414:10]
+      dt_valid <= _dt_valid_T_6; // @[Core.scala 414:10]
     end
     dt_ic_io_skip_REG <= _skip_T_1 | _skip_T_5; // @[Core.scala 418:19]
     dt_ic_io_wen_REG <= wb_reg_dmem_wen; // @[Core.scala 433:31]
