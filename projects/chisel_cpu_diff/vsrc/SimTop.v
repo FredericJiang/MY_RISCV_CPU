@@ -1758,6 +1758,7 @@ module Core(
   reg [63:0] _RAND_77;
   reg [63:0] _RAND_78;
   reg [63:0] _RAND_79;
+  reg [31:0] _RAND_80;
 `endif // RANDOMIZE_REG_INIT
   wire  regfile_clock; // @[Core.scala 66:21]
   wire  regfile_reset; // @[Core.scala 66:21]
@@ -2037,7 +2038,8 @@ module Core(
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 453:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
   reg [63:0] dt_ae_io_intrNO_REG; // @[Core.scala 473:37]
-  wire [31:0] _dt_ae_io_exceptionPC_T = wb_reg_intrpt ? wb_reg_pc : 32'h0; // @[Core.scala 475:33]
+  reg [31:0] dt_ae_io_exceptionPC_REG; // @[Core.scala 475:56]
+  wire [31:0] _dt_ae_io_exceptionPC_T = wb_reg_intrpt ? dt_ae_io_exceptionPC_REG : 32'h0; // @[Core.scala 475:33]
   RegFile regfile ( // @[Core.scala 66:21]
     .clock(regfile_clock),
     .reset(regfile_reset),
@@ -2698,6 +2700,7 @@ module Core(
     end else begin
       dt_ae_io_intrNO_REG <= 64'h0;
     end
+    dt_ae_io_exceptionPC_REG <= wb_reg_pc; // @[Core.scala 475:56]
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
@@ -2906,6 +2909,8 @@ initial begin
   instr_cnt = _RAND_78[63:0];
   _RAND_79 = {2{`RANDOM}};
   dt_ae_io_intrNO_REG = _RAND_79[63:0];
+  _RAND_80 = {1{`RANDOM}};
+  dt_ae_io_exceptionPC_REG = _RAND_80[31:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

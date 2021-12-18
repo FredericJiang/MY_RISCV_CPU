@@ -472,7 +472,7 @@ when(dt_valid){
     dt_ae.io.coreid       := 0.U
     dt_ae.io.intrNO       := RegNext(Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U))
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, wb_reg_pc, 0.U)
+    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, RegNext(wb_reg_pc), 0.U)
 
 
   val dt_cs = Module(new DifftestCSRState)
