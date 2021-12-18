@@ -253,8 +253,6 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
 //*******************************************************************
 
-when(!csr.io.intrpt)
-{
 mem_reg_mie      := csr.io.mie
 mem_reg_mstatus  := csr.io.mstatus
 mem_reg_mepc     := csr.io.mepc
@@ -269,6 +267,9 @@ mem_reg_clint_en   := clint_en
 mem_reg_csr_rd_wen  := csr.io.rd_wen
 mem_reg_csr_rd_data := csr.io.out
 
+
+when(!csr.io.intrpt) 
+{
 mem_reg_csr_type   := exe_reg_csr_type
 mem_reg_alu_type   := exe_reg_alu_type
 mem_reg_mem_rtype  := exe_reg_mem_rtype
