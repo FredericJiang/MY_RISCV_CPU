@@ -166,38 +166,37 @@ io.intrpt_pc := 0.U
   io.mcause    := mcause
   io.mscratch  := mscratch
 
-/*
+ 
     val dt_ae = Module(new DifftestArchEvent)
     dt_ae.io.clock        := clock
     dt_ae.io.coreid       := 0.U
-    dt_ae.io.intrNO       := Mux(intrpt, intrpt_no, 0.U)
+    dt_ae.io.intrNO       := Mux(io.intrpt, io.intrpt_no, 0.U)
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := Mux(intrpt, mepc, 0.U)
+    dt_ae.io.exceptionPC  := Mux(io.intrpt, io.mepc, 0.U)
 
 
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
     dt_cs.io.coreid         := 0.U
     dt_cs.io.priviledgeMode := 3.U  // Machine mode
-    dt_cs.io.mstatus        := mstatus
+    dt_cs.io.mstatus        := RegNext(mstatus)
     dt_cs.io.sstatus        := 0.U
-    dt_cs.io.mepc           := mepc
+    dt_cs.io.mepc           := RegNext(mepc)
     dt_cs.io.sepc           := 0.U
     dt_cs.io.mtval          := 0.U
     dt_cs.io.stval          := 0.U
-    dt_cs.io.mtvec          := mtvec
+    dt_cs.io.mtvec          := RegNext(mtvec)
     dt_cs.io.stvec          := 0.U
-    dt_cs.io.mcause         := mcause
+    dt_cs.io.mcause         := RegNext(mcause)
     dt_cs.io.scause         := 0.U
     dt_cs.io.satp           := 0.U
     dt_cs.io.mip            := 0.U
-    dt_cs.io.mie            := mie
-    dt_cs.io.mscratch       := mscratch
+    dt_cs.io.mie            := RegNext(mie)
+    dt_cs.io.mscratch       := RegNext(mscratch)
     dt_cs.io.sscratch       := 0.U
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
 
-*/
 
 
 }

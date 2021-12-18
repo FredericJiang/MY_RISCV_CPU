@@ -464,7 +464,7 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
-
+/*
 when((wb_reg_csr_type =/= CSR_X)){
 
   val dt_ae = Module(new DifftestArchEvent)
@@ -497,7 +497,7 @@ when((wb_reg_csr_type =/= CSR_X)){
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
   }
-
+*/
 }
 
 
