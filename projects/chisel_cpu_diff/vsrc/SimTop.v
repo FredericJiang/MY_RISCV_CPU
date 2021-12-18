@@ -2035,6 +2035,7 @@ module Core(
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 445:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
   wire [63:0] _dt_ae_io_intrNO_T = wb_reg_intrpt ? wb_reg_intrpt_no : 64'h0; // @[Core.scala 467:33]
+  wire  _T_41 = ~reset; // @[Core.scala 501:7]
   RegFile regfile ( // @[Core.scala 66:21]
     .clock(regfile_clock),
     .reset(regfile_reset),
@@ -2696,6 +2697,17 @@ module Core(
     `endif
         if (_skip_T & ~reset) begin
           $fwrite(32'h80000002,"%c",1'h0); // @[Core.scala 501:7]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_41) begin
+          $fwrite(32'h80000002,"pc in core =%x, inst in core =%x",if_reg_pc,64'h0); // @[Core.scala 506:7]
         end
     `ifdef PRINTF_COND
       end
