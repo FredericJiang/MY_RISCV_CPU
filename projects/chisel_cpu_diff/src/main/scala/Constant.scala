@@ -81,7 +81,7 @@ object Constant{
   val CSR_RS      = 4.asUInt(3.W)
   val CSR_RC      = 5.asUInt(3.W)
 
-  val BUBBLE         = "h00000013".U(32.W)
+  val BUBBLE         = "h0000000000000013".U(64.W)
   val CLINT_MTIMECMP = "h0000000002004000".U(64.W)
   val CLINT_MTIME    = "h000000000200bff8".U(64.W)
 
