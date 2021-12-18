@@ -302,6 +302,9 @@ mem_reg_rd_addr    := 0.U
 mem_reg_rd_en      := false.B
 mem_reg_dmem_wen   := false.B
 mem_reg_dmem_en    := false.B
+mem_reg_mem_rtype  := 0.U
+mem_reg_wb_type    := 0.U
+mem_reg_alu_out    := 0.U
 
 }
 //*******************************************************************
