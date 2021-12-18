@@ -85,7 +85,7 @@ object Instructions {
   def CSRRCI  = BitPat("b?????????????????111?????1110011")
   // abstract machine instructions
   def HALT    = BitPat("b00000000000000000000000001101011")
-  def PUTCH   = BitPat("b00000000000000000000000001111011")
+  //def PUTCH   = BitPat("b00000000000000000000000001111011")
 
   def MY_INST = BitPat("b00000000000000000000000001111011")
 

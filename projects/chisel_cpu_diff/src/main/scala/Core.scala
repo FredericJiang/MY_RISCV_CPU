@@ -261,7 +261,7 @@ mem_reg_intrpt_no:= csr.io.intrpt_no
 mem_reg_pc         := exe_reg_pc
 mem_reg_inst       := exe_reg_inst
 
-mem_reg_clint_en   := clint_en
+mem_reg_clint_en   := clint.io.time_intrpt
 
 mem_reg_csr_rd_wen  := csr.io.rd_wen
 mem_reg_csr_rd_data := csr.io.out

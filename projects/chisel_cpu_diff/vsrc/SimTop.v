@@ -2468,7 +2468,7 @@ module Core(
     end else begin
       mem_reg_csr_rd_data <= csr_io_out; // @[Core.scala 267:21]
     end
-    mem_reg_clint_en <= exe_reg_dmem_en & (exe_alu_out == 64'h200bff8 | exe_alu_out == 64'h2004000); // @[Core.scala 205:22]
+    mem_reg_clint_en <= clint_io_time_intrpt; // @[Core.scala 264:20]
     if (reset) begin // @[PipelineReg.scala 62:33]
       mem_reg_alu_type <= 5'h0; // @[PipelineReg.scala 62:33]
     end else begin
