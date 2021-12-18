@@ -420,7 +420,7 @@ printf("%c", a) }
 
 val dt_valid = RegInit(false.B)
 
-dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U && !wb_reg_clint_en ) 
+dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U && !wb_reg_clint_en && !wb_reg_intrpt) 
 
 val skip = (wb_reg_alu_type === ALU_MY_INST) || 
 (wb_reg_clint_en) || 
@@ -451,7 +451,7 @@ when(dt_valid){
   dt_ic.io.instr    := 0.U
 }
 
-  
+
 
   val cycle_cnt = RegInit(0.U(64.W))
   val instr_cnt = RegInit(0.U(64.W))
@@ -472,7 +472,7 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
-
+}
 
 
   val dt_ae = Module(new DifftestArchEvent)
@@ -507,7 +507,7 @@ when(dt_valid){
   
 
 
-}
+
 
 
 //printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
