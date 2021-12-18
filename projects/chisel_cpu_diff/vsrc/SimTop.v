@@ -2569,19 +2569,19 @@ module Core(
     if (reset) begin // @[PipelineReg.scala 82:32]
       wb_reg_mem_rtype <= 3'h0; // @[PipelineReg.scala 82:32]
     end else begin
-      wb_reg_mem_rtype <= mem_reg_mem_rtype; // @[Core.scala 356:20]
+      wb_reg_mem_rtype <= mem_reg_mem_rtype; // @[Core.scala 355:20]
     end
     if (reset) begin // @[PipelineReg.scala 83:32]
       wb_reg_alu_type <= 5'h0; // @[PipelineReg.scala 83:32]
     end else begin
-      wb_reg_alu_type <= mem_reg_alu_type; // @[Core.scala 355:20]
+      wb_reg_alu_type <= mem_reg_alu_type; // @[Core.scala 354:20]
     end
     if (reset) begin // @[PipelineReg.scala 84:32]
       wb_reg_csr_type <= 3'h0; // @[PipelineReg.scala 84:32]
     end else begin
       wb_reg_csr_type <= mem_reg_csr_type; // @[Core.scala 362:20]
     end
-    wb_reg_alu_out <= mem_reg_alu_out; // @[Core.scala 357:20]
+    wb_reg_alu_out <= mem_reg_alu_out; // @[Core.scala 356:20]
     wb_reg_rd_data <= lsu_io_mem_rdata; // @[PipelineReg.scala 119:23 Core.scala 341:15]
     wb_reg_rd_en <= mem_reg_rd_en; // @[Core.scala 360:20]
     if (reset) begin // @[PipelineReg.scala 88:32]
@@ -2602,7 +2602,7 @@ module Core(
       wb_reg_wdest <= 64'h0; // @[Core.scala 319:26]
     end
     wb_reg_dmem_wen <= mem_reg_dmem_wen; // @[Core.scala 353:20]
-    wb_reg_rs1_data <= mem_reg_rs1_data; // @[Core.scala 354:20]
+    wb_reg_rs1_data <= mem_reg_rs1_data; // @[Core.scala 358:20]
     wb_reg_csr_rd_wen <= mem_reg_csr_rd_wen; // @[Core.scala 363:20]
     if (reset) begin // @[PipelineReg.scala 94:33]
       wb_reg_csr_rd_data <= 64'h0; // @[PipelineReg.scala 94:33]

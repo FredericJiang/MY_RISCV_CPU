@@ -351,11 +351,11 @@ wb_reg_pc          := mem_reg_pc
 wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
 wb_reg_dmem_wen    := mem_reg_dmem_wen
-wb_reg_rs1_data    := mem_reg_rs1_data
 wb_reg_alu_type    := mem_reg_alu_type
 wb_reg_mem_rtype   := mem_reg_mem_rtype 
 wb_reg_alu_out     := mem_reg_alu_out
 wb_reg_rd_data     := mem_rd_data
+wb_reg_rs1_data    := mem_reg_rs1_data
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_en       := mem_reg_rd_en
 
