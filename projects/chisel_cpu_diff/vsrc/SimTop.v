@@ -1762,8 +1762,6 @@ module Core(
   reg [63:0] _RAND_78;
   reg [63:0] _RAND_79;
   reg [63:0] _RAND_80;
-  reg [63:0] _RAND_81;
-  reg [31:0] _RAND_82;
 `endif // RANDOMIZE_REG_INIT
   wire  regfile_clock; // @[Core.scala 66:21]
   wire  regfile_reset; // @[Core.scala 66:21]
@@ -2042,9 +2040,8 @@ module Core(
   wire [63:0] _instr_cnt_T_1 = instr_cnt + 64'h1; // @[Core.scala 459:26]
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 461:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
-  reg [63:0] dt_ae_io_intrNO_REG; // @[Core.scala 481:37]
-  reg [31:0] dt_ae_io_exceptionPC_REG; // @[Core.scala 483:56]
-  wire [31:0] _dt_ae_io_exceptionPC_T = wb_reg_intrpt ? dt_ae_io_exceptionPC_REG : 32'h0; // @[Core.scala 483:33]
+  wire [63:0] _dt_ae_io_intrNO_T = wb_reg_intrpt ? wb_reg_intrpt_no : 64'h0; // @[Core.scala 481:33]
+  wire [31:0] _dt_ae_io_exceptionPC_T = wb_reg_intrpt ? wb_reg_pc : 32'h0; // @[Core.scala 483:33]
   RegFile regfile ( // @[Core.scala 66:21]
     .clock(regfile_clock),
     .reset(regfile_reset),
@@ -2266,7 +2263,7 @@ module Core(
   assign dt_te_instrCnt = instr_cnt; // @[Core.scala 473:21]
   assign dt_ae_clock = clock; // @[Core.scala 479:27]
   assign dt_ae_coreid = 8'h0; // @[Core.scala 480:27]
-  assign dt_ae_intrNO = dt_ae_io_intrNO_REG[31:0]; // @[Core.scala 481:27]
+  assign dt_ae_intrNO = _dt_ae_io_intrNO_T[31:0]; // @[Core.scala 481:27]
   assign dt_ae_cause = 32'h0; // @[Core.scala 482:27]
   assign dt_ae_exceptionPC = {{32'd0}, _dt_ae_io_exceptionPC_T}; // @[Core.scala 483:33]
   assign dt_ae_exceptionInst = 32'h0;
@@ -2704,12 +2701,6 @@ module Core(
     end else if (dt_ic_valid) begin // @[Core.scala 458:24]
       instr_cnt <= _instr_cnt_T_1; // @[Core.scala 459:13]
     end
-    if (wb_reg_intrpt) begin // @[Core.scala 481:41]
-      dt_ae_io_intrNO_REG <= wb_reg_intrpt_no;
-    end else begin
-      dt_ae_io_intrNO_REG <= 64'h0;
-    end
-    dt_ae_io_exceptionPC_REG <= wb_reg_pc; // @[Core.scala 483:56]
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
@@ -2920,10 +2911,6 @@ initial begin
   cycle_cnt = _RAND_79[63:0];
   _RAND_80 = {2{`RANDOM}};
   instr_cnt = _RAND_80[63:0];
-  _RAND_81 = {2{`RANDOM}};
-  dt_ae_io_intrNO_REG = _RAND_81[63:0];
-  _RAND_82 = {1{`RANDOM}};
-  dt_ae_io_exceptionPC_REG = _RAND_82[31:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
