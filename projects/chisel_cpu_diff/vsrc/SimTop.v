@@ -1750,15 +1750,14 @@ module Core(
   reg [63:0] _RAND_69;
   reg [31:0] _RAND_70;
   reg [31:0] _RAND_71;
-  reg [31:0] _RAND_72;
+  reg [63:0] _RAND_72;
   reg [63:0] _RAND_73;
-  reg [63:0] _RAND_74;
-  reg [31:0] _RAND_75;
+  reg [31:0] _RAND_74;
+  reg [63:0] _RAND_75;
   reg [63:0] _RAND_76;
   reg [63:0] _RAND_77;
   reg [63:0] _RAND_78;
-  reg [63:0] _RAND_79;
-  reg [31:0] _RAND_80;
+  reg [31:0] _RAND_79;
 `endif // RANDOMIZE_REG_INIT
   wire  regfile_clock; // @[Core.scala 66:21]
   wire  regfile_reset; // @[Core.scala 66:21]
@@ -2018,7 +2017,7 @@ module Core(
   wire [63:0] _GEN_58 = _T_34 ? {{32'd0}, exe_reg_pc} : 64'hffffffffffffffff; // @[Core.scala 268:1 Core.scala 269:20 Core.scala 290:19]
   wire  _T_35 = mem_reg_rs2_addr == wb_reg_rd_addr; // @[Core.scala 335:24]
   wire  _T_38 = wb_reg_alu_type == 5'h14; // @[Core.scala 393:22]
-  reg  dt_valid; // @[Core.scala 412:23]
+  wire  dt_valid = wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0 & ~wb_reg_clint_en; // @[Core.scala 414:60]
   wire  _skip_T_1 = _T_38 | wb_reg_clint_en; // @[Core.scala 416:46]
   wire  _skip_T_5 = wb_reg_csr_type != 3'h0 & wb_reg_inst[31:20] == 12'hb00; // @[Core.scala 418:28]
   reg  dt_ic_io_skip_REG; // @[Core.scala 429:31]
@@ -2239,7 +2238,7 @@ module Core(
   assign dt_ic_clock = clock; // @[Core.scala 424:21]
   assign dt_ic_coreid = 8'h0; // @[Core.scala 425:21]
   assign dt_ic_index = 8'h0; // @[Core.scala 426:21]
-  assign dt_ic_valid = dt_valid; // @[Core.scala 427:21]
+  assign dt_ic_valid = wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0 & ~wb_reg_clint_en; // @[Core.scala 414:60]
   assign dt_ic_pc = {{32'd0}, _GEN_78}; // @[Core.scala 436:15 Core.scala 437:21 Core.scala 441:21]
   assign dt_ic_instr = _GEN_79[31:0];
   assign dt_ic_special = 8'h0; // @[Core.scala 428:21]
@@ -2671,11 +2670,6 @@ module Core(
     end else begin
       wb_reg_intrpt_no <= mem_reg_intrpt_no; // @[Core.scala 373:18]
     end
-    if (reset) begin // @[Core.scala 412:23]
-      dt_valid <= 1'h0; // @[Core.scala 412:23]
-    end else begin
-      dt_valid <= wb_reg_inst != 64'h13 & wb_reg_inst != 64'h0 & ~wb_reg_clint_en; // @[Core.scala 414:10]
-    end
     dt_ic_io_skip_REG <= _skip_T_1 | _skip_T_5; // @[Core.scala 417:19]
     dt_ic_io_wen_REG <= wb_reg_dmem_wen; // @[Core.scala 432:31]
     dt_ic_io_wdata_REG <= wb_reg_wdata; // @[Core.scala 433:31]
@@ -2887,27 +2881,25 @@ initial begin
   _RAND_69 = {2{`RANDOM}};
   wb_reg_intrpt_no = _RAND_69[63:0];
   _RAND_70 = {1{`RANDOM}};
-  dt_valid = _RAND_70[0:0];
+  dt_ic_io_skip_REG = _RAND_70[0:0];
   _RAND_71 = {1{`RANDOM}};
-  dt_ic_io_skip_REG = _RAND_71[0:0];
-  _RAND_72 = {1{`RANDOM}};
-  dt_ic_io_wen_REG = _RAND_72[0:0];
+  dt_ic_io_wen_REG = _RAND_71[0:0];
+  _RAND_72 = {2{`RANDOM}};
+  dt_ic_io_wdata_REG = _RAND_72[63:0];
   _RAND_73 = {2{`RANDOM}};
-  dt_ic_io_wdata_REG = _RAND_73[63:0];
-  _RAND_74 = {2{`RANDOM}};
-  dt_ic_io_wdest_REG = _RAND_74[63:0];
-  _RAND_75 = {1{`RANDOM}};
-  dt_ic_io_pc_REG = _RAND_75[31:0];
+  dt_ic_io_wdest_REG = _RAND_73[63:0];
+  _RAND_74 = {1{`RANDOM}};
+  dt_ic_io_pc_REG = _RAND_74[31:0];
+  _RAND_75 = {2{`RANDOM}};
+  dt_ic_io_instr_REG = _RAND_75[63:0];
   _RAND_76 = {2{`RANDOM}};
-  dt_ic_io_instr_REG = _RAND_76[63:0];
+  cycle_cnt = _RAND_76[63:0];
   _RAND_77 = {2{`RANDOM}};
-  cycle_cnt = _RAND_77[63:0];
+  instr_cnt = _RAND_77[63:0];
   _RAND_78 = {2{`RANDOM}};
-  instr_cnt = _RAND_78[63:0];
-  _RAND_79 = {2{`RANDOM}};
-  dt_ae_io_intrNO_REG = _RAND_79[63:0];
-  _RAND_80 = {1{`RANDOM}};
-  dt_ae_io_exceptionPC_REG = _RAND_80[31:0];
+  dt_ae_io_intrNO_REG = _RAND_78[63:0];
+  _RAND_79 = {1{`RANDOM}};
+  dt_ae_io_exceptionPC_REG = _RAND_79[31:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial

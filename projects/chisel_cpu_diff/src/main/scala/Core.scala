@@ -409,7 +409,7 @@ printf("%x", a) }.otherwise{
 
 /* ------------------ Difftest ------------------ */
 
-val dt_valid = RegInit(false.B)
+val dt_valid = WireInit(false.B)
 
 dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U && !wb_reg_clint_en ) 
 
