@@ -297,6 +297,11 @@ mem_reg_rs1_addr  := 0.U
 mem_reg_rs2_addr  := 0.U
 mem_reg_rd_addr   := 0.U
 
+mem_reg_rd_addr    := 0.U
+
+mem_reg_rd_en      := false.B
+mem_reg_dmem_wen   := false.B
+mem_reg_dmem_en    := false.B
 
 }
 //*******************************************************************
