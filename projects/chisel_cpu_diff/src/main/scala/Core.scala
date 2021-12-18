@@ -388,13 +388,6 @@ wb_rd_data  := MuxCase(0.U, Array(
 regfile.io.rd_data := wb_rd_data
 
 
-val my_inst = RegInit(0.U(1.W))
-when(wb_reg_alu_type === ALU_MY_INST)
-{ my_inst := 1.U
-val a = 0.U
-printf("%c", a) }.otherwise{
-  my_inst := 0.U
-}
 
 
 
@@ -500,6 +493,15 @@ when((wb_reg_csr_type =/= CSR_X)){
   }
 
 }
+val my_inst = RegInit(0.U(1.W))
+
+when(wb_reg_alu_type === ALU_MY_INST)
+{ my_inst := 1.U
+val a = 0.U
+printf("%c", a) }.otherwise{
+  my_inst := 0.U
+}
+
 
 //printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
 //printf("dt_ic_valid =%x, dt_pc =%x, dt_inst =%x  \n",dt_ic.io.valid ,dt_ic.io.pc ,dt_ic.io.instr)
