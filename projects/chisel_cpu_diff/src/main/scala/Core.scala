@@ -393,7 +393,7 @@ val my_inst = RegInit(0.U(1.W))
 
 when(wb_reg_alu_type === ALU_MY_INST)
 { val a = wb_reg_rs1_data
-printf("%c", a) }
+printf("%x", a) }
 
 
 
