@@ -439,7 +439,7 @@ when(dt_valid){
   dt_ic.io.instr    := RegNext(wb_reg_inst)}
 
 .otherwise{
-  dt_ic.io.pc       := "h7ffffffc".U(32.W)
+  dt_ic.io.pc       := 0.U(32.W)
   dt_ic.io.instr    := 0.U
 }
 
@@ -470,29 +470,29 @@ when((wb_reg_csr_type =/= CSR_X)){
   val dt_ae = Module(new DifftestArchEvent)
     dt_ae.io.clock        := clock
     dt_ae.io.coreid       := 0.U
-    dt_ae.io.intrNO       := RegNext(Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U))
+    dt_ae.io.intrNO       := Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U)
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)) //
+    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, wb_reg_mepc, 0.U) //
 
 
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
     dt_cs.io.coreid         := 0.U
     dt_cs.io.priviledgeMode := 3.U  // Machine mode
-    dt_cs.io.mstatus        := RegNext(wb_reg_mstatus)
+    dt_cs.io.mstatus        := wb_reg_mstatus
     dt_cs.io.sstatus        := 0.U
-    dt_cs.io.mepc           := RegNext(wb_reg_mepc)
+    dt_cs.io.mepc           := wb_reg_mepc
     dt_cs.io.sepc           := 0.U
     dt_cs.io.mtval          := 0.U
     dt_cs.io.stval          := 0.U
-    dt_cs.io.mtvec          := RegNext(wb_reg_mtvec)
+    dt_cs.io.mtvec          := wb_reg_mtvec
     dt_cs.io.stvec          := 0.U
-    dt_cs.io.mcause         := RegNext(wb_reg_mcause)
+    dt_cs.io.mcause         := wb_reg_mcause
     dt_cs.io.scause         := 0.U
     dt_cs.io.satp           := 0.U
     dt_cs.io.mip            := 0.U
-    dt_cs.io.mie            := RegNext(wb_reg_mie)
-    dt_cs.io.mscratch       := RegNext(wb_reg_mscratch)
+    dt_cs.io.mie            := wb_reg_mie
+    dt_cs.io.mscratch       := wb_reg_mscratch
     dt_cs.io.sscratch       := 0.U
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
