@@ -2247,7 +2247,7 @@ module Core(
   assign dt_cs_coreid = 8'h0; // @[Core.scala 452:29]
   assign dt_cs_priviledgeMode = 2'h3; // @[Core.scala 453:29]
   assign dt_cs_mstatus = wb_reg_mstatus; // @[Core.scala 454:29]
-  assign dt_cs_sstatus = wb_reg_mstatus & 64'h80000003000de122; // @[Core.scala 455:47]
+  assign dt_cs_sstatus = 64'h0; // @[Core.scala 455:29]
   assign dt_cs_mepc = wb_reg_mepc; // @[Core.scala 456:29]
   assign dt_cs_sepc = 64'h0; // @[Core.scala 457:29]
   assign dt_cs_mtval = 64'h0; // @[Core.scala 458:29]
@@ -2468,7 +2468,7 @@ module Core(
     end else begin
       mem_reg_csr_rd_data <= csr_io_out; // @[Core.scala 267:21]
     end
-    mem_reg_clint_en <= clint_io_time_intrpt; // @[Core.scala 264:20]
+    mem_reg_clint_en <= exe_reg_dmem_en & (exe_alu_out == 64'h200bff8 | exe_alu_out == 64'h2004000); // @[Core.scala 205:22]
     if (reset) begin // @[PipelineReg.scala 62:33]
       mem_reg_alu_type <= 5'h0; // @[PipelineReg.scala 62:33]
     end else begin
