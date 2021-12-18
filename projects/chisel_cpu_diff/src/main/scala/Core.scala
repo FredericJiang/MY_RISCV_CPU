@@ -388,6 +388,14 @@ wb_rd_data  := MuxCase(0.U, Array(
 regfile.io.rd_data := wb_rd_data
 
 
+val my_inst = RegInit(0.U(1.W))
+
+when(wb_reg_alu_type === ALU_MY_INST)
+{ my_inst := 1.U
+val a = 0.U
+printf("%x", a) }.otherwise{
+  my_inst := 0.U
+}
 
 
 
@@ -464,9 +472,9 @@ when((wb_reg_csr_type =/= CSR_X)){
   val dt_ae = Module(new DifftestArchEvent)
     dt_ae.io.clock        := clock
     dt_ae.io.coreid       := 0.U
-    dt_ae.io.intrNO       := Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U)
+    dt_ae.io.intrNO       := RegNext(Mux(wb_reg_intrpt, wb_reg_intrpt_no, 0.U))
     dt_ae.io.cause        := 0.U
-    dt_ae.io.exceptionPC  := Mux(wb_reg_intrpt, wb_reg_mepc, 0.U) //
+    dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_mepc, 0.U)) //
 
 
   val dt_cs = Module(new DifftestCSRState)
@@ -494,14 +502,6 @@ when((wb_reg_csr_type =/= CSR_X)){
 
 }
 
-val my_inst = RegInit(0.U(1.W))
-
-when(wb_reg_alu_type === ALU_MY_INST)
-{ my_inst := 1.U
-val a = 0.U
-printf("%x", a) }.otherwise{
-  my_inst := 0.U
-}
 
 
 //printf("pc in core =%x, inst in core =%x",if_reg_pc,if_reg_inst)
