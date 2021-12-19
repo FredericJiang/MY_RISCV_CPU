@@ -164,17 +164,18 @@ exe_reg_dmem_en   := false.B
 
 }.elsewhen(stall){
 //if stall exe insert a bubble
-exe_reg_pc        := 0.U
+exe_reg_pc        := "hffffffffffffffff".U
 exe_reg_inst      := BUBBLE
-exe_reg_rd_wen     := false.B
+
+exe_reg_alu_type  := 0.U
+exe_reg_mem_rtype := 0.U
+exe_reg_imm_type  := 0.U
+exe_reg_wb_type   := 0.U
+exe_reg_csr_type  := 0.U
+
+exe_reg_rd_wen    := false.B
 exe_reg_dmem_wen  := false.B
 exe_reg_dmem_en   := false.B
-exe_reg_csr_type  := 0.U
-exe_reg_rs1_addr  := 0.U
-exe_reg_rs2_addr  := 0.U
-exe_reg_rd_addr   := 0.U
-exe_reg_op1_data  := 0.U
-exe_reg_op2_data  := 0.U
 }
 
 //*******************************************************************
@@ -259,9 +260,6 @@ mem_reg_intrpt   := csr.io.intrpt
 mem_reg_intrpt_no:= csr.io.intrpt_no
 
 
-
-when(!csr.io.intrpt) 
-{
 mem_reg_pc         := exe_reg_pc
 mem_reg_inst       := exe_reg_inst
 mem_reg_clint_en   := clint_en
@@ -282,28 +280,8 @@ mem_reg_rd_addr    := exe_reg_rd_addr
 mem_reg_rd_wen      := exe_reg_rd_wen 
 mem_reg_dmem_wen   := exe_reg_dmem_wen && !clint_en
 mem_reg_dmem_en    := exe_reg_dmem_en  && !clint_en
-}.otherwise
-{
-mem_reg_pc        := "hffffffffffffffff".U
-mem_reg_inst      := BUBBLE
-mem_reg_rd_wen     := false.B
-mem_reg_dmem_wen  := false.B
-mem_reg_dmem_en   := false.B
-mem_reg_csr_type  := 0.U
-mem_reg_rs1_addr  := 0.U
-mem_reg_rs2_addr  := 0.U
-mem_reg_rd_addr   := 0.U
 
-mem_reg_rd_addr    := 0.U
 
-mem_reg_rd_wen      := false.B
-mem_reg_dmem_wen   := false.B
-mem_reg_dmem_en    := false.B
-mem_reg_mem_rtype  := 0.U
-mem_reg_wb_type    := 0.U
-mem_reg_alu_out    := 0.U
-
-}
 //*******************************************************************
 //MEMORY Stage
 
@@ -342,8 +320,10 @@ io.dmem.wdata := lsu.io.dmem_wdata
 // Memmory >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Write Back
 //*******************************************************************
 // signals for difftest
-wb_reg_inst        := mem_reg_inst
+
 wb_reg_pc          := mem_reg_pc
+wb_reg_inst        := mem_reg_inst
+
 wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
 wb_reg_dmem_wen    := mem_reg_dmem_wen
@@ -354,12 +334,12 @@ wb_reg_rd_data     := mem_rd_data
 wb_reg_rs1_data    := mem_reg_rs1_data
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_wen       := mem_reg_rd_wen
-
-wb_reg_csr_type    := mem_reg_csr_type
 wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
 wb_reg_csr_rd_data := mem_reg_csr_rd_data
-wb_reg_clint_en    := mem_reg_clint_en
 
+
+
+// WB CSR REG
 wb_reg_mie      :=  mem_reg_mie
 wb_reg_mstatus  :=  mem_reg_mstatus
 wb_reg_mepc     :=  mem_reg_mepc
@@ -369,6 +349,8 @@ wb_reg_mscratch :=  mem_reg_mscratch
 wb_reg_intrpt   :=  mem_reg_intrpt
 wb_reg_intrpt_no :=  mem_reg_intrpt_no
 
+wb_reg_csr_type    := mem_reg_csr_type
+wb_reg_clint_en    := mem_reg_clint_en
 //*******************************************************************
 //WriteBack
 //write back to reg enalbe
