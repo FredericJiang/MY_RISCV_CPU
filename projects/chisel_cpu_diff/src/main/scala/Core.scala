@@ -409,11 +409,15 @@ val dt_valid = RegInit(false.B)
 
 val skip = WireInit(false.B)
 
-skip := ((wb_reg_alu_type === ALU_MY_INST) || 
-(wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
+when((wb_reg_alu_type === ALU_MY_INST) || (wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
+{
+  skip := true.B
+}.otherwise{
+  skip:= false.B
+}
+
 
 dt_valid := (wb_reg_inst =/= BUBBLE )
-
 
 when(dt_valid){
 val dt_ic = Module(new DifftestInstrCommit)
