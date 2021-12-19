@@ -1258,7 +1258,6 @@ module CSR(
   wire [63:0] _GEN_9 = io_time_intrpt ? 64'h8000000000000007 : _GEN_1; // @[CSR.scala 84:23 CSR.scala 87:16]
   wire [63:0] _GEN_10 = io_time_intrpt ? _mstatus_T : _GEN_5; // @[CSR.scala 84:23 CSR.scala 88:17]
   wire [11:0] addr = io_inst[31:20]; // @[CSR.scala 101:22]
-  wire  wen = csr_rw & io_in_data != 64'h0; // @[CSR.scala 105:22]
   wire [63:0] _rdata_T_1 = 12'h300 == addr ? mstatus : 64'h0; // @[Mux.scala 80:57]
   wire [63:0] _rdata_T_3 = 12'h342 == addr ? mcause : _rdata_T_1; // @[Mux.scala 80:57]
   wire [63:0] _rdata_T_5 = 12'h304 == addr ? mie : _rdata_T_3; // @[Mux.scala 80:57]
@@ -1294,7 +1293,7 @@ module CSR(
   always @(posedge clock) begin
     if (reset) begin // @[CSR.scala 43:26]
       mstatus <= 64'h1800; // @[CSR.scala 43:26]
-    end else if (wen) begin // @[CSR.scala 127:13]
+    end else if (csr_rw) begin // @[CSR.scala 127:13]
       if (addr == 12'h300) begin // @[CSR.scala 140:37]
         mstatus <= _mstatus_T_9; // @[CSR.scala 141:15]
       end else begin
@@ -1305,7 +1304,7 @@ module CSR(
     end
     if (reset) begin // @[CSR.scala 44:26]
       mie <= 64'h0; // @[CSR.scala 44:26]
-    end else if (wen) begin // @[CSR.scala 127:13]
+    end else if (csr_rw) begin // @[CSR.scala 127:13]
       if (addr == 12'h304) begin // @[CSR.scala 143:33]
         if (3'h5 == io_csr_type) begin // @[Mux.scala 80:57]
           mie <= _wdata_T_2;
@@ -1316,7 +1315,7 @@ module CSR(
     end
     if (reset) begin // @[CSR.scala 45:26]
       mtvec <= 64'h0; // @[CSR.scala 45:26]
-    end else if (wen) begin // @[CSR.scala 127:13]
+    end else if (csr_rw) begin // @[CSR.scala 127:13]
       if (addr == 12'h305) begin // @[CSR.scala 131:35]
         if (3'h5 == io_csr_type) begin // @[Mux.scala 80:57]
           mtvec <= _wdata_T_2;
@@ -1327,7 +1326,7 @@ module CSR(
     end
     if (reset) begin // @[CSR.scala 46:26]
       mscratch <= 64'h0; // @[CSR.scala 46:26]
-    end else if (wen) begin // @[CSR.scala 127:13]
+    end else if (csr_rw) begin // @[CSR.scala 127:13]
       if (addr == 12'h340) begin // @[CSR.scala 146:38]
         if (3'h5 == io_csr_type) begin // @[Mux.scala 80:57]
           mscratch <= _wdata_T_2;
@@ -1338,7 +1337,7 @@ module CSR(
     end
     if (reset) begin // @[CSR.scala 47:26]
       mepc <= 64'h0; // @[CSR.scala 47:26]
-    end else if (wen) begin // @[CSR.scala 127:13]
+    end else if (csr_rw) begin // @[CSR.scala 127:13]
       if (addr == 12'h341) begin // @[CSR.scala 134:34]
         if (3'h5 == io_csr_type) begin // @[Mux.scala 80:57]
           mepc <= _wdata_T_2;
@@ -1353,7 +1352,7 @@ module CSR(
     end
     if (reset) begin // @[CSR.scala 48:26]
       mcause <= 64'h0; // @[CSR.scala 48:26]
-    end else if (wen) begin // @[CSR.scala 127:13]
+    end else if (csr_rw) begin // @[CSR.scala 127:13]
       if (addr == 12'h342) begin // @[CSR.scala 137:36]
         if (3'h5 == io_csr_type) begin // @[Mux.scala 80:57]
           mcause <= _wdata_T_2;

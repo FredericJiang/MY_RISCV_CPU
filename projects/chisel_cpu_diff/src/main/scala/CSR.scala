@@ -102,7 +102,7 @@ io.intrpt_pc := 0.U
   val rdata = WireInit(UInt(64.W), 0.U)
   val wdata = Wire(UInt(64.W))
   val wmask = "hffffffff".U
-  val wen   = csr_rw && (io.in_data =/= 0.U)
+  val wen   = csr_rw 
 
   wdata := MuxLookup(io.csr_type, 0.U, Array(
     CSR_RW -> io.in_data,
