@@ -365,8 +365,9 @@ wb_reg_clint_en    := mem_reg_clint_en
 regfile.io.rd_wen   := wb_reg_rd_wen || wb_reg_csr_rd_wen
 regfile.io.rd_addr  := wb_reg_rd_addr
 
+
 wb_rd_data  := MuxCase(0.U, Array(
-                  (wb_reg_csr_rd_wen && (wb_reg_inst(31,20)=/="hb00".U)) -> wb_reg_csr_rd_data,
+                  (wb_reg_csr_rd_wen) -> wb_reg_csr_rd_data,
                   (wb_reg_mem_rtype === MEM_X && !wb_reg_csr_rd_wen) -> wb_reg_alu_out,
                   (wb_reg_mem_rtype =/= MEM_X && !wb_reg_csr_rd_wen) -> wb_reg_rd_data
                   
@@ -409,7 +410,7 @@ val dt_valid = RegInit(false.B)
 
 val skip = RegInit(false.B)
 
-when((wb_reg_alu_type === ALU_MY_INST) || (wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
+when((wb_reg_alu_type === ALU_MY_INST))// || (wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
 {
   skip := true.B
 }.otherwise{
