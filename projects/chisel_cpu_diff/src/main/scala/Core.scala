@@ -410,7 +410,6 @@ val dt_valid = RegInit(false.B)
 val skip = WireInit(false.B)
 
 skip := ((wb_reg_alu_type === ALU_MY_INST) || 
-(wb_reg_clint_en) || 
 (wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
 
 dt_valid := (wb_reg_inst =/= BUBBLE )
