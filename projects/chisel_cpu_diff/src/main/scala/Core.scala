@@ -172,36 +172,8 @@ exe_reg_rs1_addr  := 0.U
 exe_reg_rs2_addr  := 0.U
 exe_reg_rd_addr   := 0.U
 */
-
-
-
 }
-/*.elsewhen(stall){
-//if stall exe insert a bubble
-exe_reg_pc        := "hffffffffffffffff".U
-exe_reg_inst      := BUBBLE
 
-exe_reg_alu_type  := 0.U
-exe_reg_mem_rtype := 0.U
-exe_reg_imm_type  := 0.U
-exe_reg_wb_type   := 0.U
-exe_reg_csr_type  := 0.U
-
-exe_reg_rd_wen    := false.B
-exe_reg_dmem_wen  := false.B
-exe_reg_dmem_en   := false.B
-
-exe_reg_imm       := 0.U
-exe_reg_rs2_data  := 0.U
-exe_reg_rs1_data  := 0.U
-exe_reg_op1_data  := 0.U
-exe_reg_op2_data  := 0.U
-exe_reg_rs1_addr  := 0.U
-exe_reg_rs2_addr  := 0.U
-exe_reg_rd_addr   := 0.U
-
-}
-*/
 //*******************************************************************
 // Execute Stage
 
@@ -274,37 +246,40 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
 //*******************************************************************
 
-mem_reg_mie      := csr.io.mie
-mem_reg_mstatus  := csr.io.mstatus
-mem_reg_mepc     := csr.io.mepc
-mem_reg_mcause   := csr.io.mcause
-mem_reg_mtvec    := csr.io.mtvec
-mem_reg_mscratch := csr.io.mscratch
-mem_reg_intrpt   := csr.io.intrpt
-mem_reg_intrpt_no:= csr.io.intrpt_no
 
+mem_reg_pc          := exe_reg_pc
+mem_reg_inst        := exe_reg_inst
 
-mem_reg_pc         := exe_reg_pc
-mem_reg_inst       := exe_reg_inst
-mem_reg_clint_en   := clint_en
-mem_reg_csr_rd_wen  := csr.io.rd_wen
-mem_reg_csr_rd_data := csr.io.out
-mem_reg_csr_type   := exe_reg_csr_type
-mem_reg_alu_type   := exe_reg_alu_type
-mem_reg_mem_rtype  := exe_reg_mem_rtype
-mem_reg_wb_type    := exe_reg_wb_type
-mem_reg_alu_out    := exe_alu_out
-mem_reg_rs2_data   := exe_reg_rs2_data
-mem_reg_rs1_data   := exe_reg_rs1_data
-mem_reg_rs2_addr   := exe_reg_rs2_addr
-mem_reg_rs1_addr   := exe_reg_rs1_addr
+mem_reg_alu_type    := exe_reg_alu_type
+mem_reg_mem_rtype   := exe_reg_mem_rtype
+mem_reg_wb_type     := exe_reg_wb_type
+mem_reg_csr_type    := exe_reg_csr_type
+mem_reg_alu_out     := exe_alu_out
 
-mem_reg_rd_addr    := exe_reg_rd_addr
+mem_reg_rs1_addr    := exe_reg_rs1_addr
+mem_reg_rs2_addr    := exe_reg_rs2_addr
+mem_reg_rd_addr     := exe_reg_rd_addr
+mem_reg_rs1_data    := exe_reg_rs1_data
+mem_reg_rs2_data    := exe_reg_rs2_data
 
 mem_reg_rd_wen      := exe_reg_rd_wen 
-mem_reg_dmem_wen   := exe_reg_dmem_wen && !clint_en
-mem_reg_dmem_en    := exe_reg_dmem_en  && !clint_en
+mem_reg_dmem_wen    := exe_reg_dmem_wen && !clint_en
+mem_reg_dmem_en     := exe_reg_dmem_en  && !clint_en
 
+
+//*******************************************************************
+// MEM CSR REG
+mem_reg_mie       := csr.io.mie
+mem_reg_mstatus   := csr.io.mstatus
+mem_reg_mepc      := csr.io.mepc
+mem_reg_mcause    := csr.io.mcause
+mem_reg_mtvec     := csr.io.mtvec
+mem_reg_mscratch  := csr.io.mscratch
+mem_reg_intrpt    := csr.io.intrpt
+mem_reg_intrpt_no := csr.io.intrpt_no
+mem_reg_clint_en  := clint_en
+mem_reg_csr_rd_wen  := csr.io.rd_wen
+mem_reg_csr_rd_data := csr.io.out
 
 //*******************************************************************
 //MEMORY Stage
@@ -348,21 +323,24 @@ io.dmem.wdata := lsu.io.dmem_wdata
 wb_reg_pc          := mem_reg_pc
 wb_reg_inst        := mem_reg_inst
 
-wb_reg_wdata       := lsu.io.dmem_wdata
-wb_reg_wdest       := mem_dmem_addr
-wb_reg_dmem_wen    := mem_reg_dmem_wen
 wb_reg_alu_type    := mem_reg_alu_type
 wb_reg_mem_rtype   := mem_reg_mem_rtype 
+wb_reg_csr_type    := mem_reg_csr_type
+
 wb_reg_alu_out     := mem_reg_alu_out
 wb_reg_rd_data     := mem_rd_data
 wb_reg_rs1_data    := mem_reg_rs1_data
 wb_reg_rd_addr     := mem_reg_rd_addr
-wb_reg_rd_wen       := mem_reg_rd_wen
-wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
+wb_reg_rd_wen      := mem_reg_rd_wen
+
 wb_reg_csr_rd_data := mem_reg_csr_rd_data
 
 
-
+// For difftest
+wb_reg_dmem_wen    := mem_reg_dmem_wen
+wb_reg_wdata       := lsu.io.dmem_wdata
+wb_reg_wdest       := mem_dmem_addr
+//*******************************************************************
 // WB CSR REG
 wb_reg_mie      :=  mem_reg_mie
 wb_reg_mstatus  :=  mem_reg_mstatus
@@ -373,7 +351,7 @@ wb_reg_mscratch :=  mem_reg_mscratch
 wb_reg_intrpt   :=  mem_reg_intrpt
 wb_reg_intrpt_no :=  mem_reg_intrpt_no
 
-wb_reg_csr_type    := mem_reg_csr_type
+wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
 wb_reg_clint_en    := mem_reg_clint_en
 //*******************************************************************
 //WriteBack
@@ -422,7 +400,7 @@ printf("%c", a) }
 
 val dt_valid = RegInit(false.B)
 
-dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_inst =/= 0.U  ) 
+dt_valid := (wb_reg_inst =/= BUBBLE  ) 
 
 val skip = (wb_reg_alu_type === ALU_MY_INST) || 
 (wb_reg_clint_en) || 
