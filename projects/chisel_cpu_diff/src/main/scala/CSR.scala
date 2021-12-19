@@ -14,9 +14,7 @@ class CSR extends Module {
     val csr_type    = Input(UInt(3.W))
     val in_data     = Input(UInt(64.W))
     val time_intrpt = Input(Bool())
-    val time_intrpt_pc = Input(UInt(64.W))
-    val intrpt_mstatus = Input(UInt(64.W))
-    val intrpt_mtvec = Input(UInt(64.W))
+
 
 
     val out       = Output(UInt(64.W))
@@ -83,12 +81,12 @@ io.intrpt_pc := 0.U
 
   when(io.time_intrpt){
         
-        mepc := io.time_intrpt_pc
+        mepc := io.pc
         mcause := "h8000000000000007".U  //Machine Timer Interrupt, Only one interrupt is realized
-        mstatus := Cat(io.intrpt_mstatus(63,13), Fill(2, 1.U), io.intrpt_mstatus(10,8), io.intrpt_mstatus(3), io.intrpt_mstatus(6, 4), 0.U, io.intrpt_mstatus(2, 0))
+        mstatus := Cat(mstatus(63,13), Fill(2, 1.U), mstatus(10,8), mstatus(3), mstatus(6, 4), 0.U, mstatus(2, 0))
         io.intrpt := true.B
         io.intrpt_no := 7.U
-        io.intrpt_pc := Cat(io.intrpt_mtvec(31, 2), Fill(2, 0.U))
+        io.intrpt_pc := Cat(mtvec(31, 2), Fill(2, 0.U))
   
   }
     
