@@ -74,7 +74,7 @@ val imm_gen = Module(new ImmGen)
 imm_gen.io.imm_type := decode.io.imm_type
 imm_gen.io.inst     := id_reg_inst
 
-val jarl_type = (decode.io.op2_type === OP_4) && (decode.io.imm_type === IMM_I)
+//val jarl_type = (decode.io.op2_type === OP_4) && (decode.io.imm_type === IMM_I)
 
 //used only for jalr
 val id_rs1 = MuxCase( regfile.io.rs1_data  , Array(
@@ -371,7 +371,7 @@ wb_rd_data  := MuxCase(0.U, Array(
 
 regfile.io.rd_data := wb_rd_data
 
-// MY_INST print 
+// MY_INST print output
 val my_inst = RegInit(0.U(1.W))
 
 when(wb_reg_alu_type === ALU_MY_INST)
@@ -457,7 +457,7 @@ when(dt_valid){
 
 }
 
-
+/*
   val dt_ae = Module(new DifftestArchEvent)
     dt_ae.io.clock        := clock
     dt_ae.io.coreid       := 0.U
@@ -465,6 +465,7 @@ when(dt_valid){
     dt_ae.io.cause        := 0.U
     dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_pc, 0.U))
 
+*/
 
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
