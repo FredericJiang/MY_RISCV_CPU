@@ -419,7 +419,7 @@ when((wb_reg_alu_type === ALU_MY_INST) || (wb_reg_csr_type =/= CSR_X && wb_reg_i
 
 dt_valid := (wb_reg_inst =/= BUBBLE )
 
-when(dt_valid && !skip){
+when(dt_valid ){
 val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.pc       := RegNext(wb_reg_pc)
   dt_ic.io.instr    := RegNext(wb_reg_inst)
@@ -428,7 +428,7 @@ val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.index    := 0.U
   dt_ic.io.valid    := dt_valid 
   dt_ic.io.special  := 0.U
-  dt_ic.io.skip     := RegNext(skip)
+  dt_ic.io.skip     := skip
   dt_ic.io.isRVC    := false.B
   dt_ic.io.scFailed := false.B
   dt_ic.io.wen      := RegNext(wb_reg_dmem_wen)
