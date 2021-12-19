@@ -312,7 +312,6 @@ lsu.io.rs2_data  := wb_rd_data
 }.otherwise{lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2
 
 mem_rd_data   := lsu.io.mem_rdata
-
 io.dmem.wmask := lsu.io.dmem_wmask
 io.dmem.wdata := lsu.io.dmem_wdata
 
@@ -328,18 +327,21 @@ wb_reg_mem_rtype   := mem_reg_mem_rtype
 wb_reg_csr_type    := mem_reg_csr_type
 
 wb_reg_alu_out     := mem_reg_alu_out
-wb_reg_rd_data     := mem_rd_data
-wb_reg_rs1_data    := mem_reg_rs1_data
+wb_reg_rs1_data    := mem_reg_rs1_data //used for print
+
+
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_wen      := mem_reg_rd_wen
-
+wb_reg_rd_data     := mem_rd_data
 wb_reg_csr_rd_data := mem_reg_csr_rd_data
 
 
 // For difftest
+
 wb_reg_dmem_wen    := mem_reg_dmem_wen
 wb_reg_wdata       := lsu.io.dmem_wdata
 wb_reg_wdest       := mem_dmem_addr
+
 //*******************************************************************
 // WB CSR REG
 wb_reg_mie      :=  mem_reg_mie
@@ -353,11 +355,12 @@ wb_reg_intrpt_no :=  mem_reg_intrpt_no
 
 wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
 wb_reg_clint_en    := mem_reg_clint_en
+
 //*******************************************************************
 //WriteBack
 //write back to reg enalbe
 regfile.io.rd_wen   := wb_reg_rd_wen || wb_reg_csr_rd_wen
-regfile.io.rd_addr := wb_reg_rd_addr
+regfile.io.rd_addr  := wb_reg_rd_addr
 
 wb_rd_data  := MuxCase(0.U, Array(
                   (wb_reg_csr_rd_wen) -> wb_reg_csr_rd_data,
@@ -368,7 +371,7 @@ wb_rd_data  := MuxCase(0.U, Array(
 
 regfile.io.rd_data := wb_rd_data
 
-
+// MY_INST print 
 val my_inst = RegInit(0.U(1.W))
 
 when(wb_reg_alu_type === ALU_MY_INST)
@@ -400,7 +403,7 @@ printf("%c", a) }
 
 val dt_valid = RegInit(false.B)
 
-dt_valid := (wb_reg_inst =/= BUBBLE  ) 
+dt_valid := (wb_reg_inst =/= BUBBLE ) 
 
 val skip = (wb_reg_alu_type === ALU_MY_INST) || 
 (wb_reg_clint_en) || 
