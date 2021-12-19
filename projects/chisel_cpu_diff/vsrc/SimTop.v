@@ -1987,7 +1987,7 @@ module Core(
   wire  _T_36 = mem_reg_rs2_addr == wb_reg_rd_addr; // @[Core.scala 313:24]
   wire  _T_39 = wb_reg_alu_type == 5'h14; // @[Core.scala 380:22]
   reg  dt_valid; // @[Core.scala 408:23]
-  wire  _skip_T_1 = _T_39 | wb_reg_clint_en; // @[Core.scala 412:47]
+  wire  _skip_T_1 = _T_39 | wb_reg_clint_en; // @[Core.scala 412:44]
   wire  _skip_T_5 = wb_reg_csr_type != 3'h0 & wb_reg_inst[31:20] == 12'hb00; // @[Core.scala 414:28]
   reg [31:0] dt_ic_io_pc_REG; // @[Core.scala 421:31]
   reg [63:0] dt_ic_io_instr_REG; // @[Core.scala 422:31]

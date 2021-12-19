@@ -407,9 +407,9 @@ printf("%c", a) }
 
 val dt_valid = RegInit(false.B)
 
+val skip = WireInit(false.B)
 
-
-val skip = ((wb_reg_alu_type === ALU_MY_INST) || 
+skip := ((wb_reg_alu_type === ALU_MY_INST) || 
 (wb_reg_clint_en) || 
 (wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
 
