@@ -2187,7 +2187,7 @@ module Core(
   assign dt_ic_clock = clock; // @[Core.scala 426:21]
   assign dt_ic_coreid = 8'h0; // @[Core.scala 427:21]
   assign dt_ic_index = 8'h0; // @[Core.scala 428:21]
-  assign dt_ic_valid = dt_valid; // @[Core.scala 429:21]
+  assign dt_ic_valid = dt_valid & ~skip; // @[Core.scala 429:33]
   assign dt_ic_pc = {{32'd0}, dt_ic_io_pc_REG}; // @[Core.scala 424:21]
   assign dt_ic_instr = dt_ic_io_instr_REG[31:0]; // @[Core.scala 425:21]
   assign dt_ic_special = 8'h0; // @[Core.scala 430:21]
