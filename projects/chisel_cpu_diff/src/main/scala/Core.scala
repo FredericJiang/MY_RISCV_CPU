@@ -148,7 +148,7 @@ exe_reg_rd_wen     := (decode.io.wb_type === WB_REG)
 exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB_X)
 exe_reg_dmem_en   := (decode.io.mem_rtype =/= MEM_X) || ((decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB_X))
 
-}.elsewhen(kill_stage){
+}.elsewhen(kill_stage || stall){
 exe_reg_pc        := "hffffffffffffffff".U
 exe_reg_inst      := BUBBLE
 
@@ -174,7 +174,8 @@ exe_reg_rd_addr   := 0.U
 
 
 
-}.elsewhen(stall){
+}
+/*.elsewhen(stall){
 //if stall exe insert a bubble
 exe_reg_pc        := "hffffffffffffffff".U
 exe_reg_inst      := BUBBLE
@@ -199,7 +200,7 @@ exe_reg_rs2_addr  := 0.U
 exe_reg_rd_addr   := 0.U
 
 }
-
+*/
 //*******************************************************************
 // Execute Stage
 
