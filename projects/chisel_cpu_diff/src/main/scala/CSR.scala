@@ -50,6 +50,8 @@ class CSR extends Module {
   
   val mcycle    = RegInit(UInt(64.W), 0.U)
   val minstret  = RegInit(UInt(64.W), 0.U)
+  BoringUtils.addSink(mcycle, "csr_mcycle")
+  BoringUtils.addSink(minstret, "csr_minstret")
 
   //io.mie := mie
   //io.mstatus := mstatus
@@ -91,7 +93,7 @@ io.intrpt_pc := 0.U
   }
     
   
-  mcycle := mcycle + 1.U
+  //mcycle := mcycle + 1.U
 
  
   

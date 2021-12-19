@@ -409,9 +409,9 @@ val dt_valid = RegInit(false.B)
 
 
 
-val skip = (wb_reg_alu_type === ALU_MY_INST) || 
+val skip = ((wb_reg_alu_type === ALU_MY_INST) || 
 (wb_reg_clint_en) || 
-(wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle)
+(wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
 
 dt_valid := (wb_reg_inst =/= BUBBLE )
 
@@ -441,6 +441,9 @@ val dt_ic = Module(new DifftestInstrCommit)
   instr_cnt := instr_cnt + 1.U
 }
   cycle_cnt := cycle_cnt + 1.U
+
+  BoringUtils.addSource(cycle_cnt, "csr_mcycle")
+  BoringUtils.addSource(instr_cnt, "csr_minstret")
 
   val rf_a0 = WireInit(0.U(64.W))
   BoringUtils.addSink(rf_a0, "rf_a0")
