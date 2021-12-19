@@ -183,9 +183,6 @@ exe_reg_rd_addr   := 0.U
 // Execute Stage
 
 
-
-
-
 val exe_op1     = Wire(UInt(64.W))
 val exe_op2     = Wire(UInt(64.W))
 
@@ -272,7 +269,6 @@ mem_reg_rs2_addr    := exe_reg_rs2_addr
 mem_reg_rd_addr     := exe_reg_rd_addr
 mem_reg_rs1_data    := exe_reg_rs1_data
 mem_reg_rs2_data    := exe_reg_rs2_data
-
 
 
 //*******************************************************************
