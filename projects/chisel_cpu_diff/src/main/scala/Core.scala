@@ -162,6 +162,7 @@ exe_reg_rd_wen    := false.B
 exe_reg_dmem_wen  := false.B
 exe_reg_dmem_en   := false.B
 
+/*
 exe_reg_imm       := 0.U
 exe_reg_rs2_data  := 0.U
 exe_reg_rs1_data  := 0.U
@@ -170,7 +171,7 @@ exe_reg_op2_data  := 0.U
 exe_reg_rs1_addr  := 0.U
 exe_reg_rs2_addr  := 0.U
 exe_reg_rd_addr   := 0.U
-
+*/
 
 
 
