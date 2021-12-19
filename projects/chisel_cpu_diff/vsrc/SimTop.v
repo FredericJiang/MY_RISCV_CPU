@@ -1986,6 +1986,7 @@ module Core(
   reg  dt_valid; // @[Core.scala 408:23]
   reg  skip; // @[Core.scala 410:19]
   wire  _T_47 = _T_39 | wb_reg_csr_type != 3'h0 & wb_reg_inst[31:20] == 12'hb00; // @[Core.scala 412:40]
+  wire [63:0] _GEN_61 = {{32'd0}, wb_reg_pc}; // @[Core.scala 420:50]
   reg [31:0] dt_ic_io_pc_REG; // @[Core.scala 424:31]
   reg [63:0] dt_ic_io_instr_REG; // @[Core.scala 425:31]
   reg  dt_ic_io_skip_REG; // @[Core.scala 431:31]
@@ -2557,7 +2558,7 @@ module Core(
     if (reset) begin // @[Core.scala 408:23]
       dt_valid <= 1'h0; // @[Core.scala 408:23]
     end else begin
-      dt_valid <= wb_reg_inst != 64'h0; // @[Core.scala 420:10]
+      dt_valid <= wb_reg_inst != 64'h0 & _GEN_61 != 64'hffffffffffffffff; // @[Core.scala 420:10]
     end
     if (reset) begin // @[Core.scala 410:19]
       skip <= 1'h0; // @[Core.scala 410:19]
