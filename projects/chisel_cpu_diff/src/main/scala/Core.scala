@@ -60,7 +60,7 @@ id_reg_inst  := id_reg_inst
 //*******************************************************************
 //Decode Instruction Stage
 
-val id_rs1_addr = Mux((id_reg_inst ==="h0000007b".U ),"h0000b".U,id_reg_inst(19, 15))
+val id_rs1_addr = id_reg_inst(19, 15)
 val id_rs2_addr = id_reg_inst(24, 20)
 
 val regfile = Module(new RegFile)

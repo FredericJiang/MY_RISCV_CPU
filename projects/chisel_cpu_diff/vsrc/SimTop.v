@@ -1951,7 +1951,7 @@ module Core(
   wire  _T_13 = id_rs2_addr != 5'h0; // @[Core.scala 115:51]
   wire  _T_14 = exe_reg_rd_addr == _GEN_81 & id_rs2_addr != 5'h0; // @[Core.scala 115:37]
   wire  _T_15 = decode_io_op2_type == 3'h1; // @[Core.scala 115:81]
-  wire [4:0] id_rs1_addr = id_reg_inst == 64'h7b ? 5'hb : id_reg_inst[19:15]; // @[Core.scala 63:22]
+  wire [4:0] id_rs1_addr = id_reg_inst[19:15]; // @[Core.scala 63:30]
   wire [63:0] _GEN_82 = {{59'd0}, id_rs1_addr}; // @[Core.scala 115:113]
   wire  _T_18 = id_rs1_addr != 5'h0; // @[Core.scala 115:143]
   wire  _T_19 = exe_reg_rd_addr == _GEN_82 & id_rs1_addr != 5'h0; // @[Core.scala 115:129]
@@ -2182,7 +2182,7 @@ module Core(
   assign io_dmem_wen = mem_reg_dmem_wen; // @[Core.scala 321:15]
   assign regfile_clock = clock;
   assign regfile_reset = reset;
-  assign regfile_io_rs1_addr = id_reg_inst == 64'h7b ? 5'hb : id_reg_inst[19:15]; // @[Core.scala 63:22]
+  assign regfile_io_rs1_addr = id_reg_inst[19:15]; // @[Core.scala 63:30]
   assign regfile_io_rs2_addr = id_reg_inst[24:20]; // @[Core.scala 64:30]
   assign regfile_io_rd_addr = wb_reg_rd_addr[4:0]; // @[Core.scala 378:20]
   assign regfile_io_rd_data = wb_reg_csr_rd_wen ? wb_reg_csr_rd_data : _wb_rd_data_T_7; // @[Mux.scala 98:16]
@@ -2430,7 +2430,7 @@ module Core(
     if (reset) begin // @[PipelineReg.scala 46:33]
       exe_reg_rs1_addr <= 64'h0; // @[PipelineReg.scala 46:33]
     end else if (_T_2) begin // @[Core.scala 123:28]
-      exe_reg_rs1_addr <= {{59'd0}, id_reg_inst[19:15]}; // @[Core.scala 135:19]
+      exe_reg_rs1_addr <= {{59'd0}, id_rs1_addr}; // @[Core.scala 135:19]
     end else if (kill_stage) begin // @[Core.scala 150:23]
       exe_reg_rs1_addr <= 64'h0; // @[Core.scala 162:19]
     end else if (stall) begin // @[Core.scala 167:18]
