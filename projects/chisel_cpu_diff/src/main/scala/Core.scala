@@ -79,9 +79,9 @@ val jarl_type = (decode.io.op2_type === OP_4) && (decode.io.imm_type === IMM_I)
 //used only for jalr
 val id_rs1 = MuxCase( regfile.io.rs1_data  , Array(
                   (id_rs1_addr === 0.U && decode.io.op1_type === OP_REG ) -> 0.U ,
-                  ((exe_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
-                  ((mem_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
-                  ((wb_reg_rd_addr  === id_rs1_addr) && (id_rs1_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
+                  ((exe_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && exe_reg_rd_wen && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
+                  ((mem_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && mem_reg_rd_wen) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
+                  ((wb_reg_rd_addr  === id_rs1_addr) && (id_rs1_addr =/= 0.U) &&  wb_reg_rd_wen) -> wb_rd_data
                   ))
 
             
@@ -90,16 +90,16 @@ val id_op1  =  MuxCase( regfile.io.rs1_data  , Array(
                   (id_rs1_addr === 0.U && decode.io.op1_type === OP_REG) -> 0.U ,
                   (decode.io.op1_type === OP_IMM ) -> imm_gen.io.imm,
                   (decode.io.op1_type === OP_PC)  -> id_reg_pc,
-                  ((exe_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
-                  ((mem_reg_rd_addr === id_rs1_addr) && (decode.io.op1_type === OP_REG) && (id_rs1_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
-                  ((wb_reg_rd_addr  === id_rs1_addr) && (decode.io.op1_type === OP_REG) && (id_rs1_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
+                  ((exe_reg_rd_addr === id_rs1_addr) && (id_rs1_addr =/= 0.U) && exe_reg_rd_wen && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
+                  ((mem_reg_rd_addr === id_rs1_addr) && (decode.io.op1_type === OP_REG) && (id_rs1_addr =/= 0.U) && mem_reg_rd_wen) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
+                  ((wb_reg_rd_addr  === id_rs1_addr) && (decode.io.op1_type === OP_REG) && (id_rs1_addr =/= 0.U) &&  wb_reg_rd_wen) -> wb_rd_data
                   ))
 
 val id_rs2 = MuxCase( regfile.io.rs2_data  , Array(
                   (id_rs1_addr === 0.U && decode.io.op1_type === OP_REG ) -> 0.U ,
-                  ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
-                  ((mem_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
-                  ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
+                  ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_wen && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
+                  ((mem_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && mem_reg_rd_wen) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
+                  ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_wen) -> wb_rd_data
                   ))
 
     
@@ -107,9 +107,9 @@ val id_op2 =  MuxCase( regfile.io.rs2_data , Array(
                   (id_rs2_addr === 0.U && decode.io.op2_type === OP_REG) -> 0.U ,
                   (decode.io.op2_type === OP_IMM ) -> imm_gen.io.imm,
                   (decode.io.op2_type === OP_4)    -> 4.U,
-                  ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_en && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
-                  ((mem_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && mem_reg_rd_en) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
-                  ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_en) -> wb_rd_data
+                  ((exe_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && exe_reg_rd_wen && exe_reg_mem_rtype === MEM_X) -> exe_alu_out,
+                  ((mem_reg_rd_addr === id_rs2_addr) && (id_rs2_addr =/= 0.U) && mem_reg_rd_wen) -> Mux(mem_reg_mem_rtype =/= MEM_X, mem_rd_data,mem_reg_alu_out),
+                  ((wb_reg_rd_addr  === id_rs2_addr) && (id_rs2_addr =/= 0.U) &&  wb_reg_rd_wen) -> wb_rd_data
                   ))
 
 // load instruciton in exe stage, and address conflict
@@ -130,30 +130,28 @@ exe_reg_inst      := id_reg_inst
 exe_reg_op1_type  := decode.io.op1_type
 exe_reg_op2_type  := decode.io.op2_type
 exe_reg_alu_type  := decode.io.alu_type
-exe_reg_csr_type  := decode.io.csr_type
 exe_reg_mem_rtype := decode.io.mem_rtype
 exe_reg_imm_type  := decode.io.imm_type
 exe_reg_wb_type   := decode.io.wb_type
-
-exe_reg_rs1_addr  := id_reg_inst(19, 15)
-exe_reg_rs2_addr  := id_reg_inst(24, 20)
-exe_reg_rd_addr   := id_reg_inst(11,  7)
+exe_reg_csr_type  := decode.io.csr_type
 
 exe_reg_imm       := imm_gen.io.imm
 exe_reg_rs2_data  := id_rs2   //   only used in store struction, and its op2_type is reg, so there is actually no difference with id_op2
 exe_reg_rs1_data  := id_rs1
-
 exe_reg_op1_data  := id_op1
 exe_reg_op2_data  := id_op2
+exe_reg_rs1_addr  := id_reg_inst(19, 15)
+exe_reg_rs2_addr  := id_reg_inst(24, 20)
+exe_reg_rd_addr   := id_reg_inst(11,  7)
 
-exe_reg_rd_en     := (decode.io.wb_type === WB_REG)
+exe_reg_rd_wen     := (decode.io.wb_type === WB_REG)
 exe_reg_dmem_wen  := (decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB_X)
 exe_reg_dmem_en   := (decode.io.mem_rtype =/= MEM_X) || ((decode.io.wb_type =/= WB_REG) && (decode.io.wb_type =/= WB_X))
 
 }.elsewhen(kill_stage){
 exe_reg_pc        := "hffffffffffffffff".U
 exe_reg_inst      := BUBBLE
-exe_reg_rd_en     := false.B
+exe_reg_rd_wen     := false.B
 exe_reg_dmem_wen  := false.B
 exe_reg_dmem_en   := false.B
 exe_reg_imm_type  := 0.U
@@ -171,7 +169,7 @@ exe_reg_op2_data  := 0.U
 //if stall exe insert a bubble
 exe_reg_pc        := 0.U
 exe_reg_inst      := BUBBLE
-exe_reg_rd_en     := false.B
+exe_reg_rd_wen     := false.B
 exe_reg_dmem_wen  := false.B
 exe_reg_dmem_en   := false.B
 exe_reg_csr_type  := 0.U
@@ -284,14 +282,14 @@ mem_reg_rs1_addr   := exe_reg_rs1_addr
 
 mem_reg_rd_addr    := exe_reg_rd_addr
 
-mem_reg_rd_en      := exe_reg_rd_en 
+mem_reg_rd_wen      := exe_reg_rd_wen 
 mem_reg_dmem_wen   := exe_reg_dmem_wen && !clint_en
 mem_reg_dmem_en    := exe_reg_dmem_en  && !clint_en
 }.otherwise
 {
 mem_reg_pc        := "hffffffffffffffff".U
 mem_reg_inst      := BUBBLE
-mem_reg_rd_en     := false.B
+mem_reg_rd_wen     := false.B
 mem_reg_dmem_wen  := false.B
 mem_reg_dmem_en   := false.B
 mem_reg_csr_type  := 0.U
@@ -301,7 +299,7 @@ mem_reg_rd_addr   := 0.U
 
 mem_reg_rd_addr    := 0.U
 
-mem_reg_rd_en      := false.B
+mem_reg_rd_wen      := false.B
 mem_reg_dmem_wen   := false.B
 mem_reg_dmem_en    := false.B
 mem_reg_mem_rtype  := 0.U
@@ -335,7 +333,7 @@ lsu.io.dmem_rdata := mem_dmem_rdata
 lsu.io.wb_type    := mem_reg_wb_type
 
 when((mem_reg_rs2_addr === wb_reg_rd_addr) 
-&& mem_reg_dmem_wen && wb_reg_rd_en ){
+&& mem_reg_dmem_wen && wb_reg_rd_wen ){
 lsu.io.rs2_data  := wb_rd_data
 }.otherwise{lsu.io.rs2_data   := mem_reg_rs2_data } //write memory data is from rs2
 
@@ -358,7 +356,7 @@ wb_reg_alu_out     := mem_reg_alu_out
 wb_reg_rd_data     := mem_rd_data
 wb_reg_rs1_data    := mem_reg_rs1_data
 wb_reg_rd_addr     := mem_reg_rd_addr
-wb_reg_rd_en       := mem_reg_rd_en
+wb_reg_rd_wen       := mem_reg_rd_wen
 
 wb_reg_csr_type    := mem_reg_csr_type
 wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
@@ -377,7 +375,7 @@ wb_reg_intrpt_no :=  mem_reg_intrpt_no
 //*******************************************************************
 //WriteBack
 //write back to reg enalbe
-regfile.io.rd_en   := wb_reg_rd_en || wb_reg_csr_rd_wen
+regfile.io.rd_wen   := wb_reg_rd_wen || wb_reg_csr_rd_wen
 regfile.io.rd_addr := wb_reg_rd_addr
 
 wb_rd_data  := MuxCase(0.U, Array(
