@@ -63,12 +63,17 @@ id_reg_inst  := id_reg_inst
 val id_rs1_addr = id_reg_inst(19, 15)
 val id_rs2_addr = id_reg_inst(24, 20)
 
-val regfile = Module(new RegFile)
-regfile.io.rs1_addr := id_rs1_addr
-regfile.io.rs2_addr := id_rs2_addr
 
 val decode = Module(new Decode)
 decode.io.inst      := id_reg_inst
+
+val regfile = Module(new RegFile)
+when(decode.io.alu_type =/= ALU_MY_INST){
+regfile.io.rs1_addr := id_rs1_addr
+}.otherwise{regfile.io.rs1_addr := 10.U}
+
+regfile.io.rs2_addr := id_rs2_addr
+
 
 val imm_gen = Module(new ImmGen)
 imm_gen.io.imm_type := decode.io.imm_type
@@ -250,34 +255,37 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 mem_reg_pc          := exe_reg_pc
 mem_reg_inst        := exe_reg_inst
 
+// Control Signal
 mem_reg_alu_type    := exe_reg_alu_type
 mem_reg_mem_rtype   := exe_reg_mem_rtype
 mem_reg_wb_type     := exe_reg_wb_type
 mem_reg_csr_type    := exe_reg_csr_type
 mem_reg_alu_out     := exe_alu_out
 
+mem_reg_rd_wen      := exe_reg_rd_wen 
+mem_reg_dmem_wen    := exe_reg_dmem_wen && !clint_en
+mem_reg_dmem_en     := exe_reg_dmem_en  && !clint_en
+
+// Data Signal
 mem_reg_rs1_addr    := exe_reg_rs1_addr
 mem_reg_rs2_addr    := exe_reg_rs2_addr
 mem_reg_rd_addr     := exe_reg_rd_addr
 mem_reg_rs1_data    := exe_reg_rs1_data
 mem_reg_rs2_data    := exe_reg_rs2_data
 
-mem_reg_rd_wen      := exe_reg_rd_wen 
-mem_reg_dmem_wen    := exe_reg_dmem_wen && !clint_en
-mem_reg_dmem_en     := exe_reg_dmem_en  && !clint_en
 
 
 //*******************************************************************
 // MEM CSR REG
-mem_reg_mie       := csr.io.mie
-mem_reg_mstatus   := csr.io.mstatus
-mem_reg_mepc      := csr.io.mepc
-mem_reg_mcause    := csr.io.mcause
-mem_reg_mtvec     := csr.io.mtvec
-mem_reg_mscratch  := csr.io.mscratch
-mem_reg_intrpt    := csr.io.intrpt
-mem_reg_intrpt_no := csr.io.intrpt_no
-mem_reg_clint_en  := clint_en
+mem_reg_mie         := csr.io.mie
+mem_reg_mstatus     := csr.io.mstatus
+mem_reg_mepc        := csr.io.mepc
+mem_reg_mcause      := csr.io.mcause
+mem_reg_mtvec       := csr.io.mtvec
+mem_reg_mscratch    := csr.io.mscratch
+mem_reg_intrpt      := csr.io.intrpt
+mem_reg_intrpt_no   := csr.io.intrpt_no
+mem_reg_clint_en    := clint_en
 mem_reg_csr_rd_wen  := csr.io.rd_wen
 mem_reg_csr_rd_data := csr.io.out
 
@@ -329,7 +337,6 @@ wb_reg_csr_type    := mem_reg_csr_type
 wb_reg_alu_out     := mem_reg_alu_out
 wb_reg_rs1_data    := mem_reg_rs1_data //used for print
 
-
 wb_reg_rd_addr     := mem_reg_rd_addr
 wb_reg_rd_wen      := mem_reg_rd_wen
 wb_reg_rd_data     := mem_rd_data
@@ -375,7 +382,8 @@ regfile.io.rd_data := wb_rd_data
 val my_inst = RegInit(0.U(1.W))
 
 when(wb_reg_alu_type === ALU_MY_INST)
-{ val a = wb_reg_rs1_data
+{ val a =  WireInit(0.U(64.W))
+  a:= wb_reg_rs1_data
 printf("%c", a) }
 
 
@@ -413,6 +421,8 @@ val skip = (wb_reg_alu_type === ALU_MY_INST) ||
 
 when(dt_valid){
 val dt_ic = Module(new DifftestInstrCommit)
+  dt_ic.io.pc       := RegNext(wb_reg_pc)
+  dt_ic.io.instr    := RegNext(wb_reg_inst)
   dt_ic.io.clock    := clock
   dt_ic.io.coreid   := 0.U
   dt_ic.io.index    := 0.U
@@ -425,14 +435,6 @@ val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.wdata    := RegNext(wb_reg_wdata)
   dt_ic.io.wdest    := RegNext(wb_reg_wdest)
 
-when(dt_valid){
-  dt_ic.io.pc       := RegNext(wb_reg_pc)
-  dt_ic.io.instr    := RegNext(wb_reg_inst)}
-
-.otherwise{
-  dt_ic.io.pc       := 0.U(32.W)
-  dt_ic.io.instr    := 0.U
-}
 
 
 
@@ -455,7 +457,7 @@ when(dt_valid){
   dt_te.io.cycleCnt := cycle_cnt
   dt_te.io.instrCnt := instr_cnt
 
-}
+
 
 /*
   val dt_ae = Module(new DifftestArchEvent)
@@ -489,7 +491,7 @@ when(dt_valid){
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
   
-
+}
 
 
 
