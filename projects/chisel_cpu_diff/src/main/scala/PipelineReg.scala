@@ -57,7 +57,7 @@ val mem_reg_inst      = RegInit(0.U(64.W))
 
 val mem_reg_csr_rd_wen  = Reg(Bool())
 val mem_reg_csr_rd_data = RegInit(0.U(64.W))
-val mem_reg_clint_en    = Reg(Bool())
+val mem_reg_clint_en    = RegInit(false.B)
 
 val mem_reg_alu_type  =  RegInit(ALU_X) 
 val mem_reg_wb_type   =  RegInit(WB_X)  
@@ -92,7 +92,7 @@ val wb_reg_dmem_wen       =  Reg(Bool())
 val wb_reg_rs1_data   = Reg(UInt(64.W))
 val wb_reg_csr_rd_wen  = Reg(Bool())
 val wb_reg_csr_rd_data = RegInit(0.U(64.W))
-val wb_reg_clint_en  = Reg(Bool())
+val wb_reg_clint_en  = RegInit(false.B)
 
 
 val mem_reg_mie      =  RegInit(0.U(64.W))
