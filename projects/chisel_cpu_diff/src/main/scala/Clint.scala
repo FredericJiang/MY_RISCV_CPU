@@ -18,6 +18,7 @@ class Clint extends Module {
 
     val  cmp_rdata   = Output(UInt(64.W))
     val  time_intrpt = Output(Bool())
+    val  intrpt_no = Output(UInt(64.W))
   })
 
 
@@ -40,8 +41,9 @@ class Clint extends Module {
   BoringUtils.addSink(mstatus, "csr_status")
 
   io.time_intrpt  := mtime >= mtimecmp && mstatus(3) === 1.U && mie(7) === 1.U
-
-
+  when(io.time_intrpt){io.intrpt_no := 7.U
+  }.otherwise{io.intrpt_no := 0.U}
+  
   io.cmp_rdata := Mux(cmp_ren, Mux(cmp_addr === CLINT_MTIME, mtime, mtimecmp), 0.U) //output read data
 
 }
