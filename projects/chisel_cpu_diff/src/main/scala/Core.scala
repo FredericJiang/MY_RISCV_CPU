@@ -303,17 +303,6 @@ mem_reg_rd_wen      := false.B
 mem_reg_dmem_wen    := false.B
 mem_reg_dmem_en     := false.B
 
-mem_reg_mie         := csr.io.mie
-mem_reg_mstatus     := csr.io.mstatus
-mem_reg_mepc        := csr.io.mepc
-mem_reg_mcause      := csr.io.mcause
-mem_reg_mtvec       := csr.io.mtvec
-mem_reg_mscratch    := csr.io.mscratch
-mem_reg_intrpt      := csr.io.intrpt
-mem_reg_intrpt_no   := csr.io.intrpt_no
-mem_reg_clint_en    := clint_en
-mem_reg_csr_rd_wen  := csr.io.rd_wen
-mem_reg_csr_rd_data := csr.io.out 
 
 }
 
