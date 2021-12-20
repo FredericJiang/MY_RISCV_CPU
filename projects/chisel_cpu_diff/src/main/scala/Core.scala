@@ -420,7 +420,7 @@ when((wb_reg_alu_type === ALU_MY_INST) || (wb_reg_csr_type =/= CSR_X && wb_reg_i
 }
 
 
-dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_pc =/= "hffffffffffffffff".U)
+dt_valid := (wb_reg_inst =/= BUBBLE && wb_reg_pc =/= "hffffffffffffffff".U && !wb_reg_intrpt)
 
 when(dt_valid ){
 val dt_ic = Module(new DifftestInstrCommit)

@@ -2585,7 +2585,7 @@ module Core(
     if (reset) begin // @[Core.scala 411:23]
       dt_valid <= 1'h0; // @[Core.scala 411:23]
     end else begin
-      dt_valid <= wb_reg_inst != 64'h0 & _GEN_61 != 64'hffffffffffffffff; // @[Core.scala 423:10]
+      dt_valid <= wb_reg_inst != 64'h0 & _GEN_61 != 64'hffffffffffffffff & ~wb_reg_intrpt; // @[Core.scala 423:10]
     end
     if (reset) begin // @[Core.scala 413:19]
       skip <= 1'h0; // @[Core.scala 413:19]
