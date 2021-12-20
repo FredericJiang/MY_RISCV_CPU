@@ -260,7 +260,14 @@ mem_reg_mem_rtype   := 0.U
 mem_reg_wb_type     := 0.U
 mem_reg_csr_type    := exe_reg_csr_type
 mem_reg_alu_out     := exe_alu_out
+
+mem_reg_rd_wen      := false.B
+mem_reg_dmem_wen    := false.B
+mem_reg_dmem_en     := false.B
+
 }
+
+
 mem_reg_pc          := exe_reg_pc
 mem_reg_inst        := exe_reg_inst
 
