@@ -355,19 +355,11 @@ wb_reg_mie         :=  mem_reg_mie
 wb_reg_mtvec       :=  mem_reg_mtvec
 wb_reg_mscratch    :=  mem_reg_mscratch
 
-when(!mem_reg_intrpt){
-
 wb_reg_mstatus  :=  mem_reg_mstatus
 wb_reg_mepc     :=  mem_reg_mepc
 wb_reg_mcause   :=  mem_reg_mcause
 
-}.otherwise{
 
-wb_reg_mstatus  :=  csr.io.mstatus
-wb_reg_mepc     :=  csr.io.mepc
-wb_reg_mcause   :=  csr.io.mcause
-
-}
 
 //*******************************************************************
 //WriteBack
