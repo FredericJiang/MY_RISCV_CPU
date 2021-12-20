@@ -216,7 +216,6 @@ csr.io.pc          := exe_reg_pc
 csr.io.inst        := exe_reg_inst
 csr.io.in_data     := exe_alu_out
 csr.io.csr_type    := exe_reg_csr_type
-csr.io.time_intrpt := false.B
 csr.io.time_intrpt := clint.io.time_intrpt
 
 
@@ -247,7 +246,7 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
 //*******************************************************************
 
-
+when(!clint.io.time_intrpt){
 mem_reg_pc          := exe_reg_pc
 mem_reg_inst        := exe_reg_inst
 
@@ -282,7 +281,27 @@ mem_reg_intrpt      := csr.io.intrpt
 mem_reg_intrpt_no   := csr.io.intrpt_no
 mem_reg_clint_en    := clint_en
 mem_reg_csr_rd_wen  := csr.io.rd_wen
-mem_reg_csr_rd_data := csr.io.out
+mem_reg_csr_rd_data := csr.io.out }.otherwise{
+
+
+// Timer Interrupt kill this stage
+
+mem_reg_pc          := "hffffffffffffffff".U
+mem_reg_inst        := BUBBLE
+
+mem_reg_alu_type    := 0.U
+mem_reg_mem_rtype   := 0.U
+mem_reg_wb_type     := 0.U
+mem_reg_csr_type    := 0.U
+mem_reg_alu_out     := 0.U
+
+mem_reg_rd_wen      := false.B
+mem_reg_dmem_wen    := false.B
+mem_reg_dmem_en     := false.B
+
+
+
+}
 
 //*******************************************************************
 //MEMORY Stage
@@ -494,6 +513,9 @@ val dt_ic = Module(new DifftestInstrCommit)
     dt_cs.io.mideleg        := 0.U
     dt_cs.io.medeleg        := 0.U
   
+
+
+
 }
 
 
