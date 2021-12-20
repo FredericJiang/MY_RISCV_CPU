@@ -216,7 +216,7 @@ csr.io.pc          := exe_reg_pc
 csr.io.inst        := exe_reg_inst
 csr.io.in_data     := exe_alu_out
 csr.io.csr_type    := exe_reg_csr_type
-csr.io.time_intrpt := clint.io.time_intrpt
+csr.io.time_intrpt := (clint.io.time_intrpt && exe_reg_pc =/= "hffffffffffffffff".U)
 
 
 val nxt_pc = Module(new Nxt_PC)
