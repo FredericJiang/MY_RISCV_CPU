@@ -380,6 +380,19 @@ wb_reg_intrpt_no :=  mem_reg_intrpt_no
 wb_reg_csr_rd_wen  := mem_reg_csr_rd_wen
 wb_reg_clint_en    := mem_reg_clint_en
 
+
+
+mem_reg_mie         := csr.io.mie
+mem_reg_mstatus     := csr.io.mstatus
+mem_reg_mepc        := csr.io.mepc
+mem_reg_mcause      := csr.io.mcause
+mem_reg_mtvec       := csr.io.mtvec
+mem_reg_mscratch    := csr.io.mscratch
+mem_reg_intrpt      := csr.io.intrpt
+mem_reg_intrpt_no   := csr.io.intrpt_no
+mem_reg_clint_en    := clint_en
+mem_reg_csr_rd_wen  := csr.io.rd_wen
+mem_reg_csr_rd_data := csr.io.out 
 //*******************************************************************
 //WriteBack
 //write back to reg enalbe
@@ -431,7 +444,7 @@ val dt_valid = RegInit(false.B)
 
 val skip = RegInit(false.B)
 
-when((wb_reg_alu_type === ALU_MY_INST) || (wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle))
+when((wb_reg_alu_type === ALU_MY_INST) || (wb_reg_csr_type =/= CSR_X && wb_reg_inst(31,20) === csr_addr.mcycle) )
 {
   skip := true.B
 }.otherwise{
@@ -484,7 +497,7 @@ val dt_ic = Module(new DifftestInstrCommit)
 
 
 
-/*
+
   val dt_ae = Module(new DifftestArchEvent)
     dt_ae.io.clock        := clock
     dt_ae.io.coreid       := 0.U
@@ -492,7 +505,7 @@ val dt_ic = Module(new DifftestInstrCommit)
     dt_ae.io.cause        := 0.U
     dt_ae.io.exceptionPC  := RegNext(Mux(wb_reg_intrpt, wb_reg_pc, 0.U))
 
-*/
+
 
   val dt_cs = Module(new DifftestCSRState)
     dt_cs.io.clock          := clock
