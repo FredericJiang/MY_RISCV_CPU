@@ -1996,14 +1996,13 @@ module Core(
   wire [63:0] _GEN_11 = kill_stage | stall ? 64'hffffffffffffffff : {{32'd0}, exe_reg_pc}; // @[Core.scala 156:32 Core.scala 157:19 PipelineReg.scala 25:32]
   wire [63:0] _GEN_21 = _T_2 ? {{32'd0}, id_reg_pc} : _GEN_11; // @[Core.scala 131:28 Core.scala 132:19]
   wire  clint_en = exe_reg_dmem_en & (exe_alu_out == 64'h200bff8 | exe_alu_out == 64'h2004000); // @[Core.scala 201:22]
-  wire [63:0] _GEN_61 = {{32'd0}, exe_reg_pc}; // @[Core.scala 219:59]
   wire  _mem_reg_dmem_wen_T = ~clint_en; // @[Core.scala 261:44]
   wire  _T_36 = mem_reg_rs2_addr == wb_reg_rd_addr; // @[Core.scala 313:24]
   wire  _T_39 = wb_reg_alu_type == 5'h14; // @[Core.scala 383:22]
   reg  dt_valid; // @[Core.scala 411:23]
   reg  skip; // @[Core.scala 413:19]
   wire  _T_48 = _T_39 | wb_reg_csr_type != 3'h0 & wb_reg_inst[31:20] == 12'hb00 | wb_reg_clint_en; // @[Core.scala 415:113]
-  wire [63:0] _GEN_62 = {{32'd0}, wb_reg_pc}; // @[Core.scala 423:50]
+  wire [63:0] _GEN_61 = {{32'd0}, wb_reg_pc}; // @[Core.scala 423:50]
   reg [31:0] dt_ic_io_pc_REG; // @[Core.scala 427:31]
   reg [63:0] dt_ic_io_instr_REG; // @[Core.scala 428:31]
   reg  dt_ic_io_wen_REG; // @[Core.scala 437:31]
@@ -2194,7 +2193,7 @@ module Core(
   assign csr_io_inst = exe_reg_inst[31:0]; // @[Core.scala 216:20]
   assign csr_io_csr_type = exe_reg_csr_type; // @[Core.scala 218:20]
   assign csr_io_in_data = alu_io_alu_out; // @[PipelineReg.scala 118:23 Core.scala 197:17]
-  assign csr_io_time_intrpt = clint_io_time_intrpt & _GEN_61 != 64'hffffffffffffffff; // @[Core.scala 219:45]
+  assign csr_io_time_intrpt = clint_io_time_intrpt & exe_reg_inst != 64'h0; // @[Core.scala 219:45]
   assign csr_csr_minstret = instr_cnt;
   assign csr_csr_mcycle = cycle_cnt;
   assign nxt_pc_io_pc = exe_reg_pc; // @[Core.scala 223:23]
@@ -2600,7 +2599,7 @@ module Core(
     if (reset) begin // @[Core.scala 411:23]
       dt_valid <= 1'h0; // @[Core.scala 411:23]
     end else begin
-      dt_valid <= wb_reg_inst != 64'h0 & _GEN_62 != 64'hffffffffffffffff & ~wb_reg_intrpt; // @[Core.scala 423:10]
+      dt_valid <= wb_reg_inst != 64'h0 & _GEN_61 != 64'hffffffffffffffff & ~wb_reg_intrpt; // @[Core.scala 423:10]
     end
     if (reset) begin // @[Core.scala 413:19]
       skip <= 1'h0; // @[Core.scala 413:19]
