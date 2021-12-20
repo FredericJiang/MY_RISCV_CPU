@@ -194,7 +194,6 @@ alu.io.inst     := exe_reg_inst
 alu.io.alu_type := exe_reg_alu_type
 alu.io.in1      := exe_op1
 alu.io.in2      := exe_op2
-
 exe_alu_out     := alu.io.alu_out
 
 val clint_en  = Wire(Bool())
