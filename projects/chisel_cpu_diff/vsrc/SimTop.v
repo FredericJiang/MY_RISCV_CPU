@@ -1121,7 +1121,6 @@ module Clint(
   input         io_cmp_wen,
   input  [63:0] io_cmp_wdata,
   output        io_time_intrpt,
-  output [63:0] io_intrpt_no,
   input  [63:0] csr_mie,
   input  [63:0] csr_status
 );
@@ -1132,9 +1131,7 @@ module Clint(
   reg [63:0] mtime; // @[Clint.scala 30:26]
   reg [63:0] mtimecmp; // @[Clint.scala 31:26]
   wire [63:0] _mtime_T_1 = mtime + 64'h1; // @[Clint.scala 33:18]
-  wire [2:0] _GEN_1 = io_time_intrpt ? 3'h7 : 3'h0; // @[Clint.scala 44:23 Clint.scala 44:37 Clint.scala 45:28]
   assign io_time_intrpt = mtime >= mtimecmp & csr_status[3] & csr_mie[7]; // @[Clint.scala 43:62]
-  assign io_intrpt_no = {{61'd0}, _GEN_1}; // @[Clint.scala 44:23 Clint.scala 44:37 Clint.scala 45:28]
   always @(posedge clock) begin
     if (reset) begin // @[Clint.scala 30:26]
       mtime <= 64'h0; // @[Clint.scala 30:26]
@@ -1208,6 +1205,7 @@ module CSR(
   output [31:0] io_jmp_pc,
   output        io_intrpt,
   output [31:0] io_intrpt_pc,
+  output [63:0] io_intrpt_no,
   output        io_rd_wen,
   output [63:0] io_mie,
   output [63:0] io_mstatus,
@@ -1260,6 +1258,7 @@ module CSR(
   wire [63:0] _GEN_8 = io_time_intrpt ? {{32'd0}, io_pc} : _GEN_0; // @[CSR.scala 84:23 CSR.scala 86:14]
   wire [63:0] _GEN_9 = io_time_intrpt ? 64'h8000000000000007 : _GEN_1; // @[CSR.scala 84:23 CSR.scala 87:16]
   wire [63:0] _GEN_10 = io_time_intrpt ? _mstatus_T : _GEN_5; // @[CSR.scala 84:23 CSR.scala 88:17]
+  wire [2:0] _GEN_12 = io_time_intrpt ? 3'h7 : 3'h0; // @[CSR.scala 84:23 CSR.scala 90:22 CSR.scala 80:14]
   wire [11:0] addr = io_inst[31:20]; // @[CSR.scala 101:22]
   wire [63:0] _rdata_T_1 = 12'h300 == addr ? mstatus : 64'h0; // @[Mux.scala 80:57]
   wire [63:0] _rdata_T_3 = 12'h342 == addr ? mcause : _rdata_T_1; // @[Mux.scala 80:57]
@@ -1284,6 +1283,7 @@ module CSR(
   assign io_jmp_pc = io_csr_type == 3'h2 ? mepc[31:0] : _GEN_4; // @[CSR.scala 69:35 CSR.scala 72:16]
   assign io_intrpt = io_time_intrpt; // @[CSR.scala 84:23 CSR.scala 89:19 CSR.scala 79:11]
   assign io_intrpt_pc = io_time_intrpt ? _csr_jmp_pc_T : 32'h0; // @[CSR.scala 84:23 CSR.scala 91:22 CSR.scala 81:14]
+  assign io_intrpt_no = {{61'd0}, _GEN_12}; // @[CSR.scala 84:23 CSR.scala 90:22 CSR.scala 80:14]
   assign io_rd_wen = io_csr_type == 3'h3 | io_csr_type == 3'h4 | io_csr_type == 3'h5; // @[CSR.scala 38:69]
   assign io_mie = mie; // @[CSR.scala 162:16]
   assign io_mstatus = mstatus; // @[CSR.scala 163:16]
@@ -1772,7 +1772,6 @@ module Core(
   wire  clint_io_cmp_wen; // @[Core.scala 207:19]
   wire [63:0] clint_io_cmp_wdata; // @[Core.scala 207:19]
   wire  clint_io_time_intrpt; // @[Core.scala 207:19]
-  wire [63:0] clint_io_intrpt_no; // @[Core.scala 207:19]
   wire [63:0] clint_csr_mie; // @[Core.scala 207:19]
   wire [63:0] clint_csr_status; // @[Core.scala 207:19]
   wire  csr_clock; // @[Core.scala 214:18]
@@ -1787,6 +1786,7 @@ module Core(
   wire [31:0] csr_io_jmp_pc; // @[Core.scala 214:18]
   wire  csr_io_intrpt; // @[Core.scala 214:18]
   wire [31:0] csr_io_intrpt_pc; // @[Core.scala 214:18]
+  wire [63:0] csr_io_intrpt_no; // @[Core.scala 214:18]
   wire  csr_io_rd_wen; // @[Core.scala 214:18]
   wire [63:0] csr_io_mie; // @[Core.scala 214:18]
   wire [63:0] csr_io_mstatus; // @[Core.scala 214:18]
@@ -2048,7 +2048,6 @@ module Core(
     .io_cmp_wen(clint_io_cmp_wen),
     .io_cmp_wdata(clint_io_cmp_wdata),
     .io_time_intrpt(clint_io_time_intrpt),
-    .io_intrpt_no(clint_io_intrpt_no),
     .csr_mie(clint_csr_mie),
     .csr_status(clint_csr_status)
   );
@@ -2065,6 +2064,7 @@ module Core(
     .io_jmp_pc(csr_io_jmp_pc),
     .io_intrpt(csr_io_intrpt),
     .io_intrpt_pc(csr_io_intrpt_pc),
+    .io_intrpt_no(csr_io_intrpt_no),
     .io_rd_wen(csr_io_rd_wen),
     .io_mie(csr_io_mie),
     .io_mstatus(csr_io_mstatus),
@@ -2538,11 +2538,11 @@ module Core(
     end else begin
       mem_reg_mscratch <= csr_io_mscratch; // @[Core.scala 278:21]
     end
-    mem_reg_intrpt <= clint_io_time_intrpt; // @[Core.scala 279:21]
+    mem_reg_intrpt <= csr_io_intrpt; // @[Core.scala 279:21]
     if (reset) begin // @[PipelineReg.scala 105:33]
       mem_reg_intrpt_no <= 64'h0; // @[PipelineReg.scala 105:33]
     end else begin
-      mem_reg_intrpt_no <= clint_io_intrpt_no; // @[Core.scala 280:21]
+      mem_reg_intrpt_no <= csr_io_intrpt_no; // @[Core.scala 280:21]
     end
     if (reset) begin // @[PipelineReg.scala 107:31]
       wb_reg_mie <= 64'h0; // @[PipelineReg.scala 107:31]
