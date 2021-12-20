@@ -1742,7 +1742,7 @@ module Core(
   reg [63:0] _RAND_74;
   reg [63:0] _RAND_75;
   reg [63:0] _RAND_76;
-  reg [31:0] _RAND_77;
+  reg [63:0] _RAND_77;
 `endif // RANDOMIZE_REG_INIT
   wire [31:0] decode_io_inst; // @[Core.scala 67:20]
   wire [4:0] decode_io_alu_type; // @[Core.scala 67:20]
@@ -2011,7 +2011,7 @@ module Core(
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 481:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
   reg [63:0] dt_ae_io_intrNO_REG; // @[Core.scala 504:37]
-  reg [31:0] dt_ae_io_exceptionPC_REG; // @[Core.scala 506:37]
+  reg [63:0] dt_ae_io_exceptionPC_REG; // @[Core.scala 506:37]
   Decode decode ( // @[Core.scala 67:20]
     .io_inst(decode_io_inst),
     .io_alu_type(decode_io_alu_type),
@@ -2233,7 +2233,7 @@ module Core(
   assign dt_ae_coreid = 8'h0; // @[Core.scala 503:27]
   assign dt_ae_intrNO = dt_ae_io_intrNO_REG[31:0]; // @[Core.scala 504:27]
   assign dt_ae_cause = 32'h0; // @[Core.scala 505:27]
-  assign dt_ae_exceptionPC = {{32'd0}, dt_ae_io_exceptionPC_REG}; // @[Core.scala 506:27]
+  assign dt_ae_exceptionPC = dt_ae_io_exceptionPC_REG; // @[Core.scala 506:27]
   assign dt_ae_exceptionInst = 32'h0;
   assign dt_cs_clock = clock; // @[Core.scala 511:29]
   assign dt_cs_coreid = 8'h0; // @[Core.scala 512:29]
@@ -2636,9 +2636,9 @@ module Core(
       dt_ae_io_intrNO_REG <= 64'h0;
     end
     if (wb_reg_intrpt) begin // @[Core.scala 506:41]
-      dt_ae_io_exceptionPC_REG <= wb_reg_pc;
+      dt_ae_io_exceptionPC_REG <= wb_reg_mepc;
     end else begin
-      dt_ae_io_exceptionPC_REG <= 32'h0;
+      dt_ae_io_exceptionPC_REG <= 64'h0;
     end
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
@@ -2842,8 +2842,8 @@ initial begin
   instr_cnt = _RAND_75[63:0];
   _RAND_76 = {2{`RANDOM}};
   dt_ae_io_intrNO_REG = _RAND_76[63:0];
-  _RAND_77 = {1{`RANDOM}};
-  dt_ae_io_exceptionPC_REG = _RAND_77[31:0];
+  _RAND_77 = {2{`RANDOM}};
+  dt_ae_io_exceptionPC_REG = _RAND_77[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
