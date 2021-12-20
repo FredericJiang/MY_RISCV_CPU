@@ -247,22 +247,12 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 //*******************************************************************
 
 when(!csr.io.intrpt){
-mem_reg_alu_type    := exe_reg_alu_type
-mem_reg_mem_rtype   := exe_reg_mem_rtype
-mem_reg_wb_type     := exe_reg_wb_type
-mem_reg_csr_type    := exe_reg_csr_type
-mem_reg_alu_out     := exe_alu_out
+
 mem_reg_rd_wen      := exe_reg_rd_wen 
 mem_reg_dmem_wen    := exe_reg_dmem_wen && !clint_en
 mem_reg_dmem_en     := exe_reg_dmem_en  && !clint_en
 
 }.otherwise{
-
-mem_reg_alu_type    := 0.U
-mem_reg_mem_rtype   := 0.U
-mem_reg_wb_type     := 0.U
-mem_reg_csr_type    := exe_reg_csr_type
-mem_reg_alu_out     := exe_alu_out
 
 mem_reg_rd_wen      := false.B
 mem_reg_dmem_wen    := false.B
@@ -275,7 +265,11 @@ mem_reg_pc          := exe_reg_pc
 mem_reg_inst        := exe_reg_inst
 
 // Control Signal
-
+mem_reg_alu_type    := exe_reg_alu_type
+mem_reg_mem_rtype   := exe_reg_mem_rtype
+mem_reg_wb_type     := exe_reg_wb_type
+mem_reg_csr_type    := exe_reg_csr_type
+mem_reg_alu_out     := exe_alu_out
 
 
 // Data Signal
