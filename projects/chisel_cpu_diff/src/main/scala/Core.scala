@@ -432,9 +432,9 @@ val dt_ic = Module(new DifftestInstrCommit)
   dt_ic.io.skip     := skip
   dt_ic.io.isRVC    := false.B
   dt_ic.io.scFailed := false.B
-  dt_ic.io.wen      := RegNext(wb_reg_dmem_wen)
-  dt_ic.io.wdata    := RegNext(wb_reg_wdata)
-  dt_ic.io.wdest    := RegNext(wb_reg_wdest)
+  dt_ic.io.wen      := RegNext(wb_reg_rd_wen || wb_reg_csr_rd_wen)
+  dt_ic.io.wdata    := RegNext(wb_rd_data)
+  dt_ic.io.wdest    := RegNext(wb_reg_rd_addr)
 
 
 
