@@ -2008,6 +2008,7 @@ module Core(
   wire [63:0] _cycle_cnt_T_1 = cycle_cnt + 64'h1; // @[Core.scala 456:26]
   wire [63:0] rf_a0_0 = regfile_rf_10;
   wire [63:0] _dt_ae_io_intrNO_T = wb_reg_intrpt ? wb_reg_intrpt_no : 64'h0; // @[Core.scala 481:33]
+  wire [31:0] _dt_ae_io_exceptionPC_T = wb_reg_intrpt ? wb_reg_pc : 32'h0; // @[Core.scala 483:33]
   Decode decode ( // @[Core.scala 67:20]
     .io_inst(decode_io_inst),
     .io_alu_type(decode_io_alu_type),
@@ -2229,7 +2230,7 @@ module Core(
   assign dt_ae_coreid = 8'h0; // @[Core.scala 480:27]
   assign dt_ae_intrNO = _dt_ae_io_intrNO_T[31:0]; // @[Core.scala 481:27]
   assign dt_ae_cause = 32'h0; // @[Core.scala 482:27]
-  assign dt_ae_exceptionPC = wb_reg_intrpt ? wb_reg_mepc : 64'h0; // @[Core.scala 483:33]
+  assign dt_ae_exceptionPC = {{32'd0}, _dt_ae_io_exceptionPC_T}; // @[Core.scala 483:33]
   assign dt_ae_exceptionInst = 32'h0;
   assign dt_cs_clock = clock; // @[Core.scala 488:29]
   assign dt_cs_coreid = 8'h0; // @[Core.scala 489:29]
