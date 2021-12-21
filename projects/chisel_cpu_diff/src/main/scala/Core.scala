@@ -246,6 +246,7 @@ kill_stage  := nxt_pc.io.pc_jmp  //current instruction jmp_flag
 //Execute  >>>>>>>>>>>>>>>>>>>>> Memory
 //*******************************************************************
 
+// timer inrerupt stop read and write to ram and register
 when(!csr.io.intrpt){
 
 mem_reg_rd_wen      := exe_reg_rd_wen 
