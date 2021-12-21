@@ -289,7 +289,7 @@ mem_reg_mepc        := csr.io.mepc
 mem_reg_mcause      := csr.io.mcause
 mem_reg_mtvec       := csr.io.mtvec
 mem_reg_mscratch    := csr.io.mscratch
-mem_reg_intrpt      := csr.io.intrpt  // 同步该指令与其是否产生计时器中断的信号
+mem_reg_intrpt      := csr.io.intrpt  
 mem_reg_intrpt_no   := csr.io.intrpt_no
 mem_reg_clint_en    := clint_en
 mem_reg_csr_rd_wen  := csr.io.rd_wen
@@ -388,6 +388,9 @@ wb_rd_data  := MuxCase(0.U, Array(
                   ))
 
 regfile.io.rd_data := wb_rd_data
+
+
+
 
 // MY_INST print output
 val my_inst = RegInit(0.U(1.W))
